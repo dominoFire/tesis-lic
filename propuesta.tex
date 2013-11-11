@@ -1,0 +1,34 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{cite,url}
+
+\title{Calendarización de flujos de trabajo en cómputo en la nube}
+\author{Fernando Aguilar Reyes}
+
+\begin{document}
+
+\maketitle
+
+\section{Análisis de antecedentes: Revisión inicial de literatura}
+
+Entendemos que un flujo de trabajo, o \emph{workflow} en inglés, es un conjunto de pasos que modelan la ejecución de un proceso \cite{gutierrez2012agent}. Un ejemplo de un flujo de trabao sería la anotación de proteínas, el cual consiste en identificar ciertas partes de la proteína y poner una etiqueta que describa la función de dicho componente \cite{o2004mapping}. 
+
+Por lo general, los flujos de trabajo tienen una complejidad computacional que hace prohibitivos ejecutarlos en una sola computadora. De acuerdo a Buyya et al., diversos enfoques se han aplicado para distribuir la ejecución de un flujo de trabajo entre varias computadoras. Los enfoques de cómputo más importantes son los clusters, los grids y las nubes \cite{buyya2009cloud}. A continuación, explicaremos cada uno de los enfoques.
+
+\begin{itemize}
+\item Los \emph{clusters} son sistemas distribuidos, paralelos, compuestos de varias computadoras que son vistas como un único recurso de cómputo \cite{buyya2009cloud}. Un ejemplo de un cluster es la instalación de la Universidad Autónoma Metropolitana, campus Iztapalapa, llamado \emph{Atizaloa}, compuesto por 270 nodos de cómputo, equipados cada uno con 2 procesadores Intel Xeon Quad-Core y 16GB en RAM; los nodos están conectados entre sí por medio de switches Ethernet e Infiniband. El cluster también cuenta con un sistema de almacenamiento distribuido badado en Lustre. La conexión con Internet se administra con el nodo maestro llamado Atizaloa. La capacidad de cómputo del cluster Atizaloa es de 18.4 teraFLOPS \cite{uamz2013tizaloa}.
+
+\item Los \emph{grids} son sistemas distribuidos, paralelos, compuestos de computadoras autónomas y geográficamente distribuidas que pueden trabajar en conjunto o de manera independiente de acuerdo a los objetivos, políticas y mecanismos de uno o varios administradores del sistema, es decir, un grid puede ser compartido entre varias instituciones \cite{buyya2009cloud}. El proyecto \emph{LANCAD} es un buen ejemplo, pues une el cluster \emph{Atizaloa} de la UAM, el cluster de la UNAM \emph{KamBalam}, y el cluster \emph{Xiuhcoatl} del CINVESTAV por medio de una red de fibra óptima instalada en las estaciones del Sistema de Transporte Colectivo Metro. La suma de la potencias reales de cada cluster robusto de cálculo del grid es de 48.55 teraFLOPS \cite{lancad2013xiuhcoatl}.
+
+\item Las \emph{nubes} (clouds) son sistemas distribuidos, paralelos, compuestos de computadoras o máquinas virtuales interconectadas que son aprovisionadas para usarse como uno o varios recursos de cómputo, de acuerdo a un contrato de nivel de servicio acordado entre el proveedor de la nube y el cliente \cite{buyya2009cloud}. Empresas nuevas y existences proveen servicios de cómputo en la nube, tales como GoGrid, Rackspace, Amazon, Microsoft, IBM, Oracle, entre otras. La forma en que operan es muy sencilla: se paga cierta cantidad por utilizar servicios de cómputo o alacenamiento durante detarminado tiempo. Así, los clientes no tienen que invertir grandes cantidades de dinero para contar con una gran infraestructura como lo son los clusters y los grids.
+\end{itemize}
+
+El \emph{cloud computing} o enofque de cómputo en la nube está tomando mucho interés tanto por la industria como por la comunidad científica, porque hace accesible una gran cantidad de recursos computacionales con cantidades razonables de presupuesto.
+
+Cuando trabajamos con flujos de trabajo en los dos primeros enfoques, se utiliza software para administrar la ejecución del flujo de trabajo. Por ejemplo, 
+
+\bibliographystyle{plain}
+\bibliography{propuesta}
+
+\end{document}
