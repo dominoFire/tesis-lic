@@ -1,0 +1,43 @@
+\documentclass[letterpaper, 12pt]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{cite,url,graphicx,amsmath,enumitem}
+\usepackage{fullpage}
+\usepackage{authblk}
+
+%para definir bibliografia en referencias
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\thebibliography}{%
+  \chapter*{\bibname}\@mkboth{\MakeUppercase\bibname}{\MakeUppercase\bibname}}{%
+  \chapter*{Referencias}}{}{}
+\makeatother
+
+\title{Estudio de algoritmos de calendarización para flujos de trabajo}
+\author{Fernando Aguilar Reyes}
+
+\affil{Tesina para obtener el título de Ingeniero en Computación \\
+       Instituto Tecnológico Autónomo de México \\
+     Río Hondo \#1, Progreso Tizapán, Del. Álvaro Obregón, 01080 \\
+     México, Distrito Federal \\}
+
+
+%interlineado
+\renewcommand{\baselinestretch}{1.0}
+
+\begin{document}
+
+\maketitle
+
+
+\chapter{Introducción}
+
+Un flujo de trabajo es un conjunto de pasos que modelan la ejecución de un proceso \cite{gutierrez2012agent}. En la literatura especializada, los flujos de trabajos también son conocidos como \emph{workflows}. En particular, se estudian a los flujos de trabajo utilizados para vislumbrar la ejecución de un proceso de cómputo. A continuación, se muestran algunos ejemplos de flujos de trabajo.
+
+
+
+\renewcommand*{\bibname}{\chapter*{Referencias}}
+\bibliographystyle{plain}
+\bibliography{propuesta}
+
+\end{document}
