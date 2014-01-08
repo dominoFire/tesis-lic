@@ -1,7 +1,7 @@
 \documentclass[letterpaper, 12pt]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
-\usepackage{cite,url,graphicx,amsmath,enumitem}
+\usepackage{cite,url,graphicx,amsmath,enumitem,amssymb}
 \usepackage{fullpage}
 \usepackage{authblk}
 
@@ -149,6 +149,9 @@ En este trabajo, se establecerán las siguientes consideraciones para limitar el
 
 %todos se pueden representar como Grafos Dirigidos Acíclicos
 
+%implementaciones de representación de workflows
+% - AGWL
+
 
 \chapter{Cómputo distribuido}
 Los flujos de trabajo requieren de recursos de cómputo para su ejecución. En los ejemplos anteriores se mencionaron aplicaciones científicas que, por su naturaleza, requieren vasto tiempo de ejecución para llevarse a cabo. Por otro lado, también existen aplicaciones de negocio que, si bien son computacionalmente sencillas, se requiere ejecutar una gran cantidad de instancias de estos flujos de trabajo. Por ello, ejecutar cualquiera de estos flujos de trabajo en una sola computadora resulta prohibitivo. Así, se hace uso de varias computadoras para distribuir el esfuerzo para correr estos grandes procesos.
@@ -193,22 +196,55 @@ En la figura \ref{fig:LANCAD-mapa-fo} se muestra los tramos de línea de Metro q
 \subsection{Nubes}
 Las \emph{nubes} (clouds) son sistemas distribuidos, paralelos, compuestos de computadoras o máquinas virtuales interconectadas que son aprovisionadas para usarse como uno o varios recursos de cómputo, de acuerdo a un contrato de nivel de servicio acordado entre el proveedor de la nube y el cliente \cite{buyya2009cloud}. 
 
-Empresas nuevas y existences proveen servicios de cómputo en la nube, tales como GoGrid, Rackspace, Amazon, Microsoft, IBM, Oracle, entre otras. La forma en que operan es la siguiente: se paga cierta cantidad por utilizar servicios de cómputo o almacenamiento durante determinado tiempo. Así, los clientes no tienen que invertir grandes cantidades de dinero para contar con una gran infraestructura como en el caso de los los clusters y los grids.
+Empresas nuevas y existentes proveen servicios de cómputo en la nube, tales como GoGrid, Rackspace, Amazon, Microsoft, IBM, Oracle, entre otras. La forma en que operan es la siguiente: se paga cierta cantidad por utilizar servicios de cómputo o almacenamiento durante determinado tiempo. Así, los clientes no tienen que invertir grandes cantidades de dinero para contar con una gran infraestructura como en el caso de los los clusters y los grids.
 
 \section{Comparación de los enfoques}
 Si bien estos enfoques difieren, principalmente, en la forma en que están organizadas las unidades de cómputo, podemos enumerar algunas observaciones.
 
 Primero, es natural ver que los grids están compuestos de clusters, pero también podría verse a un grid como un gran cluster. Hasta cierto punto este razonamiento parece correcto. Sin embargo, la diferencia importante entre clusters y grids radica en el hecho de que el grid es comúnmente administrado por varios técnicos de varias instituciones que, pueden tener objetivos y necesidades diversas, mientras que un cluster requiere de menos administradores y se asume una mayor flexibilidad para enfrentar los fallos de un cluster.
 
-Segundo, tanto los grids como las nubes son físicamente muy similares: ambos consisten de varios clusteres interconectados y distribuidos geográficamente. Entonces ¿cuál es la diferencia? Lo que distingue a las nubes de los grids son dos características: (1) en una nube, se utilizan \emph{máquinas virtuales} para distribuir el recurso. El usuario tiene la vista de una parte del grid como si fuera una computadora dedicada exclusivamente para éste. Por otro lado, en los grids, es común que el usuario acceda a él con una cuenta asignada por un administrador, de tal suerte que se tiene una vista de una gran máquina que es compartida entre varios usuarios. Muchos de los administradores de grids en el mundo administran los trabajos encargados por los usuario de tal modo que se ejecuten lo más rápido posible con los recursos disponibles en un tiempo dado. Los usuarios, en algunos casos obtienen acceso al grid y trabajan sus proyectos de manera gratuita o, en caso contrario, pagan una cuota por un tiempo fijo de cómputo. Pero, en el caso de las nubes, se agrega un modelo económico para acceder a los recursos llamado \emph{pay as you go}, en donde el usuario paga una cuota por los recursos utilizados, sin alguna limitación mas que el presupuesto. Asi, el usuario podría pagar una gran cantidad para que su flujo de trabajo se ejecute en el menor tiempo posible o también podría pagar una menor cantidad sacrificando el tiempo total de ejecución del flujo.
+Segundo, tanto los grids como las nubes son físicamente muy similares: ambos consisten de varios clusteres interconectados y distribuidos geográficamente. Entonces, ¿cuál es la diferencia? Lo que distingue a las nubes de los grids son dos características: (1) en una nube, se utilizan \emph{máquinas virtuales} para distribuir el recurso. El usuario tiene la vista de una parte del grid como si fuera una computadora dedicada exclusivamente para éste. Por otro lado, en los grids, es común que el usuario acceda a él con una cuenta asignada por un administrador, de tal suerte que se tiene una vista de una gran máquina que es compartida entre varios usuarios. Muchos de los administradores de grids en el mundo administran los trabajos encargados por los usuario de tal modo que se ejecuten lo más rápido posible con los recursos disponibles en un tiempo dado. Los usuarios, en algunos casos obtienen acceso al grid y trabajan sus proyectos de manera gratuita o, en caso contrario, pagan una cuota por un tiempo fijo de cómputo. Pero, en el caso de las nubes, se agrega un modelo económico para acceder a los recursos llamado \emph{pay as you go}, en donde el usuario paga una cuota por los recursos utilizados, sin alguna limitación mas que el presupuesto. Asi, el usuario podría pagar una gran cantidad para que su flujo de trabajo se ejecute en el menor tiempo posible o también podría pagar una menor cantidad sacrificando el tiempo total de ejecución del flujo.
 
 
 \chapter{Calendarización}
-La calendarización\footnote{También conocida en la literatura especializada como \emph{scheduling}} es el proceso de asignación de recursos a tareas, de tal modo que se define un orden de ejecución de las tareas, teniendo lugar diferentes combinaciones de recursos y tareas. En este capítulo se define de la forma más elemental el problema de la calendarización para estudiar sus propiedades y también se explica la relación de este problema fundamental con la calendarización de flujos de trabajo.
+La calendarización\footnote{También conocida en la literatura especializada como \emph{scheduling}} es el proceso de asignación de recursos a tareas, de tal modo que se define un orden de ejecución de las tareas, teniendo lugar diferentes combinaciones de recursos y tareas. En este capítulo se define de la forma más elemental el problema de la calendarización para estudiar sus propiedades y también se explica la relación de este problema fundamental con los flujos de trabajo.
 
 \section{Definición del problema}
+De acuerdo a  Ullman et al. \cite{ullman1975np}, el problema de la calendarización se define de la siguiente manera: se tiene
+
+\begin{enumerate}
+\item Un conjunto de tareas $S = \{ J_1, J_2, \dots, J_n \}$
+\item Un ordenamiento parcial $\prec$ sobre $S$
+\item Una función de peso sobre el conjunto de tareas $W: S \mapsto \mathbb{Z}^{+} $ la cual indica el tiempo que tarda en completarse cada una de las tareas en $S$
+\item Un número de computadoras (procesadores) $k$
+\end{enumerate}
+
+Para este caso, se asume que cuando una computadora ejecuta una tarea, ésta es ejecutada completamente. Así, el problema de la calendarización consiste en minimizar el tiempo total de ejecución, denotado por $t_\text{max}$, respetando el orden parcial definido por $\prec$.
 
 \section{La complejidad de calendarizar}
+Como puede notarse, hay varias maneras de acomodar las $k$ computadoras para que se ejecuten todas las tareas de $S$. Sin embargo, Ullman et al. han demostrado que este problema pertenece a la categoría NP-completo \cite{ullman1975np}.
+
+Esto signifca que no se ha encontrado un algoritmo que pueda resolver el problema en tiempo polinomial. Entonces, la solución ingenua de probar ordenadamente todas las posibles asignaciones de tareas a computadoras resulta computacionalmente muy caro.
+
+Así, la forma de atacar estos problemas NP-completos es utilizar métodos de aproximación \cite{leiserson2001introduction} que obtengan soluciones subóptimas o utilizar heurísticas que resuelvan este problema sumando ciertas restricciones.
+
+\section{Calendarización de flujos de trabajo}
+Hasta ahora, se ha mencionado el problema básico de calendarización con restricciones. Con ello, se pretende plantear el problema de la calendarización de flujos de trabajo y apoyarse en la definición del problema básico de calendarización para enumerar propiedades sobre este problema.
+
+Para plantear el problema de la calendarización de flujos de trabajo, primero se demostrará que cualquier flujo de trabajo puede ser reducido a un grafo dirigido acíclico haciendo las transformaciones adecuadas \cite{mair2007workflow}. Luego, se utilizará la definición del problema básico de calendarización con restricciones y su semejanza para flujos de trabajo. Finalmente, se hará una descripción de la complejidad de calendarizar flujos de trabajo.
+%tres hechos:
+% - todo flujo de trabajo puede reducirse a DAG
+% - transforma un DAG a un problema clásico de Ullman
+% - menciona que el problema de Ullman es NP-completo
+\subsection{Reducción de flujos de trabajo a grafos dirigidos acíclicos}
+
+
+
+\subsection{Definición del problema de calendarización de flujos de trabajo}
+
+
+\subsection{Complejidad computacional de la calendarización de flujos de trabajo}
+
 
 \chapter{Algoritmos de calendarización}
 
