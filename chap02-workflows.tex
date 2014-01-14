@@ -1,0 +1,100 @@
+\chapter{Flujos de trabajo}
+
+\section{Definición y ejemplos}
+Un flujo de trabajo es un conjunto de pasos que modelan la ejecución de un proceso \cite{gutierrez2012agent}. En la literatura especializada, los flujos de trabajos también son conocidos como \emph{workflows}. En particular, se estudian a los flujos de trabajo utilizados para vislumbrar la ejecución de un proceso de cómputo. A continuación, se muestran algunos ejemplos de estos flujos de trabajo.
+
+\subsection{Anotación de proteínas}
+En el proyecto \emph{e-Protein}, realizado por la Escuela Imperial de Londres, se realizó un flujo de trabajo para la anotación de proteínas. El objetivo del proyecto \cite{o2004mapping} era la identificación y anotación de partes de proteínas que expliquen su estructura y su función. En la figura \ref{fig:iceni-workflow} se muestra el flujo de trabajo desarrollado, donde las cajas representan los programas que son ejecutados para cada paso del proceso de anotación, y las líneas que conectan a las cajas representan las dependencias de datos entre los programas, es decir, si una caja tiene una línea que apunta a ella, significa que dicho programa depende de otro porgrama determinado por el otro extremo de la flecha.
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.8\textwidth]{imagenes/iceni-workflow}
+    \end{center}
+    \caption{Flujo de trabajo para la anotación de proteínas, diseñado en la Escuela Imperial de Londres para el proyecto \emph{e-Protein}.}
+    \label{fig:iceni-workflow}
+\end{figure}
+
+
+\subsection{Curvas de amenaza sísmica}
+Otro notable ejemplo es el proceso para generar curvas de amenaza que describen las probabilidades de que ocurra un temblor en una determinada área. Para elaborar estas curvas, los científicos del Centro de Terremotos del Sureste de California (SCEC por sus siglas en inglés) tienen que realizar una gran cantidad de simulaciones para que sus resultados puedan ser combinados y expresados en la curva de amenaza \cite{deelman2006managing}. El flujo de trabajo para generar la curva de amenaza se muestra en la figura \ref{fig:scec-workflow}.
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.8\textwidth]{imagenes/scec-workflow}
+    \end{center}
+    \caption{Flujo de trabajo para generar curvas de amenaza, elaborado por el SCEC.}
+    \label{fig:scec-workflow}
+\end{figure}
+
+\subsection{Generación de facturas}
+Recientemente en México, el Sistema de Administración Tributaria emitió los lineamientos para que las operaciones de compra-venta entre personas físicas y morales puedan ser registradas por medio de facturas electrónicas. Para generar estos Comprobantes Fiscales Digitales, las empresas tienen que hacer procesos de validaciones de RFC y encriptar el contenido de la factura con un mecanismo de llave privada. Naturalmente, este proceso de generación de factura requiere de varias actividades. En la figura \ref{fig:cfd-workflow} se muestra el flujo de trabajo que utiliza una empresa para generar sus facturas. Este flujo se encuentra documentado en una tesina presentada por Alcerreca \cite{alcerreca2013cfd}.
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.8\textwidth]{imagenes/cfd-workflow}
+    \end{center}
+    \caption{Flujo de trabajo para generar facturas electrónicas, utilizado por una empresa de cementos.}
+    \label{fig:cfd-workflow}
+\end{figure}
+
+
+\section{Estructura de los flujos de trabajo}
+Como hemos visto en los dos ejemplos anteriores, los flujos de trabajo presentados describen los \emph{pasos} que necesitan para calcular la solución de un problema. En éstos, no se ha hablado sobre detalles para hacer los cómputos necesarios para cada flujo. Tampoco definen las plataformas de cómputo en que se ejecutan estos flujos. Tan sólo definen los grandes pasos para solucionar el problema y las dependencias que tienen estos pasos. 
+
+Ahora, es muy común que estas dependencias estén dictadas por los datos que requiere cada paso para funcionar. Sin embargo, hay situaciones en los que los pasos del flujo no requieren los datos del paso anterior para funcionar, sino que las dependencias están marcadas por el orden temporal que deben seguir estos pasos. Así, se puede notar una ambigüedad en la definición de un flujo de trabajo.
+
+\subsection{Perspectivas de los flujos de trabajo}
+El trabajo de Van der Aalst et al. \cite{van2003workflow} identifica una serie de perspectivas vislumbrados en las definiciones de las especificaciones de un flujo de trabajo en las que se basan los sistemas que administran la ejecución de éstos. Las cuatro perspectivas se enuncian a continuación:
+%En esta tesis, tomaremos estas perspectivas a manera de una clasificación de flujos de trabajo basadas en la forma en que describen sus dependencias
+
+\begin{itemize}
+
+\item{\textbf{Perspectiva de control de flujo.} Describe las relaciones de las actividades (pasos) con estructuras de control, tales como: secuencia, decisión, ejecución de actividades en paralelo y punto de sincronización conjunta\footnote{Esta estructura de control también es conocida como \emph{join synchronization}}.}
+
+\item{\textbf{Perspectiva de datos.} En ella, los flujos de trabajo describen las entradas y salidas de datos, tanto de ejecución como de control, que se tienen en cada actividad del flujo. También se toma en cuenta los datos locales a cada actividad; es decir, que sólo son necesarios dentro del contexto de ésta.}
+
+\item{\textbf{Perspectiva de recursos.} Muestra cuáles son los recursos con los que se cuentan para ejecutar el flujo de trabajo y la forma en que estos recursos se encuentran organizados. Estos recursos pueden ser desde entidades de cómputo hasta roles con responsabilidades específicas cumplidas por actores humanos.}
+
+\item{\textbf{Perspectiva operacional.} Aquí se detallan las operaciones elementales necesarias en cada actividad para ejecutar el flujo de trabajo. Estos detalles incluyen las transferencias de datos entre las operaciones y su correspondencia en programas.}
+
+\end{itemize}
+
+Cabe aclarar que estas perspectivas están relacionadas entre sí de modo que el control de flujo es la base en la que descansan las demás perspectivas. Esto es porque la perspectiva de datos requiere que el control de flujo tenga los datos de entrada y salida como prueba de que se cumplieron las pre y post-condiciones de cada actividad, respectivamente; la perspectiva de recursos define con qué se ejecutarán y almacenará los datos del flujo de trabajo; mientras que la perspectiva operacional trata los detalles sobre cómo se utilizan \emph{físicamente} los recursos, los datos y los programas a lo largo del flujo de trabajo.
+
+\section{Calendarización como control de flujo}
+
+El hecho de que la perspectiva de control de flujo sea la base de las demás perspectivas indica que la forma en que controla la ejecución del flujo determina de manera fundamental el rendimiento de la ejecución total de una instancia del flujo. Por lo tanto, es de vital importancia encontrar métodos de calendarización que permitan encontrar correspondencias entre recursos y actividades que cumplan con los requisitos dictados en las especificaciones examinadas en la perspectiva del control del flujo y que también maximicen el rendimiento de la ejecución de todo el flujo en general.
+
+En este trabajo, se establecerán las siguientes consideraciones para limitar el estudio de los algoritmos de calendarización, a saber:
+
+\begin{itemize}
+\item{Los flujos de trabajo están representados como \emph{grafos dirigidos acíclicos}, con el objetivo de simplificar el estudio}
+
+\item{Las tareas (o actividades) de los flujos de trabajo son consideradas \emph{atómicas}, i.e., una tarea no puede ejecutarse incompletamente. Algunos sistemas de administración de ejecución de flujos de trabajo tienen mecanismos para lidiar con estos errores, pero el estudio de éstos queda fuera de los límites de este trabajo.}
+
+\item{La información de las \emph{demás perspectivas} se puede requerida, dependiendo si el mecanismo de calendarización lo considere necesario para tomar mejores decisiones.}
+\end{itemize}
+
+%conclusiones:
+% - representar como DAG's porque es sencillo y expresivo (balanceado)
+% - tareas atómicas
+% - la información de las demás perspectivas se puede requerir o no, dependiendo de como lo requiera el calendarizador.
+
+
+%ejemplo: ICENI tiene partes paralelas, que no requieren de ciertos datos para operar
+%ejemplo: Si hablas de orden,
+%poner ejemplos donse se ejemplifique esta calendarización
+
+%clasificados de acuerdo a dependencias (de orden, o de datos)
+
+
+%clasificados de acuerdo a nivel de detalle (específico para cada plataforma)
+
+%clasificados de acuerdo a instancias
+% - pocas instancias, mucho tiempo de cómputo:
+% - intensivos en instancias, pero cortos en ejecución:
+
+%todos se pueden representar como Grafos Dirigidos Acíclicos
+
+%implementaciones de representación de workflows
+% - AGWL
