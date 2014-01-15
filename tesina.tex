@@ -1,7 +1,7 @@
-\documentclass[letterpaper, 12pt,twoside]{report}
+\documentclass[letterpaper, 12pt, twoside, openright]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
-\usepackage{cite,url,graphicx,amsmath,amssymb,enumitem,amsthm}
+\usepackage{cite,url,graphicx,amsmath,amssymb,enumitem,amsthm,appendix}
 \usepackage{fullpage}
 \usepackage{authblk}
 
@@ -23,13 +23,19 @@
 %\renewcommand{\baselinestretch}{1.5}
 
 % Para algoritmos (Gracias Andreu)
-\usepackage[ruled,lined,boxed,linesnumbered,spanish]{algorithm2e}
-\SetKwInput{Input}{Entrada}
-\SetKwInput{Output}{Salida}
-\SetKwIF{If}{ElseIf}{Else}{si}{entonces}{de otro modo si}{de otro modo}{fin del si}
-\SetKwFor{For}{para}{hacer}{fin del para}
-\SetKwFor{While}{mientras}{hacer}{fin}
-\SetKwRepeat{Do}{hacer}{mientras}
+%\usepackage[ruled,lined,boxed,linesnumbered,spanish]{algorithm2e}
+%\SetKwInput{Input}{Entrada}
+%\SetKwInput{Output}{Salida}
+%\SetKwIF{If}{ElseIf}{Else}{si}{entonces}{de otro modo si}{de otro modo}{fin del si}
+%\SetKwFor{For}{para}{hacer}{fin del para}
+%\SetKwFor{While}{mientras}{hacer}{fin}
+%\SetKwRepeat{Do}{hacer}{mientras}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
 
 \title{Estudio de algoritmos de calendarización para flujos de trabajo}
 \author{Fernando Aguilar Reyes}
@@ -47,6 +53,7 @@
 
 \listoffigures
 
+\mainmatter
 \include{chap01-intro}
 \include{chap02-workflows}
 \include{chap03-distributed_computing}
@@ -54,6 +61,10 @@
 \include{chap05-scheduling_algorithms}
 \include{chap06-workflow_mgmt_software}
 \include{chap07-conclusions}
+
+\appendix
+%\include{app01-pseudocodes}
+\include{app}
 
 % forma rapida de cambiar "Bibliografía" por "Referencias"
 %%\renewcommand*{\bibname}{\chapter*{Referencias}}

@@ -1,0 +1,209 @@
+\chapter{Pseudocódigos}
+
+\section{Algoritmos de menor esfuerzo}
+\subsection{Miope}
+\label{alg:myopic}
+\begin{algorithmic}[1]
+\Require Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$
+\Ensure{Una calendarización $f$}
+\While{$\exists v \in \mathcal{V}$ no completada}
+	\State $t \gets$ Obtener una tarea lista, no calendarizada, con padres calendarizados;
+	\State $r \gets$ Obtener un recurso que pueda resolver la tarea en el menor tiempo;
+	\State Calendarizar $t$ en $r$, i.e., $f(r) = t$;
+\EndWhile
+\end{algorithmic}
+
+\subsection{Definiciones para los algoritmos Max-Min y Min-min}
+Los algoritmos min-min y max-min utilizan las siguientes  estimaciones: %definidas en la tabla \ref{tbl:min-min-estimators}. %todo: checar por qué numera RARO
+\begin{itemize}
+\item{$EET(t,r)$ -- \textbf{Tiempo estimado de ejecución:} Tiempo que el recurso (servicio) $r$ tomará en ejecutar la tarea $t$, desde que la tarea es ejecutada en el recurso}
+\item{$EAT(t,r)$ -- \textbf{Tiempo estimado de disponibilidad:} Tiempo en el que el recurso $r$ estará disponible para ejecutar la tarea $t$}
+\item{$FAT(t,r)$ -- \textbf{Tiempo de archivo disponible:} Tiempo más pronto en que todos los archivos requeridos por la tarea $t$ están disponibles en el recurso $r$}
+\item{$ECT(t,r)$ -- \textbf{Tiempo estimado de terminación:} Tiempo estimado en cual la tarea $t$ terminará su ejecución en el recurso $r$: 
+              \[ ECT(t,r) = EET(t,r) + max(EAT(t,r), FAT(t,r)) \]}
+\item{$MCT(t)$ -- \textbf{Tiempo mínimo estimado de terminación: } $ECT$ mínimo para la tarea $t$ sobre todos los recursos disponibles, es decir: 
+            \[ MCT(t) = \min_{r \in \mathcal{S}} ECT(t,r) \]}
+\end{itemize}
+
+\subsection{Min-Min}
+\label{alg:min-min}
+\begin{algorithmic}[1]
+\Require{Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$}
+\Ensure{Una calendarización $f$}
+\While{$\exists v \in \mathcal{V}$ \emph{no completada}}
+	\State $t \gets$ Obtener conjunto de tareas listas, no calendarizadas, con padres  calendarizados;
+	\State \Call{Sched}{$tasks$};
+\EndWhile
+\Procedure{Sched}{$availTasks$}
+	\While{$\exists t \in availTasks$ no calendarizadas}
+		\For{$t \in availTasks$}
+			\State $res \gets$ Obtener recursos disponibles para $t$;
+			\For{$r \in res$}
+				\State Calcular $ECT(t,r)$;
+			\EndFor
+			\State $R_T \gets \arg\min_{r \in res}ECT(t,r)$;
+		\EndFor
+		\State $T \gets \arg\min_{t \in availTasks}ECT(t,R_T)$;
+		\State Calendarizar $T$ en $R_T$;
+		\State Remover $T$ de \emph{availTasks};
+		\State Actualizar $EAT(R_T)$;
+	\EndWhile
+\EndProcedure
+\end{algorithmic}
+
+\subsection{Max-Min}
+\label{alg:max-min}
+\begin{algorithmic}[1]
+\Require{Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$}
+\Ensure{Una calendarización $f$}
+\While{$\exists v \in \mathcal{V}$ \emph{no completada}}
+	\State $t \gets$ Obtener conjunto de tareas listas, no calendarizadas, con padres  calendarizados;
+	\State \Call{Sched}{$tasks$};
+\EndWhile
+\Procedure{Sched}{$availTasks$}
+	\While{$\exists t \in availTasks$ no calendarizadas}
+		\For{$t \in availTasks$}
+			\State $res \gets$ Obtener recursos disponibles para $t$;
+			\For{$r \in res$}
+				\State Calcular $ECT(t,r)$;
+			\EndFor
+			\State $R_T \gets \arg\min_{r \in res}ECT(t,r)$;
+		\EndFor
+		\State $T \gets \arg\max_{t \in availTasks}ECT(t,R_T)$;
+		\State Calendarizar $T$ en $R_T$;
+		\State Remover $T$ de \emph{availTasks};
+		\State Actualizar $EAT(R_T)$;
+	\EndWhile
+\EndProcedure
+\end{algorithmic}
+
+\subsection{Sufragio}
+\label{alg:sufferage}
+\begin{algorithmic}[1]
+\Require{Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$}
+\Ensure{Una calendarización $f$}
+\While{$\exists v \in \mathcal{V}$ \emph{no completada}}
+	\State $t \gets$ Obtener conjunto de tareas listas, no calendarizadas, con padres  calendarizados;
+	\State \Call{Sched}{$tasks$};
+\EndWhile
+\Procedure{Sched}{$availTasks$}
+	\While{$\exists t \in availTasks$ no calendarizadas}
+		\For{$t \in availTasks$}
+			\State $res \gets$ Obtener recursos disponibles para $t$;
+			\For{$r \in res$}
+				\State Calcular $ECT(t,r)$;
+			\EndFor
+			\State $R^1_t \gets \arg\min_{r \in res}ECT(t,r)$;
+			\State $R^2_t \gets \arg\min_{r \in res, r \ne{R^1_t}}ECT(t,r)$;
+			\State $suf_t \gets ECT(t,R^2_t) - ECT(t,R^1_t)$;
+		\EndFor
+		\State $T \gets \arg\max_{t \in availTasks}suf_t$;
+		\State Calendarizar $T$ en $R^1_T$;
+		\State Remover $T$ de \emph{availTasks};
+		\State Actualizar $EAT(R_T)$;
+	\EndWhile
+\EndProcedure
+\end{algorithmic}
+
+\subsection{HEFT}
+\label{alg:heft}
+\begin{algorithmic}[1]
+\Require{Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$}
+\Ensure{Una calendarización $f$}
+\State Calcular \emph{Tiempo de Ejecución Promedio} (1) para cada tarea $v \in \mathcal{V}$;
+\State Calcular \emph{Tiempo de Transferencia de Datos Promedio} (2) entre tareas y sus sucesores;
+\State Calcular \emph{Rango} para cada tarea, de acuerdo a (3) (4);
+\State Ordenar las tareas por \emph{Rango}, en orden decreciente en una lista $Q$;
+\While{$Q \ne \varnothing$}
+	\State $t \gets$ Remover la primera tarea de $Q$;
+	\State $r \gets$ Encontrar un recurso que pueda ejecutar $r$ en el menor tiempo;
+	\State Calendarizar $t$ en $r$;
+\EndWhile
+\end{algorithmic}
+
+\subsection{Híbrido}
+\label{alg:hybrid}
+\begin{algorithmic}[1]
+\Require{Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$}
+\Ensure{Una calendarización $f$}
+\State Calcular \emph{Peso} de cada tarea y arista, de acuerdo a (1)(2);
+\State Calcular \emph{Rango} para cada tarea, de acuerdo a (3) (4);
+\State Ordenar las tareas por \emph{Rango}, en orden decreciente en una lista $Q$;
+\State $i \gets 0$
+\State Crear un grupo $G_i$;
+\While{$Q \ne \varnothing$}
+	\State $t \gets$ Remover la primera tarea de $Q$;
+	\If{$t$ tiene una dependencia con una tarea en $G_i$}
+		\State $i \gets i + 1$;
+		\State Crear un grupo $G_i$;
+	\EndIf
+	\State Agregar $t$ a $G_i$;
+\EndWhile
+\State $j \gets 0$;
+\While{$j \le i$}
+	\State Calendarizar tareas en $G_i$ usando un algoritmo \emph{batch};
+	\State $j \gets j + 1$;
+\EndWhile
+\end{algorithmic}
+
+\subsection{TANH}
+\label{alg:tanh}
+\begin{algorithmic}[1]
+\Require{Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$}
+\Ensure{Una calendarización $f$}
+\State Calcular \emph{Parámetros} para cada nodo tarea;
+\State Agrupar tareas del flujo de trabajo;
+\If{Número de clusters $\ge$ Número de recursos disponibles}
+	\State Reducir el Número de clusters al Número de recursos disponibles;
+\Else
+	\State Ejecutar duplicación de tareas;
+\EndIf
+\end{algorithmic}
+
+\section{Algoritmos de Calidad en el Servicio}
+\subsection{BackTracking}
+
+\subsection{Deadline Distribution}
+\subsection{CTC}
+\subsection{Deadline-MDP}
+\subsection{LOSS/GAIN}
+
+\section{Metaheurísticos}
+\subsection{Algoritmo Genético}
+
+\subsection{GRASP}
+\label{alg:grasp}
+\begin{algorithmic}[1]
+\Require{Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$}
+\Ensure{Una calendarización $f$}
+\While{Criterio de terminación no satisfactorio}
+	\State $sched \gets$ \Call{createSchedule}{$w$};
+	\If{$sched$ es mejor que $bestSched$}
+		\State $bestSched \gets sched$;
+	\EndIf
+\EndWhile
+\Procedure{createSchedule}{$workflow$}
+	\State $solution \gets$ \Call{constructSolution}{$workflow$};
+	\State $nSolution \gets$ \Call{localSearch}{$solution$};
+	\If{$nSolution$ es mejor que $solution$}
+		\State \textbf{return} $nSolution$;
+	\EndIf
+	\State \textbf{return} $solution$;
+\EndProcedure
+\Procedure{constructSolution}{$workflow$}
+	\While{calendarización no completada}
+		\State $T \gets$ Obtener tareas listas sin asignar;
+		\State Crear RCL para cada $t \in T$;
+		\State $subSolution \gets$ Seleccionar un recurso \emph{aleatoriamente} para cada $t \in T$ de su RCL;
+		\State $solution \gets solution \cup subSolution$;
+		\State Actualizar información para futuros RCL;
+	\EndWhile
+	\State \textbf{return} $solution$;
+\EndProcedure
+\Procedure{localSearch}{$solution$}
+	\State $nSolution \gets$ Encontar una solución local óptima;
+	\State \textbf{return} $nSolution$;
+\EndProcedure
+\end{algorithmic}
+
+\subsection{Recocido simulado}

@@ -1,104 +1,39 @@
 \chapter{Algoritmos de calendarización de flujos de trabajo}
-En el capítulo anterior definimos el problema de calendarizar flujos de trabajo. También se vio que dicho problema pertenece a la categoría de los problemas NP-completo, lo cual significa que la complejidad --o tiempo de ejecución-- para resolver este problema no está acotada por una función polinomial. Por ello, diversos algoritmos se han propuesto para atacar, ya sea de manera total o parcial, el objetivo principal de la calendarización: optimizar el tiempo de ejecución total.
+En el capítulo anterior definimos el problema de calendarizar flujos de trabajo. También se vio que dicho problema pertenece a la categoría de los problemas NP-completos, lo cual significa que la complejidad --o tiempo de ejecución-- para resolver este problema no está acotada por una función polinomial. Por ello, diversos algoritmos se han propuesto para atacar, ya sea de manera total o parcial, el objetivo principal de la calendarización: optimizar el tiempo de ejecución total.
 
 Ahora, con los enfoques de cómputo propuestos en el capítulo 2, se crean diversos algoritmos para diferentes necesidades. Mientras que en los clusters y los grids se asumen que estos recursos son compartidos, los algoritmos de calendarización para estos recursos asumen que los flujos deben ser ejecutados lo más pronto posible, con el fin de hacer que el recurso esté ocupado la mayor parte del tiempo. Por otro lado, el enfoque de nubes permite diseñador de flujos de trabajo elegir entre ejecutar el flujo con todos los recursos a costa de un elevado presupuesto o, minimizar dicho presupuesto tolerando un tiempo de ejecución mayor al mínimo posible.
 
-De acuerdo a Yu et al. \cite{yu2008workflow}, se pueden clasificar los algoritmos de calendarizar los algoritmos de flujos de trabajo ejecutados en grids en dos grandes niveles: los algoritmos de mejor esfuerzo son aquellos que tratan de minimizar el tiempo total de ejecución\footnote{También conocido como \emph{makespan}}, haciendo uso de todos los recursos disponibles. El segundo grupo son los algoritmos de Calidad en el Servicio\footnote{En la literatura especializada se conoce a este término como \emph{Quality of Service}}, los cuales tratan de obtener una calendarización que cumpla las restricciones especificadas como una medida de calidad, con la posibilidad de elegir soluciones que tomen un tiempo de ejecución subóptimo.
+De acuerdo a Yu et al. \cite{yu2008workflow}, se pueden clasificar los algoritmos de calendarización los algoritmos de flujos de trabajo ejecutados en grids en dos grandes niveles: los algoritmos de Mejor Eesfuerzo y los algoritmos de Calidad en el Servicio\footnote{En la literatura especializada se conoce a este término como \emph{Quality of Service}}. Al primer grupo pertenecen aquellos algoritmos que tratan de minimizar el tiempo total de ejecución\footnote{También conocido como \emph{makespan}}, haciendo uso de todos los recursos disponibles. El segundo grupo, los algoritmos tratan de obtener una calendarización que cumpla las restricciones especificadas como una medida de calidad, con la posibilidad de elegir soluciones que tomen un tiempo de ejecución subóptimo.
 
-A continuación, mostraremos los algoritmos descritos en el trabajo de Yu et al., con los ajustes en notación necesarios para que coincidan con las definiciones de flujo de trabajo establecidas en los capítulos anteriores.
+A continuación, mostraremos los algoritmos descritos en el trabajo de Yu et al., con los ajustes en notación necesarios para que coincidan con las definiciones de flujo de trabajo establecidas en el capítulo anterior.
 
 
 \section{Algoritmos de Mejor Esfuerzo}
-Este tipo de algoritmos tratan de minimizar algún criterio, que en muchos casos es el tiempo total de ejecución.
+Este tipo de algoritmos tratan de minimizar algún criterio, que en muchos casos es el tiempo total de ejecución o \emph{makespan}. Cabe aclarar que para los siguientes algoritmos, se asumirá que el grafo del flujo de trabajo tiene una correspondencia biyectiva entre los nodos $mathcal{V}$ y las tareas $mathcal{T}$, es decir, cada nodo del grafo representa una tarea del flujo de trabajo. Las aristas del grafo representan \emph{dependencias entre tareas}.
 
 \subsection{Myopic (miope)}
-Este es el más simple de todos los algoritmos. Lo único que hace es buscar un recurso disponible que pueda ejecutar la tarea y asignarle dicha tarea.
-
-\begin{algorithm}
-\label{alg:myopic}
-\caption{Algoritmo miope de calendarización}
-\Input{Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$}
-\Output{Una calendarización $f$}
-\While{$\exists v \in \mathcal{V}$ no completada} {
-	$t$ $\leftarrow$ Obtener una tarea lista cuyos padres han sido calendarizados\;
-	$r$ $\leftarrow$ Obtener un recurso que pueda resolver la tarea en el menor tiempo\;
-	Calendarizar $t$ en $r$, i.e., $f(r) = t$\;
-}
-\end{algorithm}
+Este es el más simple de todos los algoritmos. Lo único que hace es buscar un recurso disponible que pueda ejecutar la tarea y asignarle dicha tarea. No toma en cuenta otra característica a optimizar. Este algoritmo fue propuesto por Ramamritham et al. \cite{ramamritham1990efficient}. Ell algoritmo \cite{yu2008workflow} peresentado en estre trabajo se encuentra en la sección \cite{alg:myopic} del Apéndice.
 
 \subsection{Min-min}
-El algoritmo min-min está basado en la heurística de terminar las tareas más cortas en el menor tiempo posible. Para ello, hace una estimación del tiempo de ejecución tomando en cuenta el tiempo de preparación de las tareas en los servicios --o recursos-- para tener el tiempo y los archivos necesarios disponibles para el recurso en cuestión.
-
-Los algoritmos min-min y max-min utilizan las estimaciones definidas en la tabla \ref{tbl:min-min-estimators}. %todo: checar por qué numera RARO
-
-\begin{centering}
-\begin{table}
-\label{tbl:min-min-estimators}
-\caption{Estimadores utilizados para los algoritmos min-min y max-min.}
-\begin{tabular}{|c|p{14cm}|}
-\hline
-Símbolo & Definición \\
-\hline
-$EET(t,r)$ & \textbf{Tiempo estimado de ejecución:} Tiempo que el recurso (servicio) $r$ tomará en ejecutar la tarea $t$, desde que la tarea es ejecutada en el recurso \\
-$EAT(t,r)$ & \textbf{Tiempo estimado de disponibilidad:} Tiempo en el que el recurso $r$ estará disponible para ejecutar la tarea $t$ \\
-$FAT(t,r)$ & \textbf{Tiempo de archivo disponible:} Tiempo más pronto en que todos los archivos requeridos por la tarea $t$ están disponibles en el recurso $r$ \\
-$ECT(t,r)$ & \textbf{Tiempo estimado de terminación:} Tiempo estimado en cual la tarea $t$ terminará su ejecución en el recurso $r$: 
-             \[ ECT(t,r) = EET(t,r) + max(EAT(t,r), FAT(t,r)) \]\\
-$MCT(t)$ & \textbf{Tiempo mínimo estimado de terminación: } $ECT$ mínimo para la tarea $t$ sobre todos los recursos disponibles, es decir: 
-           \[ MCT(t) = \min_{r \in \mathcal{S}} ECT(t,r) \]\\
-\hline
-\end{tabular}
-\end{table}
-\end{centering}
-
-De esta forma el algoritmo está descrito en el listado \ref{alg:min-min}.
-
-\begin{algorithm}
-\label{alg:min-min}
-\caption{Algoritmo calendarización min-min}
-\Input{Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$}
-\Output{Una calendarización $f$}
-
-\SetKwFunction{proc}{Sched}
-
-\While{$\exists v \in \mathcal{V}$ \emph{no completada}} {
-	$tasks$ $\leftarrow$ Obtener un conjunto de tareas cuyos padres han sido calendarizados\;
-	\proc{$tasks$}\;
-}
-
-\SetKwProg{myproc}{Procedimiento}{}{}
-\myproc{\proc{availTasks}}{
-	\While{$\exists t \in \text{availTasks}$ \emph{no calendarizadas}} {
-		\For{$t \in \text{availTasks}$} {
-			\emph{res} $\leftarrow$ Obtener recursos disponibles para $t$\;
-			\For{$r \in \text{res}$} {
-				Calcular $ECT(t,r)$\;
-			}
-			$R_T \leftarrow \arg\min_{r \in \textit{res}}ECT(t,r)$\;
-		}
-		$T \leftarrow \arg\min_{t \in \emph{availTasks}}ECT(t,R_T)$\;
-		Calendarizar $T$ en $R_T$\;
-		Remover $T$ de \emph{availTasks}\;
-		Actualizar $EAT(R_T)$\;
-	}
-}
-\end{algorithm}
+El algoritmo min-min está basado en la heurística de terminar las tareas más cortas en el menor tiempo posible. Para ello, hace una estimación del tiempo de ejecución tomando en cuenta el tiempo de preparación de las tareas en los servicios --o recursos-- para tener el tiempo y los archivos necesarios disponibles para el recurso en cuestión. El algoritmo fue presentado por Maheswaran et al. \cite{maheswaran1999dynamic}. El pseudocódigo está descrito en el listado \ref{alg:min-min}.
 
 \subsection{Max-min}
-El algoritmo max-min es muy similar al algoritmo min-min. La diferencia radica en que éste calendariza tareas cuyo tiempo mínimo de ejecución es el mayor, de tal modo que se ejecutan las tares más \emph{largas}.
+El algoritmo max-min --también propuesto Maheswaran et al. \cite{maheswaran1999dynamic}-- es muy similar al algoritmo min-min. La diferencia radica en que éste calendariza tareas cuyo tiempo mínimo de ejecución es el mayor, de tal modo que se ejecutan las tares más \emph{largas}.
 
 El único cambio que se necesita hacer al algoritmo \ref{alg:min-min} es cambiar la siguiente línea (14):
 \[T \leftarrow \arg\min_{t \in \emph{availTasks}}ECT(t,r);\]
 por
 \[T \leftarrow \arg\max_{t \in \emph{availTasks}}ECT(t,r);\]
+Así, el algoritmo modificado puede verse en el pseudocódigo \ref{alg:max-min}.
+
+\subsection{Sufragio}
+El algoritmo Sufragio\footnote{También conocido como \emph{Sufferage}} \cite{maheswaran1999dynamic} es una variación del algoritmo Min-min, el cual considera el valor del sufragio para hacer la calendarización. Dicho valor es la diferencia entre el menor tiempo de ejecución para una tarea $t$ sobre un conjunto de recursos disponibles y el segundo menor. Se calendariza a la tarea que tenga el valor del sufragio más alto, por el hecho de que las tareas que son muy sensibles a los cambios de los recursos deben ser calendarizadas primero. El algoritmo se encuentra en la sección \ref{alg:sufferage} del Apéndice.
+
 
 
 \section{Algoritmos de Calidad en el Servicio}
 
+\section{Problemas adicionales}
 
-\subsection{Heurítsicas}
-
-\subsection{Metaheurísticas}
-
-
-\subsection{Algoritmos genéticos}
+\subsection{Estimación del tiempo}
+\subsection{Descomposición de tareas}
