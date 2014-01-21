@@ -1,19 +1,33 @@
 \chapter{Software para la administración y ejecución de flujos de trabajo}
 
+En el capitulo anterior se hizo una clasificacion se extendio la clasificacion de algoritmos de calendarizacion, elaborada por Yu et al. \cite{yu2008workflow}. Sin duda, estos algoritmos han sido probados en simulaciones e implementados en sistemas que administran la  ejecucion de los flujos de trabajo. De acuerdo a Y el al. \cite{yu2008workflow}, un sistema de administracion de flujos de trabajo\footnote{En la literatura academica, estos sistemas son conocidos como \emph{workflow management sofware systems}} se encarga de definir, coordinar y ejecutar los flujos de trabajo en los recursos de computo.
+
+Para este trabajo, clasificaremos los sistemas de administracion de flujos de trabajo de acuerdo a su enfoque de computo, enumerando las siguientes caracteristicas: año de aparicion, proyecto, utilizacion, autores y los algoritmos de calendarizacion utilizados en estos sistemas.
+
 \section{Software orientado a clusters}
 
-\subsection{Open Grid Scheduler}
+
+%\subsection{Open Grid Scheduler}
+%NO entra!!!, no trabaja con flujos de trabajo o si?
+
+\subsection{HTCondor DAGman}
+Desarrollado por la Universidad de Wisconsin en Madison, HTCondor es un sistema para administrar trabajos que necesitan ser ejecutados en entornos de computo distribuido. Este tiene un modulo llamado DAGman que se encarga de calendarizar tareas de un flujo de trabajo, expresadas como grafos dirigidos aciclicos. El algoritmo de calendarizacion utilizado por DAGMan es el algoritmo miope. 
+HTCondor presenta al usuario un unico recurso de computo, formado de varias computadoras interconectadas entre si. Esta es la razon por la que este sistema de administracion de flujos de trabajo cae dentro de la clasificacion de software orientado a clusters.
 
 \section{Software orientado a grids}
 
 \subsection{SwinDew-G}
+Swindew-G es un sistema de administracion de flujos de trabajo cuya caracteristica especial es que trabaja con redes de computadoras P2P. En la primera version de SwinDew, el proceso de calendarizacion es estatico \cite{yang2007peer}, i.e., que en la fase de preparacion de la ejecucion se crea el plan de ejecucion del flujo y se aplica sin ninguna modificacion a lo largo del tiempo. Varios esfuerzos se han hecho para mejorar el mecanismo de calendarizacion, como el algoritmo CTC \cite{liu2010compromised} diseñado especialmente para flujos de trabajo que son intensivos en instancias pero que contienen pocas tareas simples, como los flujos de trabajo utilizados en los bancos y empresas.
+
+Tambien, existen versiones especificas de SwinDew para grids y nubes. En este caso, citamos la version para grids llamada SwinDew-G. La primera version de SwinDew-G aparece en publicaciones aceptadas en el 2006. Finalmente, SwinDew y sus variantes fueron desarrollados en la Universidad de Swinburne, en Australia.
 
 \subsection{Pegasus}
+
 
 \section{Software orientado a nubes}
 
 \subsection{ANEKA}
 
 \subsection{SwinDew-C}
-
+ 
 \subsection{ASKALON}
