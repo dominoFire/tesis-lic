@@ -6,28 +6,38 @@ Para este trabajo, clasificaremos los sistemas de administracion de flujos de tr
 
 \section{Software orientado a clusters}
 
-
 %\subsection{Open Grid Scheduler}
 %NO entra!!!, no trabaja con flujos de trabajo o si?
 
 \subsection{HTCondor DAGman}
+URL: \url{http://research.cs.wisc.edu/htcondor/}
+
 Desarrollado por la Universidad de Wisconsin en Madison, HTCondor es un sistema para administrar trabajos que necesitan ser ejecutados en entornos de computo distribuido. Este tiene un modulo llamado DAGman que se encarga de calendarizar tareas de un flujo de trabajo, expresadas como grafos dirigidos aciclicos. El algoritmo de calendarizacion utilizado por DAGMan es el algoritmo miope. 
 HTCondor presenta al usuario un unico recurso de computo, formado de varias computadoras interconectadas entre si. Esta es la razon por la que este sistema de administracion de flujos de trabajo cae dentro de la clasificacion de software orientado a clusters.
 
 \section{Software orientado a grids}
 
 \subsection{SwinDew-G}
+URL: \url{http://www.swinflow.org/swindew/grid/}
+URL: \url{http://link.springer.com/chapter/10.1007%2F978-1-4614-1933-4_5}
 Swindew-G es un sistema de administracion de flujos de trabajo cuya caracteristica especial es que trabaja con redes de computadoras P2P. En la primera version de SwinDew, el proceso de calendarizacion es estatico \cite{yang2007peer}, i.e., que en la fase de preparacion de la ejecucion se crea el plan de ejecucion del flujo y se aplica sin ninguna modificacion a lo largo del tiempo. Varios esfuerzos se han hecho para mejorar el mecanismo de calendarizacion, como el algoritmo CTC \cite{liu2010compromised} diseñado especialmente para flujos de trabajo que son intensivos en instancias pero que contienen pocas tareas simples, como los flujos de trabajo utilizados en los bancos y empresas.
 
 Tambien, existen versiones especificas de SwinDew para grids y nubes. En este caso, citamos la version para grids llamada SwinDew-G. La primera version de SwinDew-G aparece en publicaciones aceptadas en el 2006. Finalmente, SwinDew y sus variantes fueron desarrollados en la Universidad de Swinburne, en Australia.
 
 \subsection{Pegasus}
+URL: \url{https://pegasus.isi.edu/}
 
+Pegasus fue desarrollado en la Universidad del Sur de California. Al igual que SwinDew-G, se puede utilizar Pegasus para trabajar con Grids y con Nubes. Pegassus implementa max-min, min-min y Sufragio como algoritmos de calendarización. Las principales aplicaciones de Pegasus son los flujos de trabajo científicos. Los primeros trabajos publicados que reportan el uso de Pegasus datan del 2003. El módulo encargado de calendarizar el flujo de trabajo es el Mapper.
 
 \section{Software orientado a nubes}
 
 \subsection{ANEKA}
+URL: \url{http://www.manjrasoft.com/products.html}
 
-\subsection{SwinDew-C}
+Aneka utiliza un mecanismo de negociación mediante agentes que buscan \emph{cerrar} los mejores tratos con los proveedores de los servicios de la nube, que mejor satisfagan los requisitos de calidad en el servicio.
+
  
 \subsection{ASKALON}
+URL: \url{http://www.dps.uibk.ac.at/projects/askalon/}
+
+Askalon implementa HEFT para calendarizar flujos que requieran reducir tiempo de ejecución y algoritmos genéticos para trabajar flujos de trabajo con restricciones de calidad en el servicio.
