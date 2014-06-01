@@ -1,13 +1,23 @@
-\documentclass[letterpaper, 12pt, openany]{book}
+%\documentclass[letterpaper, 12pt, openany]{book}
+\documentclass[letterpaper, 12pt]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
 \usepackage{cite,url,graphicx,amsmath,amssymb,enumitem,amsthm,appendix}
-\usepackage{fullpage}
+%\usepackage{fullpage}
 \usepackage{authblk}
 
 %para definir bibliografia en referencias
 %\usepackage{etoolbox}
 %\makeatletter
+%\renewcommand{\baselinestretch}{1.5}
+
+% Para algoritmos (Gracias Andreu)
+%\usepackage[ruled,lined,boxed,linesnumbered,spanish]{algorithm2e}
+%\SetKwInput{Input}{Entrada}
+%\SetKwInput{Output}{Salida}
+%\SetKwIF{If}{ElseIf}{Else}{si}{entonces}{de otro modo si}{de otro modo}{fin del si}
+%\SetKwFor{For}{para}{hacer}{fin del para}
+%\SetKwFor{While}{mientras}{h
 %\patchcmd{\thebibliography}{%
 %  \chapter*{\bibname}\@mkboth{\MakeUppercase\bibname}{\MakeUppercase\bibname}}{%
 %  \chapter*{Bibliografía}}{}{}
@@ -19,16 +29,7 @@
 %espacio entre párrafos
 %\setlength{\parskip}{6pt}
 
-%interlineado
-%\renewcommand{\baselinestretch}{1.5}
-
-% Para algoritmos (Gracias Andreu)
-%\usepackage[ruled,lined,boxed,linesnumbered,spanish]{algorithm2e}
-%\SetKwInput{Input}{Entrada}
-%\SetKwInput{Output}{Salida}
-%\SetKwIF{If}{ElseIf}{Else}{si}{entonces}{de otro modo si}{de otro modo}{fin del si}
-%\SetKwFor{For}{para}{hacer}{fin del para}
-%\SetKwFor{While}{mientras}{hacer}{fin}
+%interlineadoacer}{fin}
 %\SetKwRepeat{Do}{hacer}{mientras}
 
 \usepackage{algorithm}
@@ -40,7 +41,7 @@
 \title{Estudio de algoritmos de planificación para flujos de trabajo}
 \author{Fernando Aguilar Reyes}
 
-\affil{Tesina para obtener el título de Ingeniero en Computación \\
+\affil{Tesis para obtener el título de Ingeniero en Computación \\
        Instituto Tecnológico Autónomo de México \\
      Río Hondo \#1, Progreso Tizapán, Del. Álvaro Obregón, 01080 \\
      México, Distrito Federal \\}
@@ -53,11 +54,11 @@
 
 \listoffigures
 
-\mainmatter
+%\mainmatter
 \include{chap01-intro}
 \include{chap02-workflows}
 \include{chap03-distributed_computing}
-\include{chap04-scheduling}
+\include{chap04-scheduling}	
 \include{chap05-scheduling_algorithms}
 \include{chap06-workflow_mgmt_software}
 \include{chap07-conclusions}
