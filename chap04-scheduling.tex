@@ -1,5 +1,8 @@
 \chapter{Planificación}
-La planificación\footnote{También conocida en la literatura especializada como \emph{scheduling}} es el proceso de asignación de recursos a tareas, de tal modo que se define un orden de ejecución de las tareas, teniendo lugar diferentes combinaciones de recursos y tareas. En este capítulo se define de la forma más elemental el problema de la planificación para estudiar sus propiedades y también se explica la relación de este problema fundamental con los flujos de trabajo.
+La planificación
+%\footnote{También conocida en la literatura especializada como \emph{scheduling}}
+es el proceso de asignación de recursos a tareas, de tal modo que se define un orden de ejecución de las tareas, teniendo lugar diferentes combinaciones de recursos y tareas. En este capítulo se define de la forma más elemental el problema de la planificación para estudiar sus propiedades y también se explica la relación de este problema fundamental con los flujos de trabajo.
+
 
 \section{Definición del problema}
 De acuerdo a  Ullman et al. \cite{ullman1975np}, el problema de la planificación se define de la siguiente manera: 
@@ -13,14 +16,17 @@ El \textbf{problema de la planificación} consiste en:
 \item Una función de costo $W: S \mapsto \mathbb{Z}^{+}$, la cual indica el tiempo que tarda en completarse cada una de las tareas en $S$
 \item Un número de computadoras (procesadores) $k$
 \end{enumerate}
-Para este caso, se asume que cuando una computadora ejecuta una tarea, ésta es ejecutada completamente. Así, el objetivo es \emph{minimizar} el tiempo total de ejecución, denotado por $t_\text{max}$, respetando el orden parcial definido por $\prec$, asignando tareas de $S$ a los $k$ procesadores	.
+\begin{itemize}
+\item El objetivo del problema de la planificación es \emph{minimizar} el tiempo total de ejecución, denotado por $t_\text{max}$, respetando el orden parcial definido por $\prec$, asignando tareas de $S$ a los $k$ procesadores.
+\end{itemize}
+Es importante notar que se asume que cuando una computadora ejecuta una tarea, ésta es ejecutada completamente, sin errores o interrupciones.
 \end{defn}
 
 
 \section{La complejidad de planificar}
 Como puede notarse, hay varias maneras de acomodar las $k$ computadoras para que se ejecuten todas las tareas de $S$. Sin embargo, Ullman et al. han demostrado que este problema pertenece a la categoría NP-completo \cite{ullman1975np}.
 
-Esto signifca que no se ha encontrado un algoritmo que pueda resolver el problema en tiempo polinomial. Entonces, la solución ingenua de probar ordenadamente todas las posibles asignaciones de tareas a computadoras resulta computacionalmente muy caro.
+Esto signifca que no se ha encontrado un algoritmo que pueda resolver el problema en tiempo polinomial. Entonces, la solución ingenua de probar ordenadamente todas las posibles asignaciones de tareas a computadoras resulta computacionalmente muy costoso.
 
 Así, la forma de atacar estos problemas NP-completos es utilizar métodos de aproximación \cite{leiserson2001introduction} que obtengan soluciones subóptimas o utilizar heurísticas que resuelvan este problema sumando ciertas restricciones.
 
