@@ -13,18 +13,18 @@ Lograr esta paralelización requiere un esfuerzo por parte del desarrollador de 
 \begin{itemize}
 \item{\textbf{Programas multiproceso.} En esta técnica, la idea principal es utilizar varios procesos para repartir el cómputo. Por ejemplo, en el modelo fork/join, un programa se invoca recursivamente a sí mismo (fork), de tal modo que cada subprograma resuelve un problema más pequeño que el problema original. Después, los resultados parciales de cada subprograma son juntados en un sólo programa (join).}
 
-\item{\textbf{Threads.} Un proceso, en vez de invocarse a sí mismo varias veces, también puede invocar \emph{threads} o hilos de ejecución que, a diferencia de un proceso, éstos no son controlados por el administrador de procesos del sistema operativo, sino por el programa mismo. Por lo tanto, ocupan menos recursos del sistema. De igual modo, se pueden implementar varios modelos de programación concurrente (fork/join o productor/consumidor, como ejemplos) como se hacen con los programas multiproceso.}
+\item{\textbf{Threads.} Un proceso, en vez de invocarse a sí mismo varias veces, también puede invocar \emph{threads} o hilos de ejecución que, a diferencia de un proceso, éstos no son controlados por el administrador de procesos del sistema operativo, sino por el programa mismo. Por lo tanto, ocupan menos recursos del sistema. De igual modo, se pueden implementar varios modelos de programación concurrente (por ejemplo: fork/join o productor/consumidor) como se hace con los programas multiproceso.}
 
-\item{\textbf{MapReduce.} Este paradigma de programación especializado en procesar grandes volúmenes de datos \cite{dean2008mapreduce} funciona de la siguiente forma: primero se define una función $map(): (k_1,A) \rightarrow list(k_2,B)$, que se aplica a todos los elementos de tipo $A$ para asociarles una llave y transformarlos al tipo $B$. Luego, la función $reduce(): (k_2, list(B)) \rightarrow list(B)$, hace alguna operación asociativa para sumarizar los resultados.}
+\item{\textbf{MapReduce.} Este paradigma de programación especializado en procesar grandes volúmenes de datos \cite{dean2008mapreduce} funciona de la siguiente forma: primero se define una función $map(): (k_1,A) \rightarrow list(k_2,B)$, que se aplica a todos los elementos de tipo $A$ para asociarles una llave y transformarlos al tipo $B$. Luego, la función $reduce(): (k_2, list(B)) \rightarrow list(B)$, hace una operación asociativa para sumarizar los resultados.}
 
 \item{\textbf{MPI.} La interfaz de paso de mensajes (MPI por sus siglas en inglés) es un conjunto de definiciones de bibliotecas \cite{lusk2009mpi}, cuyas subrutinas son utilizadas por varios procesos paralelos para que puedan comunicarse entre si enviándose mensajes de manera asíncrona.}
 \end{itemize}
 
 Aunque estas técnicas de paralelización son muy efectivas, éstas son aplicadas cuando el problema a resolver ha sido bien definido y cuando sólo hay una instancia de la aplicación que resuelve el problema planteado. 
 
-Ahora bien, hay aplicaciones que involucran varios pasos que están relacionados entre sí, por ejemplo, que el programa $C$ requiera de la salida del programa $A$ y del programa $B$ para que pueda funcionar, tal y como se muestra en la figura \ref{fig:workflowABC}. También, es conveniente definir los grandes bloques de de la aplicación, porque puede suceder que los programas $A$, $B$ y $C$ están hechos con diferentes técnicas de paralelización y/o construidos con diferentes plataformas y lenguajes, por lo que cada uno debe ejecutarse por separado. 
+Ahora bien, hay aplicaciones que involucran varios pasos que están relacionados entre sí, por ejemplo, que el programa $C$ requiera de la salida del programa $A$ y del programa $B$ para que pueda funcionar, tal y como se muestra en la figura \ref{fig:workflowABC}. También, es conveniente definir los grandes bloques de la aplicación, porque puede suceder que los programas $A$, $B$ y $C$ estén hechos con diferentes técnicas de paralelización y/o construidos con diferentes plataformas y lenguajes, por lo que cada uno debe ejecutarse por separado. 
 
-En los dos casos descritos anteriormente, hay una cierta secuencia que debemos seguir y, dentro de dicha secuencia, hay algunos pasos que podemos resolver de manera concurrente y otros pasos se resuelven de manera secuencial. De esta forma, los pasos de la aplicación representan un \emph{modelo} de nuestro problema.
+En los dos casos descritos anteriormente, hay una cierta secuencia que debemos seguir y, dentro de dicha secuencia, hay algunos pasos que podemos resolver de manera concurrente y otros pasos se resuelven de manera secuencial. De esta forma, los pasos de la aplicación representan un \emph{modelo} de nuestro problema. Este modelo también es llamado \emph{flujo de trabajo}. De manera muy abstracta, un flujo de trabajo es un conjunto de pasos que modelan la ejecución de un proceso. La utilidad de este sencillo concepto ha sido probado en varias áreas, de las cuales mencionaremos dos aplicaciones: en el ámbito de los negocios y en el ámbito científico.
 
 \begin{figure}
     \begin{center}
@@ -32,14 +32,13 @@ En los dos casos descritos anteriormente, hay una cierta secuencia que debemos s
     \end{center}
     \caption{Flujo de trabajo con una tarea (C) que depende de dos tareas (A y B).}
     \label{fig:workflowABC}
-\end{figure}
-
-Este modelo también es llamado \emph{flujo de trabajo}. De manera muy abstracta, un flujo de trabajo es un conjunto de pasos que modelan la ejecución de un proceso. La utilidad de este sencillo concepto ha sido probado en varias áreas, de las cuales mencionaremos dos aplicaciones: en el ámbito de los negocios y en el ámbito científico. 
+\end{figure} 
 
 \begin{itemize}
 \item{En el ámbito de los negocios, se puede definir un flujo de trabajo para modelar el proceso de fabricación de un producto. También, es posible expresar un flujo de trabajo con un diagrama dibujado con los bloques y reglas del \emph{Lenguaje de Ejecución de Procesos de Negocio} para después simular su ejecución en una computadora.}
 
-\item{En el ámbito científico, los flujos de trabajo son aplicados para modelar programas que requieran varios pasos para su ejecución. Algunos flujos de trabajo requieren mucho tiempo tiempo de ejecución para la ejecución de sus tareas. Otros flujos de trabajo son muy tienen tareas que tardan poco tiempo en ejecutarse, pero se requieren ejecutar muchas instancias de este flujo de trabajo.}
+%\item{En el ámbito científico, los flujos de trabajo son aplicados para modelar programas que requieran varios pasos para su ejecución. Algunos flujos de trabajo requieren mucho tiempo tiempo de ejecución para la ejecución de sus tareas. Otros flujos de trabajo tienen tareas que tardan poco tiempo en ejecutarse, pero se requieren ejecutar muchas instancias de este flujo de trabajo.}
+\item{En el ámbito científico, los flujos de trabajo son utilizados para modelar aplicaciones que analizan resultados de experimentos diversos. Por ejemplo, la NASA utiliza una aplicación llamada Montage para generar una gran imagen de la bóveda celeste a partir de imágenes más pequeñas tomadas en diferentes observatorios.}
 \end{itemize}
 
 En cualquiera de los dos casos anteriores, es deseable distribuir la ejecución de éstos flujos de trabajo entre varias computadoras. Si bien es posible paralelizar algunos pasos de la ejecución de nuestro flujo de trabajo utilizando las técnicas antes mencionadas, hay restricciones de orden que se deben respetar, por lo cual, es indispensable \emph{planificar} la ejecución del flujo de trabajo entre las múltiples computadoras.
@@ -47,7 +46,7 @@ En cualquiera de los dos casos anteriores, es deseable distribuir la ejecución 
 %Hay varias maneras de hacer esta planificac. Cabe aclarar que
 %Scheduling is defined as a function that maps each task in a workflow to a service deployed on the Grid that implements this task. The cost model for workflows is described by multiple scheduling criteria
 %Definimos la \emph{planificación} como la asignación de recursos con el fin de completar la ejecución de todas las tareas de manera satisfactoria
-Definimos la \emph{planificación} como una función que asigna a cada tarea del flujo de trabajo un servicio que contiene los recursos para ejecutar dicha tarea, con el fin de completar la ejecución de todas las tareas de manera satisfactoria, cumpliendo ciertas restricciones \cite{wieczorek2009towards}. Con ello, se desea encontrar una forma óptima de hacer esta planificación, como reducir el tiempo de ejecución total del flujo de trabajo. Sin embargo, con la aparición del cómputo en la nube, es posible ejecutar nuestro flujo de trabajo con otras restricciones, como minimizar el presupuesto necesario para la ejecución del flujo afectando el tiempo de ejecución.
+Definimos la \emph{planificación} como una función que asigna a cada tarea del flujo de trabajo un servicio que contiene los recursos para ejecutar dicha tarea, con el fin de completar la ejecución de todas las tareas de manera satisfactoria, cumpliendo ciertas restricciones \cite{wieczorek2009towards}, por ejemplo, restricciones de orden de ejecución. Con ello, se desea encontrar una forma óptima de hacer esta planificación para reducir el tiempo de ejecución total del flujo de trabajo. Sin embargo, con la aparición del cómputo en la nube, es posible ejecutar nuestro flujo de trabajo con otras restricciones, como minimizar el presupuesto necesario para la ejecución del flujo afectando el tiempo de ejecución.
 
 %mencionar instruction level paralelism, data-level parallelism task level paralelism, 
 

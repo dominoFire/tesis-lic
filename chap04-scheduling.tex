@@ -58,7 +58,7 @@ Un \textbf{flujo de trabajo} es un grafo dirigido $w \in \mathcal{W}, w = (\math
 Hay que notar que en la definición anterior que la forma en que se relacionan las tareas y las transferencias de datos con los nodos y aristas del grafo está determinada por la representación \emph{concreta} del flujo de trabajo.
 %creo que esto requiere más trabajo.
 
-Ahora, se definirán los recursos de cómputo en donde se ejecuta el flujo. La definición de Wieczorek-Prodan habla de grids, pero es fácilmente aplicable a otros enfoques de cómputo
+Ahora, se definirán los recursos de cómputo en donde se ejecuta el flujo. La definición de Wieczorek-Prodan habla de grids, pero es fácilmente aplicable a otros enfoques de cómputo.
 
 \begin{defn}
 Un \textbf{servicio} es una entidad de cómputo que puede ejecutar una tarea $\tau \in \mathcal{T}$. El conjunto de todos los servicios disponibles para ejecutar el flujo de trabajo está denotado por $\mathcal{S}$.
@@ -95,11 +95,11 @@ Después de haber enunciado varias definiciones para definir el problema de la p
 
 \item El ordenamiento parcial $\prec$ está representado tanto por las dependencias de datos $\mathcal{D}$ y las aristas $\mathcal{E}$ que representan el control de flujo que debe respetarse para ejecutar el flujo.
 
-\item Las $k$ computadoras equvivalen al conjunto de servicios $\mathcal{S}$ disponibles para ejecutar el flujo.
+\item Las $k$ computadoras equivalen al conjunto de servicios $\mathcal{S}$ disponibles para ejecutar el flujo.
 
 \item La función de costo $W$ tiene una equivalencia implícita. El problema básico asume que conocemos apriori el tiempo de ejecución de una tarea. Sin embargo, es muy frecuente que sólo tengamos una estimación del tiempo de ejecución. Por otro lado, podemos establecer una función auxiliar que relacione las tareas con los servicios. Dicha relación es la función de planificación $f$. En efecto, ejecutar una tarea en un servicio genera un costo, determinado por las funciones parciales y totales. Por lo pronto, estableceremos una relación proporcional entre costo y tiempo, con el fin de mostrar que existe una equivalencia entre la función de costo $W$ del problema básico y el modelo de costo de un flujo de trabajo.
 \end{enumerate}
 
-Con lo anterior, hemos establecido que el problema de la planificación de flujos de trabajo es equivalente al problema básico de planificación. Entonces, es natural inferir que el problema de la planificación de flujos de trabajo pertenece a la categoría de problemas NP-completo.
+Con lo anterior, se ha mostrado que el problema de la planificación de flujos de trabajo es equivalente al problema básico de planificación. Entonces, es natural inferir que el problema de la planificación de flujos de trabajo pertenece a la categoría de problemas NP-completo.
 
 %tareas -> servicios -> costo <=> tiempo
