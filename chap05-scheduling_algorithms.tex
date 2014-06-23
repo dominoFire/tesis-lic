@@ -1,32 +1,69 @@
 \chapter{Algoritmos de planificación de flujos de trabajo}
 En el capítulo anterior definimos el problema de planificar flujos de trabajo. También se vio que dicho problema pertenece a la categoría de los problemas NP-completos, lo cual significa que la complejidad --o tiempo de ejecución-- para resolver este problema no está acotada por una función polinomial. Por ello, diversos algoritmos se han propuesto para atacar, ya sea de manera total o parcial, el objetivo principal de la planificación: optimizar los costos, definidos como tiempo total de ejecución o un presupuesto.
 
-Ahora, con los enfoques de cómputo propuestos en el capítulo 2, se crean diversos algoritmos para diferentes necesidades. Mientras que en los clusters y los grids se asumen que estos recursos son compartidos, los algoritmos de planificación para estos recursos asumen que los flujos deben ser ejecutados lo más pronto posible, con el fin de hacer que el recurso esté ocupado la mayor parte del tiempo. Por otro lado, el enfoque de nubes permite diseñador de flujos de trabajo elegir entre ejecutar el flujo con todos los recursos a costa de un elevado presupuesto o, minimizar dicho presupuesto tolerando un tiempo de ejecución mayor al mínimo posible.
+Ahora, con los enfoques de cómputo propuestos en el capítulo 2, se crean diversos algoritmos para diferentes necesidades. Mientras que en los clusters y los grids se asumen que estos recursos son compartidos, los algoritmos de planificación para estos recursos asumen que los flujos deben ser ejecutados lo más pronto posible, con el fin de hacer que el recurso esté ocupado la mayor parte del tiempo. Por otro lado, el enfoque de nubes permite diseñador de flujos de trabajo elegir entre ejecutar el flujo con todos los recursos a costa de un elevado presupuesto o, reducir dicho presupuesto tolerando a costa de un tiempo de ejecución más elevado.
 
 \section{Clasificación de los algoritmos de planificación}
 Como han aparecido numerosos algoritmos para planificar flujos de trabajo, es natural observar que surjan clasificaciones \cite{topcuoglu2002performance} \cite{yu2008workflow} para tener una mejor idea de los avances logrados en este tema y los puntos clave con los que trabajan los algoritmos.
 
 De acuerdo a Yu et al. \cite{yu2008workflow}, se pueden clasificar los algoritmos de planificación los algoritmos de flujos de trabajo ejecutados en grids en dos grandes niveles: los algoritmos de Mejor Eesfuerzo y los algoritmos de Calidad en el Servicio\footnote{En la literatura especializada se conoce a este término como \emph{Quality of Service}}. Al primer grupo pertenecen aquellos algoritmos que tratan de minimizar el tiempo total de ejecución\footnote{También conocido como \emph{makespan}}, haciendo uso de todos los recursos disponibles. El segundo grupo, los algoritmos tratan de obtener una planificación que cumpla las restricciones especificadas como una medida de calidad, con la posibilidad de elegir soluciones que tomen un tiempo de ejecución subóptimo. A su vez, cada grupo tiene ramas de clasificación que esbozaremos a continuación.
 
-A continuación, mostraremos los algoritmos descritos en la clasificación de Yu et al., con los ajustes en notación necesarios para que coincidan con las definiciones de flujo de trabajo establecidas en el capítulo anterior.
+A continuación, mostraremos los algoritmos descritos en la clasificación de Yu et al. con los ajustes en notación necesarios para que coincidan con las definiciones de flujo de trabajo establecidas en el capítulo anterior.
 
 \section{Algoritmos de mejor esfuerzo}
 Este tipo de algoritmos tratan de minimizar algún criterio, que en muchos casos es el tiempo total de ejecución o \emph{makespan}. Cabe aclarar que para los siguientes algoritmos, se asumirá que el grafo del flujo de trabajo tiene una correspondencia biyectiva entre los nodos $\mathcal{V}$ y las tareas $\mathcal{T}$, es decir, cada nodo del grafo representa una tarea del flujo de trabajo. Las aristas del grafo representan \emph{dependencias entre tareas}.
 
-También, los algoritmos de mejor esfuerzo se pueden dividir en algoritmos guiados por heurísticas y en algoritmos guiados por metaheurísticas. El primer subgrupo debe su nombre a que las soluciones están basadas en ideas que no están comprobadas. El segundo subgrupo contiene a los algoritmos que utilizan algún método para elegir o generar calendarizaciones que se acerquen al óptimo.
+También, los algoritmos de mejor esfuerzo se pueden dividir en algoritmos guiados por heurísticas y en algoritmos guiados por metaheurísticas. El primer subgrupo debe su nombre a que las soluciones están basadas en ideas que resuelven de manera aproximada el problema de la planificación bajo ciertas condiciones \cite{yu2008workflow}. El segundo subgrupo contiene a los algoritmos que utilizan algún método para elegir o generar planificaciones que se acerquen al óptimo.
 
-Los algoritmos heurísticos se pueden dividir en cuatro grandes tipos: (1) algoritmo inmediato, (2) algoritmos basados en lista, (3) clusterización de tareas y (4) duplicación de tareas. El primer grupo corresponde al algoritmo miope, que sólo asigna taras a recursos conforme se va necesitando. Los algoritmos basados en lista ordenan las tareas de acuerdo a algún criterio (fase de priorización) y seleccionan las tareas de acuerdo a cierto criterio (fase de selección). Los algoritmos de clusterización de tareas crean grupos que, al inicio, crean un grupo para cada tarea; después, con un paso de mezcla se van uniendo grupos hasta que quede un número de grupos igual al número de recursos disponibles; finalmente se ordenan las tareas de cada grupo para ejecutarse en cada grupo. Finalmente, los algoritmos de duplicación de tareas calendarizan una tarea en varios recursos con el fin de reducir el costo por comunicación entre recursos; cada uno de estos algoritmos se caracteriza por la manera en que eligen los algoritmos a planificar.
+\subsection{Algoritmos heurísticos de mejor esfuerzo}
+Los algoritmos heurísticos se pueden dividir en cuatro grandes tipos: 
+\begin{enumerate}
+\item{algoritmo inmediato,}
+\item{algoritmos basados en lista,}
+\item{clusterización de tareas y}
+\item{duplicación de tareas.}
+\end{enumerate}
 
-Los algoritmos metaheurísticos son clasificados de acuerdo a la metaheurística que utilizan. Para esta clasificación, vamos a describir tres tipos de heurísticas: (1) algoritmos genéticos, (2) búsqueda aleatoria adaptatipa dirigida --GRASP-- y (3) recocido simulado. Los algoritmos genéticos simulan el proceso de selección natural con posibles calendarizaciones e introducen mutaciones para evitar enfocarse en una solución local; con la ayuda de una función de evaluación (\emph{fitness}) se mide la calidad de la planificación y se eligen aquellas soluciones que resulten mejor evaluadas. El algoritmo GRASP\footnote{GRASP son las siglas en inglés de \emph{Greedy Randomized Adaptive Search Procedure}} genera aleatoriamente soluciones y con un prodecimiento glotón\footnote{Greedy} elige las soluciones óptimas locales. El recocido simulado, como su nombre lo indica, emula el proceso de formación de cristales donde en cada iteración se va creando una solución más óptima.
+El primer grupo corresponde al algoritmo miope, que sólo asigna tareas a recursos conforme se va necesitando. Los algoritmos basados en lista ordenan las tareas de acuerdo a algún criterio (fase de priorización) y seleccionan las tareas de acuerdo a cierto criterio (fase de selección). Los algoritmos de clusterización de tareas crean grupos que, al inicio, crean un grupo para cada tarea; después, con un paso de mezcla se van uniendo grupos hasta que quede un número de grupos igual al número de recursos disponibles; finalmente se ordenan las tareas de cada grupo para ejecutarse en cada grupo. Finalmente, los algoritmos de duplicación de tareas calendarizan una tarea en varios recursos con el fin de reducir el costo por comunicación entre recursos; cada uno de estos algoritmos se caracteriza por la manera en que eligen los algoritmos a planificar.
+
+\subsection{Algoritmos metaheurísticos de mejor esfuerzo}
+
+Los algoritmos metaheurísticos son clasificados de acuerdo a la metaheurística que utilizan. Para esta clasificación, vamos a describir tres tipos de heurísticas: 
+
+\begin{enumerate}
+\item{algoritmos genéticos,}
+\item{búsqueda aleatoria adaptatipa dirigida --GRASP-- y}
+\item{recocido simulado.}
+\end{enumerate}
+
+Los algoritmos genéticos simulan el proceso de selección natural con posibles calendarizaciones e introducen mutaciones para evitar enfocarse en una solución local; con la ayuda de una función de evaluación (\emph{fitness}) se mide la calidad de la planificación y se eligen aquellas soluciones que resulten mejor evaluadas. El algoritmo GRASP\footnote{GRASP son las siglas en inglés de \emph{Greedy Randomized Adaptive Search Procedure}} genera aleatoriamente soluciones y con un prodecimiento glotón\footnote{Greedy} elige las soluciones óptimas locales. El recocido simulado, como su nombre lo indica, emula el proceso de formación de cristales donde en cada iteración se va creando una solución más óptima.
 
 \section{Algoritmos de calidad en el servicio}
 En estos algoritmos, se definen un conjunto de restricciones que debe respetar la planificación. Principalmente, estas restricciones tienen que ver con un presupuesto global limitado y un límite en los tiempos de ejecución total del flujo de trabajo. También es posible definir límites de tiempo de ejecución o límites de prespuesto para cada tarea particular del flujo.
 
 De acuerdo a la forma que trabajan estos algoritmos, pueden dividirse en: restringidos por presupuesto o restringidos for fecha límite. Los primeros son algoritmos que utilizan el presupuesto para cumplir con restricciones de calidad del servicio. Los algoritmos restringidos por fecha límite buscan calendarizaciones que cumplan con fechas proporcionadas. Ambos grupos se subdividen en heurísticos y metaheurísticos. A continuación, hablaremos de estas subdivisiones.
 
-Los algoritmos restringidos por presupuesto se dividen en: (1) heurísticos y (2) metaheurísticos. En la primera división se encuentran los algoritmos que trabajan con una idea base que genera soluciones que no están garantizadas que sean óptimas. En este grupo de algoritmos se encuentran un ejemplo importante: el algoritmo LOSS/GAIN, propuesto por XXXX. Los algoritmos metaheurísticos generan soluciones aleatoriamente y utilizan la información de iteraciones pasadas para refinar las soluciones. En el trabajo de Yu et al. \cite{yu2006scheduling} proponen un algoritmo genético cuya función de evaluación valora mejor a las calendarizaciones que cumplan con el presupuesto con un tiempo de ejecución mínimo.
+\subsection{Algoritmos restringidos por presupuesto}
 
-Los algoritmos restringidos por fechas límites también se dividen en: (1) heurísticos y (2) metaheurísticos. En el primer grupo se encuentran el algoritmo BackTracking, propuesto por Menascé et al. \cite{menasce2004framework}, y el algoritmo de distribución de fechas límite, propuesto por Yu et al. \cite{yu2005cost}. En el segundo grupo se encuentra un algoritmo genético basado en el algoritmo del grupo antarior \cite{yu2006scheduling}, cuya función fitness valora mejor a aquellas soluciones que cumplan con la fecha límite, con un presupuesto mínimo.
+Los algoritmos restringidos por presupuesto se dividen en: 
+
+\begin{enumerate}
+\item{heurísticos y}
+\item{metaheurísticos.}
+\end{enumerate}
+
+En la primera división se encuentran los algoritmos que trabajan con una idea base que genera soluciones que no están garantizadas que sean óptimas. En este grupo de algoritmos se encuentran un ejemplo importante: el algoritmo LOSS/GAIN, propuesto por Tsiakkouri et al. \cite{sakellariou2007scheduling}. Los algoritmos metaheurísticos generan soluciones aleatoriamente y utilizan la información de iteraciones pasadas para refinar las soluciones. En el trabajo de Yu et al. \cite{yu2006scheduling} proponen un algoritmo genético cuya función de evaluación valora mejor a las calendarizaciones que cumplan con el presupuesto con un tiempo de ejecución mínimo.
+
+\subsection{Algoritmos restringidos por fechas límites}
+
+Los algoritmos restringidos por fechas límites también se dividen en:
+
+\begin{enumerate}
+\item{heurísticos y}
+\item{metaheurísticos.}
+\end{enumerate}
+
+En el primer grupo se encuentran el algoritmo BackTracking, propuesto por Menascé et al. \cite{menasce2004framework}, y el algoritmo de distribución de fechas límite, propuesto por Yu et al. \cite{yu2005cost}. En el segundo grupo se encuentra un algoritmo genético basado en el algoritmo del grupo anterior \cite{yu2006scheduling}, cuya función fitness valora mejor a aquellas soluciones que cumplan con la fecha límite, con un presupuesto mínimo.
 
 \subsection{Estimación del tiempo}
-En los algoritmos vistos en esta seccion, se asume que se conoce el tiempo de ejecucion de una tarea. Sin embargo, en la etapa de diseño de un flujo de trabajo, es complicado conocer la duracion de las tareas, debido a que son muchos los factores que influyen el tiempo total de ejecucion del flujo, como el rendimiento de la plataforma de computo, la cantidad de datos a procesar, el tiempo de comunicacion entre nodos de computo, entre otros. Para mitigar este problema, se han hecho algoritmos basados en series de tiempo que estiman el tiempo de ejecucion de cada una de las tareas de un flujo de trabajo. Estos algoritmos utilizan informacion historica de ejecuciones de flujos de trabajo para realizar las predicciones  \cite{liu2011novel}.
+En los algoritmos vistos en esta seccion, se asume que se conoce el tiempo de ejecucion de una tarea. Sin embargo, en la etapa de diseño de un flujo de trabajo, es complicado conocer la duracion de las tareas, debido a que son muchos los factores que influyen el tiempo total de ejecucion del flujo, como el rendimiento de la plataforma de cómputo, la cantidad de datos a procesar, el tiempo de comunicacion entre nodos de computo, entre otros. Para mitigar este problema, se han hecho algoritmos basados en series de tiempo que estiman el tiempo de ejecucion de cada una de las tareas de un flujo de trabajo. Estos algoritmos utilizan informacion histórica de ejecuciones de flujos de trabajo para realizar las predicciones  \cite{liu2011novel}.

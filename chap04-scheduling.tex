@@ -13,7 +13,7 @@ El \textbf{problema de la planificación} consiste en:
 \begin{enumerate}
 \item Un conjunto de tareas $S = \{ J_1, J_2, \dots, J_n \}$
 \item Un ordenamiento parcial $\prec$ sobre $S$
-\item Una función de costo $W: S \mapsto \mathbb{Z}^{+}$, la cual indica el tiempo que tarda en completarse cada una de las tareas en $S$
+\item Una función de costo $U: S \mapsto \mathbb{Z}^{+}$, la cual indica el tiempo que tarda en completarse cada una de las tareas en $S$
 \item Un número de computadoras (procesadores) $k$
 \end{enumerate}
 \begin{itemize}
@@ -33,7 +33,7 @@ Así, la forma de atacar estos problemas NP-completos es utilizar métodos de ap
 \section{Planificación de flujos de trabajo}
 Hasta ahora, se ha mencionado el problema básico de planificación con restricciones. Con ello, se pretende plantear el problema de la planificación de flujos de trabajo y apoyarse en la definición del problema básico de planificación para enumerar propiedades sobre este problema.
 
-Para plantear el problema de la planificación de flujos de trabajo, primero se demostrará que bajo ciertas condiciones, un flujo de trabajo puede ser reducido a un grafo dirigido acíclico haciendo las transformaciones adecuadas. Luego, se utilizará la definición del problema básico de planificación con restricciones y su semejanza para flujos de trabajo. Finalmente, se hará una descripción de la complejidad de planificar flujos de trabajo.
+Para plantear el problema de la planificación de flujos de trabajo, primero se mostrará que bajo ciertas condiciones, un flujo de trabajo puede ser reducido a un grafo dirigido acíclico haciendo las transformaciones adecuadas. Luego, se utilizará la definición del problema básico de planificación con restricciones y su semejanza para flujos de trabajo. Finalmente, se hará una descripción de la complejidad de planificar flujos de trabajo.
 %tres hechos:
 % - todo flujo de trabajo puede reducirse a DAG
 % - transforma un DAG a un problema clásico de Ullman
@@ -49,16 +49,17 @@ El hecho importante a recalcar es que los grafos dirigidos acíclicos sirven com
 \subsection{Definición del problema de planificación de flujos de trabajo}
 Una vez que se ha establecido a los grafos dirigidos acíclicos como nuestra representación básica de flujos de trabajo, se definirá el problema que conlleva asignar recursos a las tareas del flujo.
 
-Con el fin de no perder generalidad, tomaremos la definición de Wieczorek-Prodan \cite{wieczorek2008taxonomies} del problema:
+Con el fin de no perder generalidad, tomaremos la definiciones de Wieczorek-Prodan \cite{wieczorek2008taxonomies} para definir el problema de la planificación de flujos de trabajo:
 
 \begin{defn}
-Un \textbf{flujo de trabajo} es un grafo dirigido $w \in \mathcal{W}, w = (\mathcal{V},\mathcal{E})$, compuesto de un conjunto de nodos $\mathcal{V}$ y un conjunto de aristas $\mathcal{E}$, donde los nodos y las aristas representan tareas $ \tau \in \mathcal{T}$ y transferencias de datos $ \rho \in \mathcal{D}$.
+Un \textbf{flujo de trabajo} es un grafo dirigido $w \in \mathcal{W}, w = (\mathcal{V},\mathcal{E})$, compuesto de un conjunto de nodos $\mathcal{V}$ que representan tareas $ \tau \in \mathcal{T}$ y un conjunto de aristas $\mathcal{E}$ que representan transferencias de datos $ \rho \in \mathcal{D}$.
 \end{defn}
 
 Hay que notar que en la definición anterior que la forma en que se relacionan las tareas y las transferencias de datos con los nodos y aristas del grafo está determinada por la representación \emph{concreta} del flujo de trabajo.
 %creo que esto requiere más trabajo.
 
-Ahora, se definirán los recursos de cómputo en donde se ejecuta el flujo. La definición de Wieczorek-Prodan habla de grids, pero es fácilmente aplicable a otros enfoques de cómputo.
+Ahora, se definirán los recursos de cómputo en donde se ejecuta el flujo. 
+%La definición de Wieczorek-Prodan habla de grids, pero es fácilmente aplicable a otros enfoques de cómputo.
 
 \begin{defn}
 Un \textbf{servicio} es una entidad de cómputo que puede ejecutar una tarea $\tau \in \mathcal{T}$. El conjunto de todos los servicios disponibles para ejecutar el flujo de trabajo está denotado por $\mathcal{S}$.
@@ -87,7 +88,8 @@ Para cada criterio $c_i \in C$, existe una \textbf{función de costo total} $\De
 El objetivo del problema de la planificación de flujos de trabajo es encontrar la planificación $f$ que minimice las funciones de costo total $\Delta_i$, $1 \le i \le n$.
 
 \subsection{Complejidad computacional de la planificación de flujos de trabajo}
-Después de haber enunciado varias definiciones para definir el problema de la planificación de flujos de trabajo, se hará una analogía con el problema básico de planificación para poder estudiar su complejidad computacional. La analogía es la siguiente:
+%Después de haber enunciado varias definiciones para definir el problema de la planificación de flujos de trabajo
+Ahora, se hará una analogía con el problema básico de planificación para poder estudiar su complejidad computacional. La analogía es la siguiente:
 
 
 \begin{enumerate}
@@ -97,9 +99,9 @@ Después de haber enunciado varias definiciones para definir el problema de la p
 
 \item Las $k$ computadoras equivalen al conjunto de servicios $\mathcal{S}$ disponibles para ejecutar el flujo.
 
-\item La función de costo $W$ tiene una equivalencia implícita. El problema básico asume que conocemos apriori el tiempo de ejecución de una tarea. Sin embargo, es muy frecuente que sólo tengamos una estimación del tiempo de ejecución. Por otro lado, podemos establecer una función auxiliar que relacione las tareas con los servicios. Dicha relación es la función de planificación $f$. En efecto, ejecutar una tarea en un servicio genera un costo, determinado por las funciones parciales y totales. Por lo pronto, estableceremos una relación proporcional entre costo y tiempo, con el fin de mostrar que existe una equivalencia entre la función de costo $W$ del problema básico y el modelo de costo de un flujo de trabajo.
+\item La función de costo $U$ tiene una equivalencia implícita. El problema básico asume que conocemos apriori el tiempo de ejecución de una tarea. Sin embargo, es muy frecuente que sólo tengamos una estimación del tiempo de ejecución. Por otro lado, podemos establecer una función auxiliar que relacione las tareas con los servicios. Dicha relación es la función de planificación $f$. En efecto, ejecutar una tarea en un servicio genera un costo, determinado por las funciones parciales y totales. Por lo pronto, estableceremos una relación proporcional entre costo y tiempo, con el fin de mostrar que existe una equivalencia entre la función de costo $W$ del problema básico y el modelo de costo de un flujo de trabajo.
 \end{enumerate}
 
-Con lo anterior, se ha mostrado que el problema de la planificación de flujos de trabajo es equivalente al problema básico de planificación. Entonces, es natural inferir que el problema de la planificación de flujos de trabajo pertenece a la categoría de problemas NP-completo.
+Con lo anterior, se ha mostrado que el problema de la planificación de flujos de trabajo es equivalente al problema básico de planificación. Entonces, se puede inferir que el problema de la planificación de flujos de trabajo pertenece a la categoría de problemas NP-completo.
 
 %tareas -> servicios -> costo <=> tiempo
