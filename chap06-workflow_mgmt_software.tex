@@ -38,12 +38,17 @@ Pegasus \cite{deelman2005pegasus} fue desarrollado en la Universidad del Sur de 
 \section{Software orientado a nubes}
 
 \subsection{Aneka}
-URL: \url{http://www.manjrasoft.com/products.html}
+%URL: \url{http://www.manjrasoft.com/products.html}
 
-Aneka utiliza un mecanismo de negociación mediante agentes que buscan \emph{cerrar} los mejores tratos con los proveedores de los servicios de la nube, que mejor satisfagan los requisitos de calidad en el servicio.
+Aneka \cite{chu2007aneka} es una implementación de una plataforma como servicio que, además de poder especificar y ejecutar flujos de trabajo , también puede planificar y ejecutar aplicaciones distribuidas que hayan sido construidas con distintos modelos de programación distribuida: basado en tareas, basado en threads y basado en MapReduce. El modelo de programación que se utiliza en Aneka para trabajar con flujos de trabajo es el modelo basado en tareas.
+%En el primer paper, de grids, se usan estos modelos: task farming y dataflow model.
 
- 
+El diseño de Aneka es basado en servicios. Cada servicio se encarga de una funcionalidad específica para la administración del grid. Así, existe un módulo específico para la planificación de la ejecución de las aplicaciones que varía de acuerdo al modelo de programación elegido para desarrollar la aplicación.
+
+Técnicamente, es posible construir una nube con Aneka \cite{vecchiola2009aneka} utilizando computadoras de escritorio convencionales. De esta forma, Aneka provee servicios para administrar el esquema de precios de la nube construida con este software. Del mismo modo, Aneka utiliza un mecanismo de negociación mediante agentes que buscan \emph{cerrar} los mejores tratos con los proveedores de los servicios de la nube, que mejor satisfagan los requisitos de calidad en el servicio.
+
+
 \subsection{Askalon}
-URL: \url{http://www.dps.uibk.ac.at/projects/askalon/}
+%URL: \url{http://www.dps.uibk.ac.at/projects/askalon/}
 
 Askalon implementa HEFT para calendarizar flujos que requieran reducir tiempo de ejecución y algoritmos genéticos para trabajar flujos de trabajo con restricciones de calidad en el servicio.

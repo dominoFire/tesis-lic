@@ -2,7 +2,8 @@
 
 \section{Algoritmos de menor esfuerzo}
 \subsection{Miope}
-Este es el más simple de todos los algoritmos. Lo único que hace es buscar un recurso disponible que pueda ejecutar la tarea y asignarle dicha tarea. No toma en cuenta otra característica a optimizar. Este algoritmo fue propuesto por Ramamritham et al. \cite{ramamritham1990efficient}. El algoritmo \cite{yu2008workflow} peresentado en estre trabajo se encuentra en la sección \ref{alg:myopic} del Apéndice.
+El algoritmo miope \cite{yu2008workflow} es el más simple de todos los algoritmos. Lo único que hace es buscar un recurso disponible que pueda ejecutar la tarea y asignarle dicha tarea. No toma en cuenta otra característica a optimizar. Este algoritmo fue propuesto por Ramamritham et al. \cite{ramamritham1990efficient}. 
+%El algoritmo peresentado en estre trabajo se encuentra en la sección \ref{alg:myopic} del Apéndice.
 
 \label{alg:myopic}
 \begin{algorithmic}[1]
@@ -28,7 +29,8 @@ Los algoritmos min-min y max-min utilizan las siguientes  estimaciones: %definid
 \end{itemize}
 
 \subsection{Min-Min}
-El algoritmo min-min está basado en la heurística de terminar las tareas más cortas en el menor tiempo posible. Para ello, hace una estimación del tiempo de ejecución tomando en cuenta el tiempo de preparación de las tareas en los servicios --o recursos-- para tener el tiempo y los archivos necesarios disponibles para el recurso en cuestión. El algoritmo fue presentado por Maheswaran et al. \cite{maheswaran1999dynamic}. El pseudocódigo está descrito en el listado \ref{alg:min-min}.
+El algoritmo min-min está basado en la heurística de terminar las tareas más cortas en el menor tiempo posible. Para ello, hace una estimación del tiempo de ejecución tomando en cuenta el tiempo de preparación de las tareas en los servicios --o recursos-- para tener el tiempo y los archivos necesarios disponibles para el recurso en cuestión. El algoritmo fue presentado por Maheswaran et al. \cite{maheswaran1999dynamic}. 
+%El pseudocódigo está descrito en el listado \ref{alg:min-min}.
 
 \label{alg:min-min}
 \begin{algorithmic}[1]
@@ -90,7 +92,8 @@ Así, el algoritmo modificado puede verse en el pseudocódigo \ref{alg:max-min}.
 \end{algorithmic}
 
 \subsection{Sufragio}
-El algoritmo Sufragio\footnote{También conocido como \emph{Sufferage}} \cite{maheswaran1999dynamic} es una variación del algoritmo Min-min, el cual considera el valor del sufragio para hacer la calendarización. Dicho valor es la diferencia entre el menor tiempo de ejecución para una tarea $t$ sobre un conjunto de recursos disponibles y el segundo menor. Se calendariza a la tarea que tenga el valor del sufragio más alto, por el hecho de que las tareas que son muy sensibles a los cambios de los recursos deben ser calendarizadas primero. El algoritmo se encuentra en la sección \ref{alg:sufferage} del Apéndice.
+El algoritmo Sufragio\footnote{También conocido como \emph{Sufferage}} \cite{maheswaran1999dynamic} es una variación del algoritmo Min-min, el cual considera el valor del sufragio para hacer la calendarización. Dicho valor es la diferencia entre el menor tiempo de ejecución para una tarea $t$ sobre un conjunto de recursos disponibles y el segundo menor. Se calendariza a la tarea que tenga el valor del sufragio más alto, por el hecho de que las tareas que son muy sensibles a los cambios de los recursos deben ser calendarizadas primero. 
+%El algoritmo se encuentra en la sección \ref{alg:sufferage} del Apéndice.
 
 \label{alg:sufferage}
 \begin{algorithmic}[1]
