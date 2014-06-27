@@ -8,7 +8,7 @@ El algoritmo miope \cite{yu2008workflow} es el más simple de todos los algoritm
 \label{alg:myopic}
 \begin{algorithmic}[1]
 \Require Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$
-\Ensure{Una calendarización $f$}
+\Ensure{Una planificación $f$}
 \While{$\exists v \in \mathcal{V}$ no completada}
 	\State $t \gets$ Obtener una tarea lista, no calendarizada, con padres calendarizados;
 	\State $r \gets$ Obtener un recurso que pueda resolver la tarea en el menor tiempo;
@@ -35,7 +35,7 @@ El algoritmo min-min está basado en la heurística de terminar las tareas más 
 \label{alg:min-min}
 \begin{algorithmic}[1]
 \Require{Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$}
-\Ensure{Una calendarización $f$}
+\Ensure{Una planificación $f$}
 \While{$\exists v \in \mathcal{V}$ \emph{no completada}}
 	\State $t \gets$ Obtener conjunto de tareas listas, no calendarizadas, con padres  calendarizados;
 	\State \Call{Sched}{$tasks$};
@@ -69,7 +69,7 @@ Así, el algoritmo modificado puede verse en el pseudocódigo \ref{alg:max-min}.
 \label{alg:max-min}
 \begin{algorithmic}[1]
 \Require{Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$}
-\Ensure{Una calendarización $f$}
+\Ensure{Una planificación $f$}
 \While{$\exists v \in \mathcal{V}$ \emph{no completada}}
 	\State $t \gets$ Obtener conjunto de tareas listas, no calendarizadas, con padres  calendarizados;
 	\State \Call{Sched}{$tasks$};
@@ -92,13 +92,13 @@ Así, el algoritmo modificado puede verse en el pseudocódigo \ref{alg:max-min}.
 \end{algorithmic}
 
 \subsection{Sufragio}
-El algoritmo Sufragio\footnote{También conocido como \emph{Sufferage}} \cite{maheswaran1999dynamic} es una variación del algoritmo Min-min, el cual considera el valor del sufragio para hacer la calendarización. Dicho valor es la diferencia entre el menor tiempo de ejecución para una tarea $t$ sobre un conjunto de recursos disponibles y el segundo menor. Se calendariza a la tarea que tenga el valor del sufragio más alto, por el hecho de que las tareas que son muy sensibles a los cambios de los recursos deben ser calendarizadas primero. 
+El algoritmo Sufragio\footnote{También conocido como \emph{Sufferage}} \cite{maheswaran1999dynamic} es una variación del algoritmo Min-min, el cual considera el valor del sufragio para hacer la planificación. Dicho valor es la diferencia entre el menor tiempo de ejecución para una tarea $t$ sobre un conjunto de recursos disponibles y el segundo menor. Se calendariza a la tarea que tenga el valor del sufragio más alto, por el hecho de que las tareas que son muy sensibles a los cambios de los recursos deben ser calendarizadas primero. 
 %El algoritmo se encuentra en la sección \ref{alg:sufferage} del Apéndice.
 
 \label{alg:sufferage}
 \begin{algorithmic}[1]
 \Require{Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$}
-\Ensure{Una calendarización $f$}
+\Ensure{Una planificación $f$}
 \While{$\exists v \in \mathcal{V}$ \emph{no completada}}
 	\State $t \gets$ Obtener conjunto de tareas listas, no calendarizadas, con padres  calendarizados;
 	\State \Call{Sched}{$tasks$};
@@ -123,28 +123,41 @@ El algoritmo Sufragio\footnote{También conocido como \emph{Sufferage}} \cite{ma
 \end{algorithmic}
 
 \subsection{HEFT}
-El algoritmo HEFT\footnote{Heterogeneous Earliest-Finish Time} fue propuesto por Topcuoglu et al. \cite{topcuoglu2002performance}
+El algoritmo HEFT\footnote{Heterogeneous Earliest-Finish Time} fue propuesto por Topcuoglu et al. \cite{topcuoglu2002performance}. Este algoritmo está dividido en dos fases: (1) priorización de tareas y (2) selección de recursos. En la primera fase, para todas las tareas se calcula un valor llamado $Rango_{Asc}$, que es una estimación del costo de ejecutar una tarea. En la segunda fase, se procede a procesar la lista generada en la primera fase y asignar a cada tarea de la lista un recurso disponible que tenga el tiempo de disponibilidad más corto. Este tiempo se refiere al instante en que un recurso tiene todos los datos necesarios para ejecutar la tarea a planificar.
+
+
+%Este valor se define de la siguiente forma:
+
+%\begin{equation}
+%Rango_{Asc}(t) = \overline{Costo_{comp}(t)} + \max_{n_j \in succ(t)}(\overline{Costo_{comm}(t, n_j)} + Rango_{Asc}(n_j))
+%\end{equation}
 
 \label{alg:heft}
 \begin{algorithmic}[1]
 \Require{Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$}
-\Ensure{Una calendarización $f$}
+\Ensure{Una planificación $f$}
 \State Calcular \emph{Tiempo de Ejecución Promedio} (1) para cada tarea $v \in \mathcal{V}$;
 \State Calcular \emph{Tiempo de Transferencia de Datos Promedio} (2) entre tareas y sus sucesores;
-\State Calcular \emph{Rango} para cada tarea, de acuerdo a (3) (4);
-\State Ordenar las tareas por \emph{Rango}, en orden decreciente en una lista $Q$;
+\State Calcular $Rango_{Asc}$ para cada tarea, de acuerdo a (3) (4);
+\State Ordenar las tareas por $Rango_{Asc}$, en orden decreciente en una lista $Q$;
 \While{$Q \ne \varnothing$}
 	\State $t \gets$ Remover la primera tarea de $Q$;
-	\State $r \gets$ Encontrar un recurso que pueda ejecutar $r$ en el menor tiempo;
+	\State $r \gets \arg\min_{r_i \in R}EFT(r_i, t)$ usando \emph{planificación basada en inserciones}
+	%\For{$r_i \in R$}
+	%	\State Calcular $EFT(r_i, t)$ utilizando la política de \emph{planificación basada en inserciones}
+	%\EndFor
+	%\State $r \gets$ Encontrar un recurso que pueda ejecutar $t$ en el menor $EFT(r, t)$;
 	\State Calendarizar $t$ en $r$;
 \EndWhile
 \end{algorithmic}
 
 \subsection{Híbrido}
+Este algoritmo combina dos heurístas: primero agrupa las tareas que tengan dependencias entre sí, de tal modo que haya un balance entre el número de grupos y el número de recursos disponibles para la ejecución de las tareas agrupadas. Luego, con los grupos listos, se utiliza un algoritmo de planificación batch para asignar a cada grupo un recurso. Este algoritmo/heurística fue propuesto por Sakellariou et al \cite{sakellariou2004hybrid}.
+
 \label{alg:hybrid}
 \begin{algorithmic}[1]
 \Require{Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$}
-\Ensure{Una calendarización $f$}
+\Ensure{Una planificación $f$}
 \State Calcular \emph{Peso} de cada tarea y arista, de acuerdo a (1)(2);
 \State Calcular \emph{Rango} para cada tarea, de acuerdo a (3) (4);
 \State Ordenar las tareas por \emph{Rango}, en orden decreciente en una lista $Q$;
@@ -167,9 +180,11 @@ El algoritmo HEFT\footnote{Heterogeneous Earliest-Finish Time} fue propuesto por
 
 \subsection{TANH}
 \label{alg:tanh}
+Bajaj et al. \cite{bajaj2004improving} pronen un algoritmo basado en dos heurísticas: en la duplicación de tares y en el agrupamiento de tareas. La primera heurística se basa en que si dos tareas dependen del resultado de una tarea en común y estas dos tareas se encuentran en recursos diferentes y con un tiempo muerto previo a la ejecución de estas tareas, entonces se ejecuta de forma rendundante la tarea común en los dos recursos diferentes, para que las dos tareas puedan continuar su ejecución de manera independiente y no exista un costo de comunicación de datos entre estos dos recursos. La segunda heurística se refiere a que las tareas con dependencias entre sí se deben ejecutar en los mismos recursos, para que los costos de comunicación de datos sean despreciables.
+
 \begin{algorithmic}[1]
 \Require{Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$}
-\Ensure{Una calendarización $f$}
+\Ensure{Una planificación $f$}
 \State Calcular \emph{Parámetros} para cada nodo tarea;
 \State Agrupar tareas del flujo de trabajo;
 \If{Número de clusters $\ge$ Número de recursos disponibles}
@@ -187,14 +202,16 @@ El algoritmo HEFT\footnote{Heterogeneous Earliest-Finish Time} fue propuesto por
 %\subsection{Deadline-MDP}
 %\subsection{LOSS/GAIN}
 
-\section{Metaheurísticos}
+%\section{Metaheurísticos}
 %\subsection{Algoritmo Genético}
 
 \subsection{GRASP}
 \label{alg:grasp}
+El procedimiento de búsqueda aleatoria glotona adaptativa (GRASP por sus siglas en inglés) es una heurística que se utiliza para resolver problemas de optimización combinatoria. De manera glotona, se construyen planificaciones que reduzcan del tiempo de ejecución total evaluado cada uno de los sucesores de una tarea dada. Así, el algoritmo escoge las tareas de manera aleatoria cuya variación en el tiempo no pase de un rango dado. El algoritmo termina hasta se cumple un criterio de terminación, como un tiempo límite. Este algoritmo fue propuesto por Blythe et al. \cite{blythe2005task}.
+
 \begin{algorithmic}[1]
 \Require{Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$}
-\Ensure{Una calendarización $f$}
+\Ensure{Una planificación $f$}
 \While{Criterio de terminación no satisfactorio}
 	\State $sched \gets$ \Call{createSchedule}{$w$};
 	\If{$sched$ es mejor que $bestSched$}
@@ -210,7 +227,7 @@ El algoritmo HEFT\footnote{Heterogeneous Earliest-Finish Time} fue propuesto por
 	\State \textbf{return} $solution$;
 \EndProcedure
 \Procedure{constructSolution}{$workflow$}
-	\While{calendarización no completada}
+	\While{planificación no completada}
 		\State $T \gets$ Obtener tareas listas sin asignar;
 		\State Crear RCL para cada $t \in T$;
 		\State $subSolution \gets$ Seleccionar un recurso \emph{aleatoriamente} para cada $t \in T$ de su RCL;
