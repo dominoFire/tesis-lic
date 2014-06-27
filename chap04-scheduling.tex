@@ -9,19 +9,17 @@ De acuerdo a  Ullman et al. \cite{ullman1975np}, el problema de la planificació
 
 %al parecer hay que usar la definición extendida de Ullman para que muestre a la planificación como una función f
 \begin{defn}
-El \textbf{problema de la planificación} consiste en:
+El \textbf{problema de la planificación} está compuesto por:
 \begin{enumerate}
 \item Un conjunto de tareas $S = \{ J_1, J_2, \dots, J_n \}$
 \item Un ordenamiento parcial $\prec$ sobre $S$
 \item Una función de costo $U: S \mapsto \mathbb{Z}^{+}$, la cual indica el tiempo que tarda en completarse cada una de las tareas en $S$
 \item Un número de computadoras (procesadores) $k$
 \end{enumerate}
-\begin{itemize}
-\item El objetivo del problema de la planificación es \emph{minimizar} el tiempo total de ejecución, denotado por $t_\text{max}$, respetando el orden parcial definido por $\prec$, asignando tareas de $S$ a los $k$ procesadores.
-\end{itemize}
-Es importante notar que se asume que cuando una computadora ejecuta una tarea, ésta es ejecutada completamente, sin errores o interrupciones.
 \end{defn}
 
+Para Ullman et al. \cite{ullman1975np}, el objetivo del problema de la planificación es \emph{minimizar} el tiempo total de ejecución, denotado por $t_\text{max}$, respetando el orden parcial definido por $\prec$, asignando tareas de $S$ a los $k$ procesadores.
+También, es importante notar que se asume que cuando una computadora ejecuta una tarea, ésta es ejecutada completamente, sin errores o interrupciones.
 
 \section{La complejidad de planificar}
 Como puede notarse, hay varias maneras de acomodar las $k$ computadoras para que se ejecuten todas las tareas de $S$. Sin embargo, Ullman et al. han demostrado que este problema pertenece a la categoría NP-completo \cite{ullman1975np}.
@@ -33,18 +31,21 @@ Así, la forma de atacar estos problemas NP-completos es utilizar métodos de ap
 \section{Planificación de flujos de trabajo}
 Hasta ahora, se ha mencionado el problema básico de planificación con restricciones. Con ello, se pretende plantear el problema de la planificación de flujos de trabajo y apoyarse en la definición del problema básico de planificación para enumerar propiedades sobre este problema.
 
-Para plantear el problema de la planificación de flujos de trabajo, primero se mostrará que bajo ciertas condiciones, un flujo de trabajo puede ser reducido a un grafo dirigido acíclico haciendo las transformaciones adecuadas. Luego, se utilizará la definición del problema básico de planificación con restricciones y su semejanza para flujos de trabajo. Finalmente, se hará una descripción de la complejidad de planificar flujos de trabajo.
+Para plantear el problema de la planificación de flujos de trabajo, primero se mostrará que, bajo ciertas condiciones, un flujo de trabajo puede ser reducido a un grafo dirigido acíclico haciendo las transformaciones adecuadas. Luego, se utilizará la definición del problema básico de planificación con restricciones y su semejanza para flujos de trabajo. Finalmente, se hará una descripción de la complejidad de planificar flujos de trabajo.
 %tres hechos:
 % - todo flujo de trabajo puede reducirse a DAG
 % - transforma un DAG a un problema clásico de Ullman
 % - menciona que el problema de Ullman es NP-completo
 \subsection{Reducción de flujos de trabajo a grafos dirigidos acíclicos}
-En el trabajo de de Mair et al. \cite{mair2007workflow} proponen un formato para una representación intermedia de flujos de trabajo, con el fin de transformar una especificación de un flujo de trabajo detallada --escrita en un lenguaje basado en XML llamado AGWL-- a una representación intermedia basada en grafos dirigidos acíclicos.
+En el trabajo de de Mair et al. \cite{mair2007workflow} se propone un formato para una representación intermedia de flujos de trabajo basada en grafos dirigidos acíclicos, con el fin de poder transformar una especificación detallada de un flujo de trabajo, escrita en un lenguaje basado en XML llamado AGWL, a esta representación intermedia. Como se vio en el capítulo \ref{chap:workflows}, un flujo de trabajo puede ser interpretado desde varias perspectivas. Sin embargo, un grafo dirigido acíclico resume en pocos elementos (nodos y aristas), las tareas y las dependencias que deben ser cumplidas durante la planificación. Es por esta razón que es deseable reducir un flujo de trabajo, interpretado desde cualquier perspectiva, a un grafo dirigido acíclico.
 
-Aunque no existe un consenso general sobre cuál es una definición completa de un flujo de trabajo \cite{van2003workflow}, el lenguaje AGWL es una especificación suficiente para una gran cantidad de flujos de trabajo de ámbito científico, porque con las construcciones if, while, for, parallel, secuence son adecuadas para expresar vastos flujos.
+Cabe aclarar que, como se vio en la Introducción de este trabajo, aún no existe un conseso sobre qué representa un flujo de trabajo \cite{van2003workflow}, debido a las diferentes perpectivas de interpretación de un flujo, reflejada en las distintas formas de representación que los sistemas de administración de flujos de trabajo utilizan para operar. En el caso del lenguaje AGWL, éste cuenta con facilidades para poder expresar flujos de trabajo condicionales, a saber: constucciones if, while, for y parallel. Estas facilidades permiten expresar una gran variedad de flujos de trabajo. Sin embargo, para poder estudiar los flujos de trabajo con estas construcciones, se requieren de mecanismos de predicción o estimación de posibles rutas de ejecución del flujo de trabajo. En algunos sistemas de administración de ejecución de flujos de trabajo, como Pegasus \cite{deelman2005pegasus}, aplican desenrollamiento de ciclos como una técnica de estimación de la ruta de ejecución del flujo, con el fin de transformar el flujo de trabajo condicional en un grafo dirigido acíclico. Sin embargo, el estudio de estos mecanismos está fuera del alcance de este trabajo.
 
-El hecho importante a recalcar es que los grafos dirigidos acíclicos sirven como representación para utilizarlos en los algoritmos de planificación.
+%Aunque no existe un consenso general sobre cuál es una definición completa de un flujo de trabajo \cite{van2003workflow}, el lenguaje AGWL es una especificación suficientemente flexible para expresar una gran cantidad de flujos de trabajo, porque con las construcciones if, while, for, parallel, secuence son adecuadas para expresar vastos flujos.
 
+%El hecho importante a recalcar es que los grafos dirigidos acíclicos sirven como representación para utilizarlos en los algoritmos de planificación.
+
+De esta forma, es posible asumir, tanto para el estudio del problema de planificación de flujos de trabajo como para los algoritmos de planificación, que se tendrá como entrada la representación del flujo de trabajo en forma de un grafo dirigido acícliclo.
 
 \subsection{Definición del problema de planificación de flujos de trabajo}
 Una vez que se ha establecido a los grafos dirigidos acíclicos como nuestra representación básica de flujos de trabajo, se definirá el problema que conlleva asignar recursos a las tareas del flujo.

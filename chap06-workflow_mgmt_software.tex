@@ -16,9 +16,6 @@ HTCondor \cite{condor-practice} es un sistema para administrar flujos de trabajo
 
 HTCondor presenta al usuario un único recurso de computo, formado de varias computadoras interconectadas entre si. Esta es la razón por la que este sistema de administracion de flujos de trabajo cae dentro de la clasificacion de software orientado a clusters.
 
-\subsection{SwinDew-C}
-
-
 \section{Software orientado a grids}
 
 \subsection{SwinDew-G}
@@ -28,7 +25,7 @@ HTCondor presenta al usuario un único recurso de computo, formado de varias com
 
 SwinDew-G \cite{yang2007peer} es un sistema de administracion de flujos de trabajo cuya característica especial es que trabaja con redes de computadoras P2P. En la primera version de SwinDew, el proceso de calendarizacion es estático \cite{yang2007peer}, i.e., que en la fase de preparacion de la ejecucion se crea el plan de ejecucion del flujo y se aplica sin ninguna modificacion a lo largo del tiempo. Varios esfuerzos se han hecho para mejorar el mecanismo de calendarizacion, como el algoritmo CTC \cite{liu2010compromised} diseñado especialmente para flujos de trabajo que son intensivos en instancias pero que contienen pocas tareas simples, como los flujos de trabajo utilizados en los bancos y empresas.
 
-Tambien, existen versiones especificas de SwinDew para grids y nubes. En este caso, citamos la versión para grids llamada SwinDew-G. La primera versión de SwinDew-G aparece en publicaciones aceptadas en el 2006. Finalmente, SwinDew y sus variantes fueron desarrollados en la Universidad de Swinburne, en Australia.
+Tambien, existen versiones especificas de SwinDew para nubes. En este caso, citamos la versión para grids llamada SwinDew-G. La primera versión de SwinDew-G aparece en publicaciones aceptadas en el 2006. Finalmente, SwinDew y sus variantes fueron desarrollados en la Universidad de Swinburne, en Australia.
 
 \subsection{Pegasus}
 %URL: \url{https://pegasus.isi.edu/}
@@ -36,6 +33,11 @@ Tambien, existen versiones especificas de SwinDew para grids y nubes. En este ca
 Pegasus \cite{deelman2005pegasus} fue desarrollado en la Universidad del Sur de California. Al igual que SwinDew-G, se puede utilizar Pegasus para trabajar con grids y con nubes. Pegassus implementa max-min, min-min y Sufragio como algoritmos de planificación. Las principales aplicaciones de Pegasus son los flujos de trabajo científicos. Los primeros trabajos publicados que reportan el uso de Pegasus datan del 2003 \cite{pegasus2014publications}. El módulo encargado de calendarizar el flujo de trabajo es el Mapper.
 
 \section{Software orientado a nubes}
+
+\subsection{SwinDew-C}
+
+SwinDew-C \cite{liu2010swindew} es un sistema de administración de flujos de trabajo basado en SwinDew-C, cuya principal característica es que agrega nubes externas como recursos disponibles para la ejecución de flujos de trabajo. La arquitectura de SwinDew-C es muy similar a la arquitectura de SwinDew-G, con la diferencia de que agrega nuevos componentes para manejar restricciones de calidad de servicio y administración de fallos. En el caso de una falla en la ejecución de las tareas, SwinDew-C replanifica la ejecución de la tarea fallida con un algoritmo basado en optimización por colonia de hormigas.
+%checar referencia en el paper de SwinDew-C para colonia de hormigas
 
 \subsection{Aneka}
 %URL: \url{http://www.manjrasoft.com/products.html}
@@ -47,8 +49,13 @@ El diseño de Aneka es basado en servicios. Cada servicio se encarga de una func
 
 Técnicamente, es posible construir una nube con Aneka \cite{vecchiola2009aneka} utilizando computadoras de escritorio convencionales. De esta forma, Aneka provee servicios para administrar el esquema de precios de la nube construida con este software. Del mismo modo, Aneka utiliza un mecanismo de negociación mediante agentes que buscan \emph{cerrar} los mejores tratos con los proveedores de los servicios de la nube, que mejor satisfagan los requisitos de calidad en el servicio.
 
+Es importante mencionar que la plataforma Aneka fue desarrollada inicialmente por el laboratorio GRIDS de la Universidad de Swinburne, en Austraila. Actualmente, Aneka es desarrollado por la empresa Manjrasoft \cite{aneka2014webpage}.
 
 \subsection{Askalon}
 %URL: \url{http://www.dps.uibk.ac.at/projects/askalon/}
 
-Askalon implementa HEFT para calendarizar flujos que requieran reducir tiempo de ejecución y algoritmos genéticos para trabajar flujos de trabajo con restricciones de calidad en el servicio.
+Askalon \cite{fahringer2005askalon} es un entorno que facilita el desarrollo y la ejecución de flujos de trabajo. Askalon utiliza un lenguaje llamado AGWL para especificar flujos de trabajo. Al igual que Aneka, el diseño de Askalon está basado en servicios, cuyos principales: el motor de promulgación, el administrador de recursos, la base de datos de checkpoints y el planificador.
+
+En el servicio planificador, Askalon utiliza varios algoritmos de planificación: HEFT, miope y un algoritmo genético. Esto es porque antes de ejecutar el flujo de trabajo, se hace una predicción del tiempo estimado de ejecución de cada tarea. Entonces, hay un módulo encargado de actualizar la información de las predicciones y, en base al resultado de los tres algoritmos, se elige la planificación que mejor cumpla con los requisitos de calidad en el servicio dictados por el usuario.
+
+Actualmente, el proyecto Askalon es desarrollado por la Universidad de Innsbruck, en Austria \cite{askalon2014webpage}.
