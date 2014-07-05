@@ -5,6 +5,7 @@ es el proceso de asignación de recursos a tareas, de tal modo que se define un 
 
 
 \section{Definición del problema}
+\label{secc:scheduling_problem}
 De acuerdo a  Ullman et al. \cite{ullman1975np}, el problema de la planificación se define de la siguiente manera: 
 
 %al parecer hay que usar la definición extendida de Ullman para que muestre a la planificación como una función f
@@ -22,11 +23,9 @@ Para Ullman et al. \cite{ullman1975np}, el objetivo del problema de la planifica
 También, es importante notar que se asume que cuando una computadora ejecuta una tarea, ésta es ejecutada completamente, sin errores o interrupciones.
 
 \section{La complejidad de planificar}
-Como puede notarse, hay varias maneras de acomodar las $k$ computadoras para que se ejecuten todas las tareas de $S$. Sin embargo, Ullman et al. han demostrado que este problema pertenece a la categoría NP-completo \cite{ullman1975np}.
+Como puede notarse, hay varias maneras de acomodar las $k$ computadoras para que se ejecuten todas las tareas de $S$. De hecho, Ullman et al. han demostrado que este problema pertenece a la categoría NP-completo \cite{ullman1975np}. Esto signifca que no se ha encontrado un algoritmo que pueda resolver el problema en tiempo polinomial. Entonces, la solución ingenua de probar ordenadamente todas las posibles asignaciones de tareas a computadoras resulta computacionalmente muy costoso.
 
-Esto signifca que no se ha encontrado un algoritmo que pueda resolver el problema en tiempo polinomial. Entonces, la solución ingenua de probar ordenadamente todas las posibles asignaciones de tareas a computadoras resulta computacionalmente muy costoso.
-
-Así, la forma de atacar estos problemas NP-completos es utilizar métodos de aproximación \cite{leiserson2001introduction} que obtengan soluciones subóptimas o utilizar heurísticas que resuelvan este problema sumando ciertas restricciones.
+Así, la forma de atacar estos problemas NP-completos es utilizar métodos de aproximación \cite{leiserson2001introduction} que obtengan soluciones subóptimas o utilizar heurísticas que resuelvan este problema asumiendo ciertas restricciones.
 
 \section{Planificación de flujos de trabajo}
 Hasta ahora, se ha mencionado el problema básico de planificación con restricciones. Con ello, se pretende plantear el problema de la planificación de flujos de trabajo y apoyarse en la definición del problema básico de planificación para enumerar propiedades sobre este problema.
@@ -37,9 +36,10 @@ Para plantear el problema de la planificación de flujos de trabajo, primero se 
 % - transforma un DAG a un problema clásico de Ullman
 % - menciona que el problema de Ullman es NP-completo
 \subsection{Reducción de flujos de trabajo a grafos dirigidos acíclicos}
-En el trabajo de de Mair et al. \cite{mair2007workflow} se propone un formato para una representación intermedia de flujos de trabajo basada en grafos dirigidos acíclicos, con el fin de poder transformar una especificación detallada de un flujo de trabajo, escrita en un lenguaje basado en XML llamado AGWL, a esta representación intermedia. Como se vio en el capítulo \ref{chap:workflows}, un flujo de trabajo puede ser interpretado desde varias perspectivas. Sin embargo, un grafo dirigido acíclico resume en pocos elementos (nodos y aristas), las tareas y las dependencias que deben ser cumplidas durante la planificación. Es por esta razón que es deseable reducir un flujo de trabajo, interpretado desde cualquier perspectiva, a un grafo dirigido acíclico.
+En el trabajo de Mair et al. \cite{mair2007workflow} se propone un formato para una representación intermedia de flujos de trabajo basada en grafos dirigidos acíclicos, con el fin de transformar una especificación detallada de un flujo de trabajo, escrita en un lenguaje basado en XML llamado AGWL, a esta representación intermedia. Como se vio en el capítulo \ref{chap:workflows}, un flujo de trabajo puede ser interpretado desde varias perspectivas. Sin embargo, un grafo dirigido acíclico resume en pocos elementos (nodos y aristas), las tareas y las dependencias que deben ser cumplidas durante la planificación. Es por esta razón que es deseable reducir un flujo de trabajo, interpretado desde cualquier perspectiva, a un grafo dirigido acíclico.
 
-Cabe aclarar que, como se vio en la Introducción de este trabajo, aún no existe un conseso sobre qué representa un flujo de trabajo \cite{van2003workflow}, debido a las diferentes perpectivas de interpretación de un flujo, reflejada en las distintas formas de representación que los sistemas de administración de flujos de trabajo utilizan para operar. En el caso del lenguaje AGWL, éste cuenta con facilidades para poder expresar flujos de trabajo condicionales, a saber: constucciones if, while, for y parallel. Estas facilidades permiten expresar una gran variedad de flujos de trabajo. Sin embargo, para poder estudiar los flujos de trabajo con estas construcciones, se requieren de mecanismos de predicción o estimación de posibles rutas de ejecución del flujo de trabajo. En algunos sistemas de administración de ejecución de flujos de trabajo, como Pegasus \cite{deelman2005pegasus}, aplican desenrollamiento de ciclos como una técnica de estimación de la ruta de ejecución del flujo, con el fin de transformar el flujo de trabajo condicional en un grafo dirigido acíclico. Sin embargo, el estudio de estos mecanismos está fuera del alcance de este trabajo.
+%reflejada en las distintas formas de representación que los sistemas de administración de flujos de trabajo utilizan para operar
+Cabe aclarar que, como se vio en el primer capítulo de este trabajo, aún no existe un conseso sobre qué representa un flujo de trabajo \cite{van2003workflow}, debido a las diferentes perpectivas de interpretación de un flujo. En el caso del lenguaje AGWL, éste cuenta con facilidades para poder expresar flujos de trabajo condicionales, a saber: constucciones if, while, for y parallel. Estas facilidades permiten expresar una gran variedad de flujos de trabajo. Sin embargo, para poder estudiar los flujos de trabajo con estas construcciones, se requieren de mecanismos de predicción o estimación de posibles rutas de ejecución del flujo de trabajo. En algunos sistemas de administración de ejecución de flujos de trabajo, como Pegasus \cite{deelman2005pegasus}, aplican desenroscado de bucles como técnica de estimación de la ruta de ejecución del flujo, para transformar el flujo de trabajo condicional en un grafo dirigido acíclico. Sin embargo, el estudio de estos mecanismos está fuera del alcance de este trabajo.
 
 %Aunque no existe un consenso general sobre cuál es una definición completa de un flujo de trabajo \cite{van2003workflow}, el lenguaje AGWL es una especificación suficientemente flexible para expresar una gran cantidad de flujos de trabajo, porque con las construcciones if, while, for, parallel, secuence son adecuadas para expresar vastos flujos.
 
@@ -56,7 +56,8 @@ Con el fin de no perder generalidad, tomaremos la definiciones de Wieczorek-Prod
 Un \textbf{flujo de trabajo} es un grafo dirigido $w \in \mathcal{W}, w = (\mathcal{V},\mathcal{E})$, compuesto de un conjunto de nodos $\mathcal{V}$ que representan tareas $ \tau \in \mathcal{T}$ y un conjunto de aristas $\mathcal{E}$ que representan transferencias de datos $ \rho \in \mathcal{D}$.
 \end{defn}
 
-Hay que notar que en la definición anterior que la forma en que se relacionan las tareas y las transferencias de datos con los nodos y aristas del grafo está determinada por la representación \emph{concreta} del flujo de trabajo.
+Hay que notar que en la definición anterior que la forma en que se relacionan las tareas y las transferencias de datos con los nodos y aristas del grafo está determinada por la representación del flujo de trabajo.
+%\emph{concreta}
 %creo que esto requiere más trabajo.
 
 Ahora, se definirán los recursos de cómputo en donde se ejecuta el flujo. 
@@ -90,7 +91,7 @@ El objetivo del problema de la planificación de flujos de trabajo es encontrar 
 
 \subsection{Complejidad computacional de la planificación de flujos de trabajo}
 %Después de haber enunciado varias definiciones para definir el problema de la planificación de flujos de trabajo
-Ahora, se hará una analogía con el problema básico de planificación para poder estudiar su complejidad computacional. La analogía es la siguiente:
+Ahora, se hará una analogía con el problema básico de planificación visto en la sección \ref{secc:scheduling_problem} para estudiar su complejidad computacional. La analogía es la siguiente:
 
 
 \begin{enumerate}
