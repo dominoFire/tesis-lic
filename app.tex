@@ -11,7 +11,7 @@ El algoritmo miope \cite{yu2008workflow} es el más simple de todos los algoritm
 \Ensure{Una planificación $f$}
 \While{$\exists v \in \mathcal{V}$ no completada}
 	\State $t \gets$ Obtener una tarea lista, no calendarizada, con padres calendarizados;
-	\State $r \gets$ Obtener un recurso que pueda resolver la tarea en el menor tiempo;
+	\State $r \gets$ Obtener un recurso que pueda empezar la tarea en el menor tiempo;
 	\State Calendarizar $t$ en $r$, i.e., $f(r) = t$;
 \EndWhile
 \end{algorithmic}
