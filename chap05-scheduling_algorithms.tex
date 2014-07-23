@@ -1,4 +1,6 @@
-\chapter{Algoritmos de planificación de flujos de trabajo}
+\chapter[Planificación de flujos de trabajo]{Algoritmos de planificación de flujos de trabajo}
+\label{chap:scheduling_algorithms}
+
 En el capítulo anterior definimos el problema de planificar flujos de trabajo. También se vio que dicho problema pertenece a la categoría de los problemas NP-completos, lo cual significa que la complejidad --o tiempo de ejecución-- para resolver este problema no está acotada por una función polinomial. Por ello, diversos algoritmos se han propuesto para atacar, ya sea de manera total o parcial, el objetivo principal de la planificación: minimizar los costos, tales como el tiempo total de ejecución o un presupuesto.
 
 Ahora, con los enfoques de cómputo propuestos en el capítulo 2, se crean diversos algoritmos para diferentes necesidades. Mientras que en los clusters y los grids se asumen que estos recursos son compartidos, los algoritmos de planificación para estos recursos asumen que los flujos deben ser ejecutados lo más pronto posible, con el fin de hacer que el recurso esté ocupado la mayor parte del tiempo. Por otro lado, el enfoque de nubes permite al diseñador de flujos de trabajo elegir entre ejecutar el flujo con todos los recursos a costa de un elevado presupuesto o, reducir dicho presupuesto a costa de un tiempo de ejecución más elevado.

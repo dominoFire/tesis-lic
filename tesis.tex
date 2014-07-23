@@ -1,0 +1,79 @@
+\documentclass[openany,oneside]{book}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{cite,url,graphicx,amsmath,amssymb,enumitem,amsthm,appendix,authblk}
+\usepackage[hidelinks,bookmarks=true]{hyperref}
+
+%dimensiones oficiales
+\usepackage[paperwidth=17cm,paperheight=22.5cm,margin=2cm]{geometry}
+
+%espacio entre párrafos
+%\setlength{\parskip}{6pt}
+
+%para revision ("frame" para cuadrito)
+%\usepackage[letter,center,noinfo]{crop}
+%\usepackage{fullpage}
+
+%colores para el codigo
+\usepackage{color}
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+%para poner codigo en monospace
+\usepackage{listings}
+\usepackage{courier}
+\lstset{ %
+  framextopmargin=50pt,
+  backgroundcolor=\color{white},   % choose the background color
+  basicstyle=\footnotesize\ttfamily,        % size of fonts used for the code
+  breaklines=true,                 % automatic line breaking only at whitespace
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  keywordstyle=\color{blue},       % keyword style
+  stringstyle=\color{mymauve},     % string literal style
+  numbers=left
+}
+
+% Pseudocódigo de algoritmos (Gracias Andreu)
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\renewcommand{\algorithmicrequire}{\textbf{Entrada:}}
+\renewcommand{\algorithmicensure}{\textbf{Salida:}}
+
+%definición de definicones matemágicas
+\newtheorem{defn}{Definición}
+
+\title{Estudio de algoritmos de planificación para flujos de trabajo}
+\author{Fernando Aguilar Reyes}
+\affil{Instituto Tecnológico Autónomo de México \\
+     Río Hondo 1, Progreso Tizapán, Del. Álvaro Obregón, 01080 \\
+     México, Distrito Federal \\}
+
+\begin{document}
+\include{portada} %Portada ITAM
+
+\frontmatter
+\include{statement} %Declaracion de derechos
+\include{abstracts}
+\include{ack}
+\tableofcontents
+\listoffigures
+
+\mainmatter
+\include{chap01-intro}
+\include{chap02-workflows}
+\include{chap03-distributed_computing}
+\include{chap04-scheduling}
+\include{chap05-scheduling_algorithms}
+\include{chap06-workflow_mgmt_software}
+\include{chap07-implementation}
+\include{chap08-conclusions}
+
+\appendix
+\include{app}
+
+\bibliographystyle{plain}
+\bibliography{propuesta}
+\end{document}
