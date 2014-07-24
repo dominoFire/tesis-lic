@@ -23,3 +23,5 @@
 *.synctex.gz
 .Rhistory
 *Thumbs.db
+*_latexmk
+*.fls
