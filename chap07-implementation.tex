@@ -1,8 +1,8 @@
 \chapter[Simulador]{Simulador de ejecución de flujos de trabajo}
 
-En los capítulos anteriores, se han revisado los principales elementos del problema de la planificación de flujos de trabajo en entornos de cómputo distribuido. Se el concepto de flujo de trabajo y sus propiedades. También se han detallo los enfoques de cómputo distribuido comunes en la planificación de flujos de trabajo. Además, se ha estudiado el problema de planificación elemental y su aplicación al problema específico de flujos de trabajo. De este modo, se puede notar que son varios los factores que se tienen que tomar en cuenta para construir software para flujos de trabajo en entornos de cómputo distribuido.
+En los capítulos anteriores, se han revisado los principales elementos del problema de la planificación de flujos de trabajo en entornos de cómputo distribuido. Se estudió también el concepto de flujo de trabajo y sus propiedades. También se han detallo los enfoques de cómputo distribuido comunes en la planificación de flujos de trabajo. Además, se ha estudiado el problema de planificación elemental y su aplicación al problema específico de flujos de trabajo. De este modo, se puede notar que son varios los factores que se tienen que tomar en cuenta para construir software para flujos de trabajo en entornos de cómputo distribuido.
 
-Con el fin de facilitar el estudio de los algoritmos de planificación de flujos de trabajo y de proveer a la comunidad científica de cloud computing de una plataforma para analizar el desempeño de nuevos algoritmos de planificación con respecto a algoritmos consolidados, se construyó un simulador de ejecución de flujos de trabajo.
+Con el fin de facilitar el estudio de los algoritmos de planificación de flujos de trabajo y de proveer a la comunidad científica de cloud computing de una plataforma para analizar el desempeño de nuevos algoritmos de planificación con respecto a algoritmos consolidados, se construyó un simulador de ejecución de flujos de trabajo. El simulador está construido con el lenguaje de prograjamción Java. También, se utilizó Maven \cite{maven2014} para administrar el proceso de compilación de código y también para administrar la aplicación de pruebas unitaricas con el marco de trabajo JUnit \cite{junit2014}. También, el código está disponible como software libre \cite{dominofire2014workflowsimulator} para su libre utilización en otros proyectos.
 
 Los algoritmos de planificación implementados en el simulador son: Miope (\ref{alg:myopic}, \ref{code:myopic}), MinMin (\ref{alg:min-min}, \ref{lst:xmin_main}) y MaxMin (\ref{alg:max-min}, \ref{lst:xmin_main}). Cabe recordar que el algoritmo Miope es un algoritmo voraz que busca el recurso que pueda ejecutar la tarea lo más pronto posible. También, los algoritmos MinMin y MaxMin buscan recursos que puedan minimizar tanto la duración de la tareas listas como el tiempo en el que inician la ejecución de las tareas. Luego, en el caso de MaxMin, se busca la tarea que tarde más tiempo en ejecutarse. En el caso de MinMin, se busca la tarea que tarde menos en ejecutarse.
 
@@ -18,7 +18,7 @@ Para simplificar la construcción del simulador, se asumieron seis supocisiones:
 \end{enumerate}
 
 \section{Clases comunes para los algoritmos}
-El diseño de las clases y objetos se hizo de tal modo que los elementos más comunes de los algoritmos fueran representados en una clase. Así, describiremos primero las clases \texttt{Task}, \texttt{Resource} y \texttt{Schedule}, para luego describir la clase \texttt{Workflow} y las clases que implementan los algoritmos: \texttt{Myopic}, \texttt{MinMin} y \texttt{MaxMin}. En la figura \ref{fig:uml_class} se puede apreciar el diagrama de clases UML de las clases que modelan los elementos del problema de planificación de flujos de trabajo.
+El diseño de las clases y objetos se hizo de tal modo que los elementos más comunes de los algoritmos fueran representados en una clase. Así, describiremos primero las clases \texttt{Task}, \texttt{Resource} y \texttt{Schedule}, para luego describir la clase \texttt{Workflow} y las clases que implementan los algoritmos: \texttt{Myopic}, \texttt{MinMin} y \texttt{MaxMin}. En la figura \ref{fig:uml_class} se puede apreciar el diagrama de clases UML de las clases que modelan los elementos del problema de planificación de flujos de trabajo. Estas clases se encuentran en el paquete \texttt{org.perez.workflow.elements}.
 
 \begin{figure}
 \label{fig:uml_class}
@@ -44,19 +44,36 @@ Representa una planificación de una tarea en un recurso. Cada objeto de esta cl
 \subsection{Clase \texttt{Workflow}}
 La clase \texttt{Workflow} representa un flujo de trabajo, compuesto de tareas y las relaciones de precedencia entre tareas. Cabe aclarar que no se permiten que existan tareas con el mismo nombre y también se verifica que las relaciones de precedencia entre las tareas formen un grafo dirigido acícilico.
 
+\subsection{Clases Adicionales}
+La clase \texttt{Pair} una tupla de dos valores, la cual es utilizada ampliamente en los alogritmos de planificación. La clase \texttt{GEXFConverter} contiene métodos para guardar los flujos de trabajo en archivos con formato GEXF \cite{gexf2014}, el cual es utilizado en software como Gephi \cite{bastian2009gephi} para visualizar grafos. La clase \texttt{EarliestStartTimeComparator} implementa un comparador que es utilizado en el algoritmo Miope para mantener una lista de recursos ordenada por el tiempo de disponibilidad más corto.
+
 \section{Código de los algoritmos de planificación}
 En esta sección, detallaremos las decisiones de diseño que fueron necesarias para implementar los algoritmos. Como se verá en cada uno de los algoritmos, todos tienen detalles específicos que salen a la luz a la hora de programar. Cada algoritmo está codificado en una clase y cada una de estas clases contiene un método estático de la forma:
 
+\begin{center}
 \begin{lstlisting}[numbers=none]
 List<Schedule> schedule(Workflow w, List<Resource> resourceList) { ... }
 \end{lstlisting}
+\end{center}
+
+En la figura \ref{fig:uml_class_scheduler} está el diagrama de clases UML de las clases que implementan los algoritmos de planificación. También en esta figura están representadas las clases auxiliares utilizadas tanto en los algoritmos y en las pruebas. La clase \texttt{Utils} tiene métodos para verificar si una planificación es correcta. También contiene métodos para imprimir las planificaciones, útil para las sesiones de depuración. Otro método importarnte a mencionar es \texttt{createRGanttScript()}, el cual genera un script en el lenguaje de programación estadística R \cite{Rlang2014} para graficar la planificación de un flujo de trabajo.
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=1.0\textwidth]{imagenes/uml_class_scheduler}
+\end{center}
+\label{fig:uml_class_scheduler}
+\caption{Diagrama de clases de los algoritmos y clases auxliares.}
+\end{figure}
+
+A continuación, se describirán los detalles de implementación de cada uno de los algoritmos de planificación.
 
 \subsection{Algoritmo Miope}
-Como se vió en el capítulo \ref{chap:scheduling_algorithms} y en la sección \ref{alg:myopic} del apéndice, el algoritmo Miope asigna tareas a recursos de tal modo que se empiecen a ejecutar lo más pronto posible. Aunque la idea básica resulte fácil de entender, hay algunas cuestiones que deben ser resueltas para implementar este algoritmo. En la figura \ref{code:myopic} se encuentra el código del algoritmo Miope, el cual utiliza las clases de los elementos comunes antes descritos. 
+Como se vió en el capítulo \ref{chap:scheduling_algorithms} y en la sección \ref{alg:myopic} del apéndice, el algoritmo Miope asigna tareas a recursos de tal modo que se empiecen a ejecutar lo más pronto posible. Aunque la idea básica resulte fácil de entender, hay algunas cuestiones que deben ser resueltas para implementar este algoritmo. En el código \ref{code:myopic} se encuentra el código del algoritmo Miope, el cual utiliza las clases de los elementos comunes antes descritos. 
 
 Primero, hay que hacer una distinción entre \emph{tareas planificadas} y \emph{tareas listas}. Una tarea está planificada si ya está asignada a uno y sólo un recurso. Cabe aclarar que no se permite que una tarea sea asignada a varios recursos. Ahora bien, una tarea está lista para planificar si sus predecesores inmediatos o padres han sido planificados. Esto asegura que se respeten las dependencias entre las tareas a la hora de planificar.
 
-También, hay que tomar en cuenta cómo obtener tareas que estén listas para planificar. En el caso del algoritmo Miope, se evalua exhaustivamente la lista de tareas disponibles \texttt{readyTasks} (línea 4 de la figura \ref{code:myopic}) en busca de una tarea lista para planificar. El método \texttt{Utils.checkParents(task, schedTasks, workflow)} (línea 15 de la figura \ref{code:myopic}) devuelve \texttt{true} si la tarea \texttt{task} es una \emph{tarea lista} para planificar. Este método (figura \ref{code:utils_checkParents}) busca si todos los padres de una tarea dada se encuentran en la lista de tareas planificadas.
+También, hay que tomar en cuenta cómo obtener tareas que estén listas para planificar. En el caso del algoritmo Miope, se evalua exhaustivamente la lista de tareas disponibles \texttt{readyTasks} (línea 4 del código \ref{code:myopic}) en busca de una tarea lista para planificar. El método \texttt{Utils.checkParents(task, schedTasks, workflow)} (línea 15 del código \ref{code:myopic}) devuelve \texttt{true} si la tarea \texttt{task} es una \emph{tarea lista} para planificar. Este método (código \ref{code:utils_checkParents}) busca si todos los padres de una tarea dada se encuentran en la lista de tareas planificadas.
 
 \begin{lstlisting}[language=java,label={code:utils_checkParents},caption={Método que verifica si los padres de una tarea están planificados.},float]
 boolean checkParents(Task t, ArrayList<Task> sched, Workflow w) {
@@ -69,9 +86,9 @@ boolean checkParents(Task t, ArrayList<Task> sched, Workflow w) {
 }
 \end{lstlisting}
 
-Una vez que se obtiene la tarea lista para planificar, se busca el recurso al que se le asignará la tarea. Así, se mantiene una cola de prioridad \texttt{R} (línea 8 de la figura \ref{code:myopic}) de los recursos con el tiempo de disponibilidad más pronto. Como esta cola de prioridad es un montículo, sólo necesitamos consultar la raíz del montículo para saber cuál es el recurso con el menor tiempo de disponibilidad. 
+Una vez que se obtiene la tarea lista para planificar, se busca el recurso al que se le asignará la tarea. Así, se mantiene una cola de prioridad \texttt{R} (línea 8 del código \ref{code:myopic}) de los recursos con el tiempo de disponibilidad más pronto. Como esta cola de prioridad es un montículo, sólo necesitamos consultar la raíz del montículo para saber cuál es el recurso con el menor tiempo de disponibilidad. 
 
-Después, se hacen los cálculos (líneas 17-22 de la figura \ref{code:myopic}) del tiempo de ejecución y el tiempo de inicio de la tarea en el recurso elegido. Para el caso del del tiempo de inicio, en la línea 18 de la figura \ref{code:myopic} se hace una llamada al método \texttt{Utils.parentsReadyTime(task, scheduleList, workflow)}, el cual obtiene el instante de tiempo más pronto en el que todos los padres de una tarea han sido ejecutados. Este método, mostrado en la figura \ref{code:utils_parentsReadyTime}, busca en la lista de tareas planificadas si se encuentran los padres de la tarea dada y mantiene un registro del tiempo que tardan en ejecutarse estos padres.
+Después, se hacen los cálculos (líneas 17-22 del código \ref{code:myopic}) del tiempo de ejecución y el tiempo de inicio de la tarea en el recurso elegido. Para el caso del del tiempo de inicio, en la línea 18 del código \ref{code:myopic} se hace una llamada al método \texttt{Utils.parentsReadyTime(task, scheduleList, workflow)}, el cual obtiene el instante de tiempo más pronto en el que todos los padres de una tarea han sido ejecutados. Este método, mostrado en el código \ref{code:utils_parentsReadyTime}, busca en la lista de tareas planificadas si se encuentran los padres de la tarea dada y mantiene un registro del tiempo que tardan en ejecutarse estos padres.
 
 \begin{lstlisting}[language=java,label={code:utils_parentsReadyTime},caption={Método que calcula el tiempo mínimo en el que los padres de una tarea dada han sido ejecutados.},float]
 double parentsReadyTime(Task t, List<Schedule> partialSchedule, Workflow w) {
@@ -87,46 +104,50 @@ double parentsReadyTime(Task t, List<Schedule> partialSchedule, Workflow w) {
 }
 \end{lstlisting}
 
-Estos cálculos son utilizados para crear un objeto del tipo \texttt{Schedule} que representa la planificación de la tarea en el recurso. Más adelante, se vuelve a crear la cola de prioridad (línea 24 de la figura \ref{code:myopic}) para conocer en la siguiente iteración del algoritmo cuál es el recurso con el menor tiempo de disponibilidad. Por último, el algoritmo termina cuando ya no hay más tareas listas para planificar (i.e. cuando la lista \texttt{readyTasks} esté vacía).
+Estos cálculos son utilizados para crear un objeto del tipo \texttt{Schedule} que representa la planificación de la tarea en el recurso. Más adelante, se vuelve a crear la cola de prioridad (línea 24 del código \ref{code:myopic}) para conocer en la siguiente iteración del algoritmo cuál es el recurso con el menor tiempo de disponibilidad. Por último, el algoritmo termina cuando ya no hay más tareas listas para planificar (i.e. cuando la lista \texttt{readyTasks} esté vacía).
 
-\begin{lstlisting}[language=java,label={code:myopic},caption={Código del algoritmo Miope},float]
+\begin{lstlisting}[language=java,label={code:myopic},caption={Algoritmo Miope},float]
 List<Schedule> schedule(Workflow w, List<Resource> resourceList) {
   Utils.checkScheduleParams(w, resourceList);
   //lista de tareas no calendarizadas
-  ArrayList<Task> readyTasks = new ArrayList<Task>(w.getTasks());
   ArrayList<Task> schedTasks = new ArrayList<Task>();
-  ArrayList<Schedule> schedules = new ArrayList<Schedule>();
-  //heap para mantener a los recursos mas pronto disponibles
+  ArrayList<Task> allTasks = new ArrayList<Task>(w.getTasks());
+  ArrayList<Task> readyTasks = null;
+  ArrayList<Schedule> scheduleList = new ArrayList<Schedule>();
+  //necesito un heap para mantener a los recursos mas pronto disponibles
   PriorityQueue<Resource> R = new PriorityQueue<Resource>(resourceList.size(), EarliestStartTimeComparator.getComp());
   R.addAll(resourceList);
   Task t; Resource r;
-  while(!readyTasks.isEmpty()) {
+  while(!allTasks.isEmpty()) {
+    //puedes sacar subconjuntos de todas las tareas
+    readyTasks = new ArrayList<Task>();
+    for(Task tt: allTasks)
+      if(!schedTasks.contains(tt) && Utils.checkParents(tt, schedTasks, w))
+        readyTasks.add(tt);
     Iterator<Task> it = readyTasks.iterator();
-    if(it.hasNext()) {
-      t = it.next();
-      if(Utils.checkParents(t, schedTasks, w)) {
-        r = R.peek();
-        double d = t.getComplexityFactor() / r.getSpeedFactor();
-        double st = Math.max(r.getReadyTime(), Utils.parentsReadyTime(t, schedules, w));
-        Schedule s = new Schedule(t, r, d, st);
-        readyTasks.remove(t);
-        schedTasks.add(t);
-        r.addReadyTime(d);
-        //Actualizamos heap
-        R = new PriorityQueue<Resource>(resourceList.size(), EarliestStartTimeComparator.getComp());
-        R.addAll(resourceList);
-        schedules.add(s);
-      }
+    while(it.hasNext()) {
+      t = it.next(); r = R.peek();
+      double d = t.getComplexityFactor() / r.getSpeedFactor();
+      double st = Math.max(r.getReadyTime(), Utils.parentsReadyTime(t, scheduleList, w));
+      Schedule s = new Schedule(t, r, d, st);
+      allTasks.remove(t);
+      schedTasks.add(t);
+      r.setReadyTime(st);
+      r.addReadyTime(d);
+      //Update resource priority queue
+      R = new PriorityQueue<Resource>(resourceList.size(), EarliestStartTimeComparator.getComp());
+      R.addAll(resourceList);
+      scheduleList.add(s);
     }
   }
-  return schedules;
+  return scheduleList;
 }
 \end{lstlisting}
 
 \subsection{Algoritmo MaxMin y MinMin}
-Para los algoritmos MaxMin y MinMin se reutilizaron los métodos estáticos de la clase \texttt{Utils}: \texttt{parentsReadyTime()} y \texttt{checkParents()}, que fueron utilizados en el algoritmo Miope. Como se vio en la sección \ref{alg:def_maxmin} del apéndice, hay algunas definiciones que son comunes para ambos algoritmos. Estas definiciones están expresadas en código en la figura \ref{code:xmin_defs}.
+Para los algoritmos MaxMin y MinMin se reutilizaron los métodos estáticos de la clase \texttt{Utils}: \texttt{parentsReadyTime()} y \texttt{checkParents()}, que fueron utilizados en el algoritmo Miope. Como se vio en la sección \ref{alg:def_maxmin} del apéndice, hay algunas definiciones que son comunes para ambos algoritmos. Estas definiciones están expresadas en el código \ref{code:xmin_defs}.
 
-\begin{lstlisting}[language=java,label={code:xmin_defs},caption={Código de las definiciones comunes para MaxMin y MinMin.},float]
+\begin{lstlisting}[language=java,label={code:xmin_defs},caption={Definiciones comunes para MaxMin y MinMin.},float]
 import static java.lang.Math.max; 
 import static org.perez.workflow.scheduler.Utils.parentsReadyTime;
 
@@ -152,10 +173,10 @@ double ECT(Task t, Resource r, Workflow w, List<Schedule> partialSchedule) {
 }
 \end{lstlisting}
 
-Como los algoritmos MaxMin y MinMin son muy similares, se hizo un sólo método que encapsula el código en común entre ambos algoritmos. Este método se encuentra en la figura \ref{lst:xmin_main}. Además, con el parámetro \texttt{algorithm} de tipo \texttt{XMinAlgorithm}, se puede elegir el método ejecuta el algoritmo MaxMin o el algoritm MinMin. Este método prepara la lista de tareas listas (líneas 10-13), luego obtiene las planificaciones de las tareas lístas (línea 15). Después, actualiza la lista de tareas planificadas (\texttt{schedTasks}) y la lista global \texttt{allTasks}. Nuevamente, el algoritmo termina cuando la lista global está vacía.
+Como los algoritmos MaxMin y MinMin son muy similares, se hizo un sólo método que encapsula el código en común entre ambos algoritmos. Este método se encuentra en el código \ref{lst:xmin_main}. Además, con el parámetro \texttt{alg} de tipo \texttt{XMinAlgorithm}, se puede elegir el método ejecuta el algoritmo MaxMin o el algoritm MinMin. Este método prepara la lista de tareas listas (líneas 10-13), luego obtiene las planificaciones de las tareas listas (línea 15). Después, actualiza la lista de tareas planificadas (\texttt{schedTasks}) y la lista global \texttt{allTasks}. Nuevamente, el algoritmo termina cuando la lista global está vacía.
 
-\begin{lstlisting}[language=java,label={lst:xmin_main},caption={Método principal en Java para los algoritmos MaxMin y MinMin.},float]
-List<Schedule> schedule(Workflow w, List<Resource> resourceList, XMinAlgorithm algorithm) {
+\begin{lstlisting}[language=java,label={lst:xmin_main},caption={Método principal para los algoritmos MaxMin y MinMin.},float]
+List<Schedule> schedule(Workflow w, List<Resource> resourceList, XMinAlgorithm alg) {
   Utils.checkScheduleParams(w, resourceList); //validacion de argumentos
 
   ArrayList<Task> schedTasks = new ArrayList<Task>();
@@ -169,7 +190,7 @@ List<Schedule> schedule(Workflow w, List<Resource> resourceList, XMinAlgorithm a
       if(!schedTasks.contains(t) && Utils.checkParents(t, schedTasks, w))
         readyTasks.add(t);
     //obtiene la planificacion de tareas listas
-    scheduleList = scheduleXMin(w, resourceList, readyTasks, scheduleList, algorithm);
+    scheduleList = scheduleXMin(w, resourceList, readyTasks, scheduleList, alg);
     for(Schedule s: scheduleList) { //actualiza allTasks y schedTasks
       Task t = s.getTask();
       if(!schedTasks.contains(t))
@@ -183,7 +204,7 @@ List<Schedule> schedule(Workflow w, List<Resource> resourceList, XMinAlgorithm a
 }
 \end{lstlisting}
 
-Luego, en los códigos \ref{code:xmin_detail_1}, \ref{code:xmin_detail_2} y \ref{code:xmin_detail_3} se encuentra método \texttt{scheduleXMin()} que planifica las tareas listas. En el primer código (\ref{code:xmin_detail_1}) se puede notar los ciclos \texttt{for} que calculan el tiempo estimado de terminación --$ECT(t,r)$-- para cada tarea lista y para cada recurso (líneas 10-19), manteniendo aquél recurso $r$ que minimice $ECT(t,r)$ para cada tarea $t$ (líneas 15-17 y 20-21).
+Luego, en los códigos \ref{code:xmin_detail_1}, \ref{code:xmin_detail_2} y \ref{code:xmin_detail_3} se encuentra método \texttt{scheduleXMin()} que planifica las tareas listas. En el primer código (\ref{code:xmin_detail_1}) se puede notar los ciclos \texttt{for} que calculan el tiempo estimado de terminación --$ECT(t,r)$-- para cada tarea lista y para cada recurso (líneas 10-19), manteniendo aquel recurso $r$ que minimice $ECT(t,r)$ para cada tarea $t$ (líneas 15-17 y 20-21).
 
 \begin{lstlisting}[language=java,label={code:xmin_detail_1},caption={Método de MaxMin/MinMin que planifica las tareas (parte 1)},float]
 List<Schedule> scheduleXMin(Workflow w, List<Resource> resourceList, 
@@ -208,7 +229,7 @@ List<Schedule> scheduleXMin(Workflow w, List<Resource> resourceList,
       MCT[i_t] = min_mct;
       R_t_idx[i_t] = min_mct_r_idx;
     }
-    //continua en la siguiente figura...
+    //continua en el siguiente codigo...
 \end{lstlisting}
 
 En el código \ref{code:xmin_detail_2} se encuentra la sentencia \texttt{switch} que decide si se ejecuta el código que es correspondiente al algoritmo MaxMin o al algoritmo MinMin. Como se ha mencionado anteriormente, el algoritmo MaxMin busca aquella tarea $t$ que tenga el máximo $ECT(t,r_{min}(t))$ ejecutada en el recurso $r_{min}(t)$ que minimice el tiempo de ejecución de la tarea $t$ (líneas 4-10). Por otro lado, el algoritmo MinMin busca aquella tarea $t$ que tenga el mínimo $ECT(t,r_{min}(t))$ (líneas 13-19).
@@ -235,7 +256,7 @@ En el código \ref{code:xmin_detail_2} se encuentra la sentencia \texttt{switch}
         }
       break;
     }
-    //continua en la siguiente figura...
+    //continua en el siguiente codigo...
 \end{lstlisting}
 
 Por último, en el código \ref{code:xmin_detail_3} se hacen los mismos cálculos de tiempo de inicio y duración de la tarea y el recurso a asignar, elegidos en el código \ref{code:xmin_detail_2}. También, se actualizan la lista de planificaciones (\texttt{partialSched}, línea 8) y la lista de tareas a planificar (\texttt{availTasks}, línea 10).
@@ -252,6 +273,7 @@ Por último, en el código \ref{code:xmin_detail_3} se hacen los mismos cálculo
     //remote T from availTasks
     availTasks.remove(t);
     //update EAT(R_t)
+    r.setReadyTime( startTime );
     r.addReadyTime( duration );
   } //del while de la parte 1
 

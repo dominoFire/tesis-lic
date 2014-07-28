@@ -7,18 +7,22 @@
 %stocastic based approach no son estudiados, pero debería verlos
 %taboo search
 
-En este trabajo hemos revisado el problema de planificar flujos de trabajo. Primero se describió el concepto de flujo de trabajo, ilustrándolo con algunos ejemplos de aplicación. También vimos que la descripción de las tareas y las dependencias entre ellas juegan un papel muy importante a la hora de planear y administrar los recursos asigados a cada tarea del flujo de trabajo.
-
-Además, se mostró que los flujos de trabajo son ejecutados en sistemas de cómputo distribuido, los cuales se clasificaron en clusters, grids y nubes. Cabe aclarar que esta clasificación está basada en la forma en que los recursos están distribuidos.
+En este trabajo hemos revisado el problema de planificar flujos de trabajo. Primero se describió el concepto de flujo de trabajo, ilustrándolo con algunos ejemplos de aplicación. También vimos que la descripción de las tareas y las dependencias entre ellas juegan un papel muy importante a la hora de planear y administrar los recursos asigados a cada tarea del flujo de trabajo. Además, se mostró que los flujos de trabajo son ejecutados en sistemas de cómputo distribuido, los cuales se clasificaron en clusters, grids y nubes. Cabe aclarar que esta clasificación está basada en la forma en que los recursos están distribuidos.
 %, de acuerdo a la forma en trabajan para un objetivo común
 
 Después se estudió la complejidad de planificar flujos de trabajo, comparando este problema con otro problema de planificación más general, orientado a ciencias en computación. Como este problema es NP-completo, se han propuesto varias soluciones heurísticas y metaheurísticas que resuelven el problema bajo ciertas circunstancias.
 
-También, con el objetivo de comprender las diferentes heurísticas propuestas para planificar flujos de trabajo, se utilizó un modelo propuesto en el trabajo elaborado por Wieckzorek et al. para describir de la forma más general posible un flujo de trabajo.
-
-Con el modelo establecido, se realizó una clasificación de los algoritmos de planificación, la cual está basada en el trabajo de Yu et al.; la aportación de este trabajo fue dar otro punto de vista sobre la forma de clasificar las metaheurísticas, ya que éstas, dependiendo de cómo son programadas, pueden hacer optimizaciones que minimicen algún costo (es decir, hacen el mejor esfuerzo por otimizar el costo) o buscar soluciones que cumplan con restricciones (en otras palabras, mantienen la calidad en el servicio).
+También, con el objetivo de comprender las diferentes heurísticas propuestas para planificar flujos de trabajo, se utilizó un modelo propuesto en el trabajo elaborado por Wieckzorek et al. para describir de la forma más general posible un flujo de trabajo. Con el modelo establecido, se realizó una clasificación de los algoritmos de planificación, la cual está basada en el trabajo de Yu et al.
 
 Finalmente, se describieron algunos sistemas de administración de flujos de trabajo y los algoritmos de planificación que utilizan estos sistemas, clasificándolos de acuerdo a la orientación que tienen los algoritmos para planificar, en otras palabras, si la planificación está pensada para utilizarse en clusters, grids o nubes. Como se puede notar, en estos sistemas puede verse claramente la unión de las dos teorías sobre enfoques de cómputo distribuido y algoritmos de planificación.
+
+\section{Contribuciones}
+Las principales contribuciones de esta tesis fueron las siguientes:
+\begin{enumerate}
+\item Dar otro punto de vista sobre la forma de clasificar las metaheurísticas, ya que éstas, dependiendo de cómo son programadas, pueden hacer optimizaciones que minimicen algún costo (es decir, hacen el mejor esfuerzo por otimizar el costo) o buscar soluciones que cumplan con restricciones (en otras palabras, mantienen la calidad en el servicio).
+\item La implementación de un simulador de ejecución de flujos de trabajo que utiliza los algoritmos MaxMin, MinMin y Miope. Este simulador puede servir como plataforma para estudiar otros algoritmos de planificación porque, debido a que es un proyecto inicial, tiene una jerarquía de clases simple con la cual se puede comenzar a trabajar rápidamente. Además, el código está disponible en internet en forma de software líbre.
+\item Un estudio con flujos de trabajo generados aleatoriamente en el cual se muestra que, en promedio, los algoritmos MaxMin y MinMin obtienen planificaciones con menores tiempos totales de ejecución, comparados con el algoritmo Miope. Cabe aclarar que estos algoritmos son heurísticas diseñadas para casos específicos, por lo que pueden existir situaciones en las que incluso el algoritmo Miope obtenga mejores planificaciones que los otros dos algoritmos implementados en el simulador.
+\end{enumerate}
 
 \section{Retos}
 La planificación es una pieza clave para ejecutar flujos de trabajo en entornos distribuidos. Sin embargo, existen otras cuestiones que deben ser tomadas en cuenta para utilizar estos algoritmos en un sistema real. La primera de ellas es la tolerancia a fallos. Su importancia radica en que en presencia de fallas se puede replanificar el flujo o tratar de recuperar los resultados o el recurso fallido. Sin duda, este es un tema de investigación muy activo en el área de sistemas distribuidos. Otro aspecto a tomar en cuenta es la seguridad, dado que estos sistemas pueden procesar información sensible. Además, el monitoreo de estos sistemas es otro tema a tratar, ya que la complejidad de los sistemas distribuidos y la cantidad de tareas que coordinan los sistemas de administración de flujos de trabajo presentan una complejidad exhorbitante.

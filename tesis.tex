@@ -1,7 +1,7 @@
 \documentclass[oneside]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
-\usepackage{cite,url,graphicx,amsmath,amssymb,enumitem,amsthm,appendix,authblk}
+\usepackage{cite,url,graphicx,epsfig,amsmath,amssymb,enumitem,amsthm,appendix,authblk}
 \usepackage[hidelinks,bookmarks=true]{hyperref}
 \usepackage[paperwidth=17cm,paperheight=22.5cm,margin=2cm]{geometry} %dimensiones oficiales
 
@@ -13,7 +13,7 @@
 \usepackage{color} %colores para el codigo
 \definecolor{mygreen}{rgb}{0,0.6,0}
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
-\definecolor{mymauve}{rgb}{0.58,0,0.82}
+\definecolor{mymauve}{rgb}{0.58,0,0.82} 
 
 \usepackage{listings}
 \usepackage{courier} %para poner codigo en monospace
@@ -50,6 +50,7 @@
 \include{ack}
 \tableofcontents
 \listoffigures
+\lstlistoflistings
 
 \mainmatter
 \include{chap01-intro}
@@ -59,7 +60,8 @@
 \include{chap05-scheduling_algorithms}
 \include{chap06-workflow_mgmt_software}
 \include{chap07-implementation}
-\include{chap08-conclusions}
+\include{chap08-results}
+\include{chap09-conclusions}
 
 \appendix
 \include{app}
