@@ -3,11 +3,11 @@
 %\epsfig{file=imagenes/MaxMin0.eps, angle=-90, width=0.8\textwidth}
 %\epsfig{file=fish01.ps, height=4cm, angle=-90} 
 
-Con el simulador de ejecución de flujos de trabajo visto en el capítulo anterior, es necesario proponer un estudio con el objetivo de verificar la correcta funcionalidad del simulador y también con el objetivo de comparar los algoritmos de planificación implementados del simulador. A continuación, se discutirá sobre el diseño del experimento y se darán detalles sobre los resultados de la planificación de un flujo de trabajo en particular.
+Con el simulador de ejecución de flujos de trabajo descrito en el capítulo anterior, es necesario proponer un estudio con el objetivo de verificar la correcta funcionalidad del simulador y también con el objetivo de comparar los algoritmos de planificación implementados del simulador. A continuación, se discutirá el diseño del experimento y se darán detalles sobre los resultados de la planificación de un flujo de trabajo en particular.
 
 \section{Diseño del experimento}
 
-Para probar los algoritmos, se hicieron varias pruebas con diferentes flujos de trabajo. En total, los tres algoritmos fueron ejecutados para planificar 50 flujos de trabajo generados aleatoriamente. Cada flujo de trabajo generado consta de 10 tareas y 12 dependencias entre tareas, las cuales se eligieron aleatoriamente y siempre verificando que cada dependencia no alterara la propiedad de que el flujo de trabajo sea un grafo dirigido acíclico. Los algoritmos fueron planificados en 3 recursos cuyos factores de velocidad se encuentran en la tabla \ref{table:resources}.
+Para probar los algoritmos Miope, MaxMin y MinMin, implementados en el simulador, se hicieron varias pruebas con diferentes flujos de trabajo. En total, los tres algoritmos fueron ejecutados para planificar 50 flujos de trabajo generados aleatoriamente. Cada flujo de trabajo generado consta de 10 tareas y 12 dependencias entre tareas, las cuales se eligieron aleatoriamente y siempre verificando que cada dependencia no alterara la propiedad de que el flujo de trabajo sea un grafo dirigido acíclico. Los algoritmos fueron planificados en 3 recursos cuyos factores de velocidad se encuentran en la tabla \ref{table:resources}.
 
 \begin{table}
 \begin{center}
@@ -37,9 +37,7 @@ En cada ejecución de cada algoritmo con cada flujo de trabajo se midió el tiem
 \caption{Tiempos totales promedios de ejecución de cada algoritmo.}
 \end{figure}
 
-En la gráfica de la figura \ref{fig:tiempos_promedios} se puede apreciar que el algoritmo Miope tiene el mayor tiempo total promedio de ejecución. Luego, el algoritmo MaxMin y el algoritmo MinMin tienen los tiempos de ejecución menores que algoritmo Miope, siendo el algoritmo MinMin con el menor tiempo total promedio de planificación.
-
-Sin embargo, las barras de error dan la idea de que hay una gran variabilidad en los resultados, lo cual podría indicar que existan algunos casos en los que el algoritmo Miope podría menores tiempos totales de planificación. Este hecho es aún más notorio para los algoritmos MaxMin y MinMin. Esto es más notorio en la gráfica de la figura \ref{fig:tiempos_totales}, donde se puede ver, por ejemplo, que en el flujo de trabajo núm. 20, el algoritmo Miope tiene un menor tiempo de planificación que el algoritmo MaxMin.
+En la gráfica de la figura \ref{fig:tiempos_promedios} se puede apreciar que el algoritmo Miope tiene el mayor tiempo total promedio de ejecución. Luego, el algoritmo MaxMin y el algoritmo MinMin tienen los tiempos de ejecución menores que el algoritmo Miope, siendo el algoritmo MinMin con el menor tiempo total promedio de planificación.
 
 \begin{figure}
 \begin{center}
@@ -48,6 +46,8 @@ Sin embargo, las barras de error dan la idea de que hay una gran variabilidad en
 \label{fig:tiempos_totales}
 \caption{Tiempos totales de ejecución de cada algoritmo en cada flujo de trabajo aleatorio.}
 \end{figure}
+
+Sin embargo, las barras de error sugieren que hay una gran variabilidad en los resultados, lo cual podría indicar que existieron algunos casos en los que el algoritmo Miope pudo obtener menores tiempos totales de planificación. Este hecho es aún más notorio para los algoritmos MaxMin y MinMin. Esto se refleja en la gráfica de la figura \ref{fig:tiempos_totales}, donde se puede ver, por ejemplo, que en el flujo de trabajo núm. 7, el algoritmo Miope tiene un menor tiempo de planificación que el algoritmo MaxMin.
 
 \section{Análsis del flujo de trabajo número 7}
 Para saber por qué ocurre el fenómeno descrito en el párrafo anterior, se estudiarán a detalle las planificaciones que produce cada algoritmo y la estructura del flujo de trabajo número 7. En la figura \ref{fig:workflow6} se puede ver este flujo de trabajo. Los nodos cuyo color es azul fuerte tienen un factor de complejidad más alto que los nodos con color azul claro.
@@ -60,13 +60,13 @@ Para saber por qué ocurre el fenómeno descrito en el párrafo anterior, se est
 \caption{Flujo de trabajo número 7, generado aleatoriamente}
 \end{figure}
 
-Ahora, en la figura \ref{fig:schedules6} están representadas las planificaciones que dan como salida los algoritmos Miope, MaxMin y MinMin, respectivamente. En el eje vertical están los recursos que se ocupan en el flujo de trabjo. En el eje horizontal indica el tiempo y los cuadros de color representan la duración de las tareas en cada recurso. Cabe aclarar que los tiempos totales de ejecución de las planificaciones de los algoritmos Miope, MaxMin y MinMin fueron 4.063928  4.471435 y 4.569478, respectivamente.
+Ahora, en la figura \ref{fig:schedules6} están representadas las planificaciones que dan como salida los algoritmos Miope, MaxMin y MinMin, respectivamente. En el eje vertical están los recursos que se ocupan en el flujo de trabajo. En el eje horizontal se indica el tiempo y los cuadros de color representan la duración de las tareas en cada recurso. Cabe aclarar que los tiempos totales de ejecución de las planificaciones de los algoritmos Miope, MaxMin y MinMin fueron 4.063928, 4.471435 y 4.569478, respectivamente.
 
 \begin{figure}
 \begin{center}
-  \includegraphics[width=0.3\textwidth]{imagenes/Myopic6.pdf}
-  \includegraphics[width=0.3\textwidth]{imagenes/MaxMin6.pdf}
-  \includegraphics[width=0.3\textwidth]{imagenes/MinMin6.pdf}
+  \includegraphics[width=0.7\textwidth]{imagenes/Myopic6.pdf}
+  \includegraphics[width=0.7\textwidth]{imagenes/MaxMin6.pdf}
+  \includegraphics[width=0.7\textwidth]{imagenes/MinMin6.pdf}
 \end{center}
 \label{fig:schedules6}
 \caption{Planificaciones de cada uno de los algoritmos para el flujo de trabajo número 7.}
