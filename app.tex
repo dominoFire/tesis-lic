@@ -3,7 +3,7 @@
 \section{Algoritmos de mejor esfuerzo}
 
 \subsection{Miope}
-El algoritmo miope \cite{yu2008workflow} es el más simple de todos los algoritmos. Lo único que hace es buscar un recurso disponible que pueda ejecutar la tarea y asignarle dicha tarea. No toma en cuenta otra característica a optimizar. Este algoritmo fue propuesto por Ramamritham et al. \cite{ramamritham1990efficient}. 
+El algoritmo Miope \cite{yu2008workflow} es el más simple de todos los algoritmos. Lo único que hace es buscar un recurso disponible que pueda ejecutar la tarea y asignarle dicha tarea. No toma en cuenta otra característica a optimizar. Este algoritmo fue propuesto por Ramamritham et al. \cite{ramamritham1990efficient}. 
 %El algoritmo peresentado en estre trabajo se encuentra en la sección \ref{alg:myopic} del Apéndice.
 
 \label{alg:myopic}
@@ -17,9 +17,9 @@ El algoritmo miope \cite{yu2008workflow} es el más simple de todos los algoritm
 \EndWhile
 \end{algorithmic}
 
-\subsection{Definiciones para los algoritmos Max-Min y Min-min}
+\subsection{Definiciones para los algoritmos MaxMin y MinMin}
 \label{alg:def_maxmin}
-Los algoritmos min-min y max-min utilizan las siguientes  estimaciones: %definidas en la tabla \ref{tbl:min-min-estimators}. %todo: checar por qué numera RARO
+Los algoritmos MinMin y MaxMin utilizan las siguientes estimaciones: %definidas en la tabla \ref{tbl:min-min-estimators}. %todo: checar por qué numera RARO
 \begin{itemize}
 \item{$EET(t,r)$ -- \textbf{Tiempo estimado de ejecución:} Tiempo que el recurso (servicio) $r$ tomará en ejecutar la tarea $t$, desde que la tarea es ejecutada en el recurso}
 \item{$EAT(t,r)$ -- \textbf{Tiempo estimado de disponibilidad:} Tiempo en el que el recurso $r$ estará disponible para ejecutar la tarea $t$}
@@ -30,8 +30,8 @@ Los algoritmos min-min y max-min utilizan las siguientes  estimaciones: %definid
             \[ MCT(t) = \min_{r \in \mathcal{S}} ECT(t,r) \]}
 \end{itemize}
 
-\subsection{Min-Min}
-El algoritmo min-min está basado en la heurística de terminar las tareas más cortas en el menor tiempo posible. Para ello, hace una estimación del tiempo de ejecución tomando en cuenta el tiempo de preparación de las tareas en los servicios --o recursos-- para tener el tiempo y los archivos necesarios disponibles para el recurso en cuestión. El algoritmo fue propuesto por Maheswaran et al. \cite{maheswaran1999dynamic}. 
+\subsection{MinMin}
+El algoritmo MinMin está basado en la heurística de terminar las tareas más cortas en el menor tiempo posible. Para ello, hace una estimación del tiempo de ejecución tomando en cuenta el tiempo de preparación de las tareas en los servicios --o recursos-- para tener el tiempo y los archivos necesarios disponibles para el recurso en cuestión. El algoritmo fue propuesto por Maheswaran et al. \cite{maheswaran1999dynamic}. 
 %El pseudocódigo está descrito en el listado \ref{alg:min-min}.
 
 \label{alg:min-min}
@@ -59,8 +59,8 @@ El algoritmo min-min está basado en la heurística de terminar las tareas más 
 \EndProcedure
 \end{algorithmic}
 
-\subsection{Max-Min}
-El algoritmo max-min --también propuesto Maheswaran et al. \cite{maheswaran1999dynamic}-- es muy similar al algoritmo min-min. La diferencia radica en que éste calendariza tareas cuyo tiempo mínimo de ejecución es el mayor, de tal modo que se ejecutan las tares más \emph{largas}.
+\subsection{MaxMin}
+El algoritmo MaxMin --también propuesto Maheswaran et al. \cite{maheswaran1999dynamic}-- es muy similar al algoritmo min-min. La diferencia radica en que éste calendariza tareas cuyo tiempo mínimo de ejecución es el mayor, de tal modo que se ejecutan las tares más \emph{largas}.
 
 El único cambio que se necesita hacer al algoritmo \ref{alg:min-min} es cambiar la línea 14:
 \[T \leftarrow \arg\min_{t \in \emph{availTasks}}ECT(t,r);\]
@@ -150,7 +150,7 @@ Sea $time(e_{ij}, r_i, r_j)$ el tiempo de transferencia de datos entre los recur
 \overline{c_{ij}} = \frac{ \sum_{r_i \in R_i, r_j \in R_j} {time(e_{ij}, r_i, r_j)} }{|R_i| |R_j|}
 \end{equation}
 
-Cabe recordar que en la primera fase del algoritmo HEFT, las tareas son ordenads de acuerdo a una función de rango. Esta función está definida por partes. Para una tarea de salida $T$, es decir, una tarea que no tiene sucesores que dependan de ella, el valor de rango es determinado por:
+Cabe recordar que en la primera fase del algoritmo HEFT, las tareas son ordenadas de acuerdo a una función de rango. Esta función está definida por partes. Para una tarea de salida $T$, es decir, una tarea que no tiene sucesores que dependan de ella, el valor de rango es determinado por:
 \begin{equation}
 \label{ecc:heft3}
 Rango(T) = \overline{\omega_i}
@@ -183,7 +183,7 @@ donde $succ(T_i)$ es el conjunto de los sucesores inmediatos de la tarea $T_i$.
 \end{algorithmic}
 
 \subsection{Híbrido}
-Este algoritmo combina dos heurístas: primero agrupa las tareas que tengan dependencias entre sí, de tal modo que haya un balance entre el número de grupos y el número de recursos disponibles para la ejecución de las tareas agrupadas. Luego, con los grupos listos, se utiliza un algoritmo de planificación batch para asignar a cada grupo un recurso. Este algoritmo/heurística fue propuesto por Sakellariou et al \cite{sakellariou2004hybrid}. El algoritmo híbrido utiliza las definiciones de tiempos promedio y función de rango del algoritmo HEFT.
+Este algoritmo combina dos heurísticas: primero agrupa las tareas que tengan dependencias entre sí, de tal modo que haya un balance entre el número de grupos y el número de recursos disponibles para la ejecución de las tareas agrupadas. Luego, con los grupos listos, se utiliza un algoritmo de planificación batch para asignar a cada grupo un recurso. Este algoritmo/heurística fue propuesto por Sakellariou et al \cite{sakellariou2004hybrid}. El algoritmo híbrido utiliza las definiciones de tiempos promedio y función de rango del algoritmo HEFT.
 
 \label{alg:hybrid}
 \begin{algorithmic}[1]
@@ -211,7 +211,7 @@ Este algoritmo combina dos heurístas: primero agrupa las tareas que tengan depe
 
 \subsection{TANH}
 \label{alg:tanh}
-Bajaj et al. \cite{bajaj2004improving} proponen un algoritmo basado en dos heurísticas: en la duplicación de tareas y en el agrupamiento de tareas. La primera heurística se basa en que si dos tareas dependen del resultado de una tarea en común y, estas dos tareas se encuentran en recursos diferentes y con un tiempo muerto previo a la ejecución de estas tareas, entonces, se ejecuta de forma rendundante la tarea común en los dos recursos diferentes, para que las dos tareas puedan continuar su ejecución de manera independiente y no exista un costo de comunicación de datos entre estos dos recursos. La segunda heurística se refiere a que las tareas con dependencias entre sí se deben ejecutar en los mismos recursos, para que los costos de comunicación de datos sean despreciables.
+Bajaj et al. \cite{bajaj2004improving} proponen un algoritmo basado en dos heurísticas: en la duplicación de tareas y en el agrupamiento de tareas. La primera heurística se basa en que si dos tareas dependen del resultado de una tarea en común y, estas dos tareas se encuentran en recursos diferentes y con un tiempo muerto previo a la ejecución de estas tareas, entonces, se ejecuta de forma redundante la tarea común en los dos recursos diferentes, para que las dos tareas puedan continuar su ejecución de manera independiente y no exista un costo de comunicación de datos entre estos dos recursos. La segunda heurística se refiere a que las tareas con dependencias entre sí se deben ejecutar en los mismos recursos, para que los costos de comunicación de datos sean despreciables.
 
 \begin{algorithmic}[1]
 \Require{Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$}

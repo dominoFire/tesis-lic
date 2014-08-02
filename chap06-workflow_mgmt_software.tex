@@ -1,6 +1,6 @@
 \chapter[Software para flujos de trabajo]{Software para la administración y ejecución de flujos de trabajo}
 
-En el capitulo anterior se extendió la clasificación de algoritmos de planificación elaborada por Yu et al. \cite{yu2008workflow}. Sin duda, estos algoritmos han sido probados en simulaciones e implementados en sistemas que administran la ejecucion de los flujos de trabajo. De acuerdo a Yu el al. \cite{yu2008workflow}, un sistema de administración de flujos de trabajo\footnote{En la literatura académica, estos sistemas son conocidos como \emph{workflow management sofware systems}} se encarga de definir, coordinar y ejecutar los flujos de trabajo en los recursos de cómputo.
+En el capítulo anterior se extendió la clasificación de algoritmos de planificación elaborada por Yu et al. \cite{yu2008workflow}. Sin duda, estos algoritmos han sido probados en simulaciones e implementados en sistemas que administran la ejecución de los flujos de trabajo. De acuerdo a Yu el al. \cite{yu2008workflow}, un sistema de administración de flujos de trabajo\footnote{En la literatura académica, estos sistemas son conocidos como \emph{workflow management sofware systems}} se encarga de definir, coordinar y ejecutar los flujos de trabajo en los recursos de cómputo.
 
 Para este trabajo, clasificaremos los sistemas de administración de flujos de trabajo de acuerdo a su enfoque de cómputo, enumerando las siguientes características: año de aparición, proyecto, utilización, autores y los algoritmos de planificación utilizados en estos sistemas.
 
@@ -12,9 +12,9 @@ Para este trabajo, clasificaremos los sistemas de administración de flujos de t
 \subsection{HTCondor}
 %URL: \url{http://research.cs.wisc.edu/htcondor/}
 
-HTCondor \cite{condor-practice} es un sistema para administrar flujos de trabajo que necesitan ser ejecutados en entornos de cómputo distribuido. Desde 1983 \cite{htcondor2014webpage}, HTCondor es desarrollado y mantenido por la Universidad de Wisconsin en Madison. Éste tiene un modulo llamado DAGman que se encarga de planificar tareas de un flujo de trabajo, expresadas como grafos dirigidos acíclicos. El algoritmo de planificación utilizado por DAGMan es el algoritmo miope. 
+HTCondor \cite{condor-practice} es un sistema para administrar flujos de trabajo que necesitan ser ejecutados en entornos de cómputo distribuido. Desde 1983 \cite{htcondor2014webpage}, HTCondor es desarrollado y mantenido por la Universidad de Wisconsin en Madison. Éste tiene un módulo llamado DAGman que se encarga de planificar tareas de un flujo de trabajo, expresadas como grafos dirigidos acíclicos. El algoritmo de planificación utilizado por DAGMan es el algoritmo Miope. 
 
-HTCondor presenta al usuario un único recurso de cómputo, formado de varias computadoras interconectadas entre si. Esta es la razón por la que este sistema de administración de flujos de trabajo cae dentro de la clasificación de software orientado a clusters.
+HTCondor presenta al usuario un único recurso de cómputo, formado de varias computadoras interconectadas entre sí. Esta es la razón por la que este sistema de administración de flujos de trabajo cae dentro de la clasificación de software orientado a clusters.
 
 \section{Software orientado a grids}
 
@@ -23,7 +23,7 @@ HTCondor presenta al usuario un único recurso de cómputo, formado de varias co
 
 %URL: \url{http://link.springer.com/chapter/10.1007%2F978-1-4614-1933-4_5}
 
-SwinDew-G \cite{yang2007peer} es un sistema de administración de flujos de trabajo cuya característica especial es que trabaja con redes de computadoras P2P. En la primera version de SwinDew, el proceso de planificación es estático \cite{yang2007peer}, i.e., en la fase de preparación de la ejecución se crea el plan de ejecución del flujo y se aplica sin ninguna modificación a lo largo del tiempo. Varios esfuerzos se han hecho para mejorar el mecanismo de planificación, como el algoritmo CTC \cite{liu2010compromised} diseñado especialmente para flujos de trabajo que son intensivos en instancias pero que contienen pocas tareas simples, como los flujos de trabajo utilizados en los bancos y empresas \cite{liu2011novel}.
+SwinDew-G \cite{yang2007peer} es un sistema de administración de flujos de trabajo cuya característica especial es que trabaja con redes de computadoras P2P. En la primera versión de SwinDew, el proceso de planificación es estático \cite{yang2007peer}, i.e., en la fase de preparación de la ejecución se crea el plan de ejecución del flujo y se aplica sin ninguna modificación a lo largo del tiempo. Varios esfuerzos se han hecho para mejorar el mecanismo de planificación, como el algoritmo CTC \cite{liu2010compromised} diseñado especialmente para flujos de trabajo que son intensivos en instancias pero que contienen pocas tareas simples, como los flujos de trabajo utilizados en los bancos y empresas \cite{liu2011novel}.
 
 %También, existen versiones específicas de SwinDew para nubes. En este caso, citamos la versión para grids llamada SwinDew-G. La primera versión de SwinDew-G aparece en publicaciones aceptadas en el 2006.
 Finalmente, SwinDew y sus variantes fueron desarrollados en la Universidad de Swinburne, en Australia.
@@ -31,7 +31,7 @@ Finalmente, SwinDew y sus variantes fueron desarrollados en la Universidad de Sw
 \subsection{Pegasus}
 %URL: \url{https://pegasus.isi.edu/}
 
-Pegasus \cite{deelman2005pegasus} fue desarrollado en la Universidad del Sur de California. Al igual que SwinDew-G, se puede utilizar Pegasus para trabajar con grids y con nubes. Pegassus implementa max-min, min-min y Sufragio como algoritmos de planificación. Las principales aplicaciones de Pegasus son los flujos de trabajo científicos. Los primeros trabajos publicados que reportan el uso de Pegasus datan del 2003 \cite{pegasus2014publications}. Dentro de la arquitectura de Pegasus, el módulo encargado de planificar el flujo de trabajo es el Mapper.
+Pegasus \cite{deelman2005pegasus} fue desarrollado en la Universidad del Sur de California. Al igual que SwinDew-G, se puede utilizar Pegasus para trabajar con grids y con nubes. Pegassus implementa MaxMin, MinMin y Sufragio como algoritmos de planificación. Las principales aplicaciones de Pegasus son los flujos de trabajo científicos. Los primeros trabajos publicados que reportan el uso de Pegasus datan del 2003 \cite{pegasus2014publications}. Dentro de la arquitectura de Pegasus, el módulo encargado de planificar el flujo de trabajo es el Mapper.
 
 \section{Software orientado a nubes}
 
@@ -57,6 +57,6 @@ Es importante mencionar que la plataforma Aneka fue desarrollada inicialmente po
 
 Askalon \cite{fahringer2005askalon} es un entorno que facilita el desarrollo y la ejecución de flujos de trabajo. Askalon utiliza un lenguaje llamado AGWL para especificar flujos de trabajo. Al igual que Aneka, el diseño de Askalon está basado en servicios, tales como: el motor de promulgación, el administrador de recursos, la base de datos de checkpoints y el planificador.
 
-En el servicio planificador, Askalon utiliza varios algoritmos de planificación: HEFT, miope y un algoritmo genético. Esto es porque antes de ejecutar el flujo de trabajo, se hace una predicción del tiempo estimado de ejecución de cada tarea. Entonces, hay un módulo encargado de actualizar la información de las predicciones y, en base al resultado de los tres algoritmos, se elige la planificación que mejor cumpla con los requisitos de calidad en el servicio dictados por el usuario.
+En el servicio planificador, Askalon utiliza varios algoritmos de planificación: HEFT, Miope y un algoritmo genético. Esto es porque antes de ejecutar el flujo de trabajo, se hace una predicción del tiempo estimado de ejecución de cada tarea. Entonces, hay un módulo encargado de actualizar la información de las predicciones y, en base al resultado de los tres algoritmos, se elige la planificación que mejor cumpla con los requisitos de calidad en el servicio dictados por el usuario.
 
 Actualmente, el proyecto Askalon es desarrollado por la Universidad de Innsbruck, en Austria \cite{askalon2014webpage}.

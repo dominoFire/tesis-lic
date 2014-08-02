@@ -39,18 +39,18 @@ Para plantear el problema de la planificación de flujos de trabajo, primero se 
 En el trabajo de Mair et al. \cite{mair2007workflow} se propone un formato para una representación intermedia de flujos de trabajo basada en grafos dirigidos acíclicos, con el fin de transformar una especificación detallada de un flujo de trabajo, escrita en un lenguaje basado en XML llamado AGWL, a esta representación intermedia. Como se vio en el capítulo \ref{chap:workflows}, un flujo de trabajo puede ser interpretado desde varias perspectivas. Sin embargo, un grafo dirigido acíclico resume en pocos elementos (nodos y aristas), las tareas y las dependencias que deben ser cumplidas durante la planificación. Es por esta razón que es deseable reducir un flujo de trabajo, interpretado desde cualquier perspectiva, a un grafo dirigido acíclico.
 
 %reflejada en las distintas formas de representación que los sistemas de administración de flujos de trabajo utilizan para operar
-Cabe aclarar que, como se vio en el primer capítulo de este trabajo, aún no existe un conseso sobre qué representa un flujo de trabajo \cite{van2003workflow}, debido a las diferentes perpectivas de interpretación de un flujo. En el caso del lenguaje AGWL, éste cuenta con facilidades para poder expresar flujos de trabajo condicionales, a saber: constucciones if, while, for y parallel. Estas facilidades permiten expresar una gran variedad de flujos de trabajo. Sin embargo, para poder estudiar los flujos de trabajo con estas construcciones, se requieren de mecanismos de predicción o estimación de posibles rutas de ejecución del flujo de trabajo. En algunos sistemas de administración de ejecución de flujos de trabajo, como Pegasus \cite{deelman2005pegasus}, aplican desenroscado de bucles como técnica de estimación de la ruta de ejecución del flujo, para transformar el flujo de trabajo condicional en un grafo dirigido acíclico. Sin embargo, el estudio de estos mecanismos está fuera del alcance de este trabajo.
+Cabe aclarar que, como se vio en el primer capítulo de este trabajo, aún no existe un consenso sobre qué representa un flujo de trabajo \cite{van2003workflow}, debido a las diferentes perspectivas de interpretación de un flujo. En el caso del lenguaje AGWL, éste cuenta con facilidades para poder expresar flujos de trabajo condicionales, a saber: construcciones if, while, for y parallel. Estas facilidades permiten expresar una gran variedad de flujos de trabajo. Sin embargo, para poder estudiar los flujos de trabajo con estas construcciones, se requieren de mecanismos de predicción o estimación de posibles rutas de ejecución del flujo de trabajo. En algunos sistemas de administración de ejecución de flujos de trabajo, como Pegasus \cite{deelman2005pegasus}, aplican desenroscado de bucles como técnica de estimación de la ruta de ejecución del flujo, para transformar el flujo de trabajo condicional en un grafo dirigido acíclico. Sin embargo, el estudio de estos mecanismos está fuera del alcance de este trabajo.
 
 %Aunque no existe un consenso general sobre cuál es una definición completa de un flujo de trabajo \cite{van2003workflow}, el lenguaje AGWL es una especificación suficientemente flexible para expresar una gran cantidad de flujos de trabajo, porque con las construcciones if, while, for, parallel, secuence son adecuadas para expresar vastos flujos.
 
 %El hecho importante a recalcar es que los grafos dirigidos acíclicos sirven como representación para utilizarlos en los algoritmos de planificación.
 
-De esta forma, es posible asumir, tanto para el estudio del problema de planificación de flujos de trabajo como para los algoritmos de planificación, que se tendrá como entrada la representación del flujo de trabajo en forma de un grafo dirigido acícliclo.
+De esta forma, es posible asumir, tanto para el estudio del problema de planificación de flujos de trabajo como para los algoritmos de planificación, que se tendrá como entrada la representación del flujo de trabajo en forma de un grafo dirigido acíclico.
 
 \subsection{Definición del problema de planificación de flujos de trabajo}
 Una vez que se ha establecido a los grafos dirigidos acíclicos como nuestra representación básica de flujos de trabajo, se definirá el problema que conlleva asignar recursos a las tareas del flujo.
 
-Con el fin de no perder generalidad, tomaremos la definiciones de Wieczorek-Prodan \cite{wieczorek2008taxonomies} para definir el problema de la planificación de flujos de trabajo:
+Con el fin de no perder generalidad, tomaremos las definiciones de Wieczorek-Prodan \cite{wieczorek2008taxonomies} para definir el problema de la planificación de flujos de trabajo:
 
 \begin{defn}
 Un \textbf{flujo de trabajo} es un grafo dirigido $w \in \mathcal{W}, w = (\mathcal{V},\mathcal{E})$, compuesto de un conjunto de nodos $\mathcal{V}$ que representan tareas $ \tau \in \mathcal{T}$ y un conjunto de aristas $\mathcal{E}$ que representan transferencias de datos $ \rho \in \mathcal{D}$.
@@ -73,7 +73,7 @@ De este modo, la planificación es definida como una función:
 La \textbf{planificación de un flujo de trabajo} $w$ es una función $ f: \mathcal{T} \mapsto \mathcal{S}$ que asigna servicios a las tareas del flujo. El conjunto que contiene todas las posibles calendarizaciones de $w$ es denotado por $\mathcal{F}$.
 \end{defn}
 
-Cada posible planificación determina un costo de ejecución. A continuación, definiremos el modelo de costo determinado por la utlización de los servicios.
+Cada posible planificación determina un costo de ejecución. A continuación, definiremos el modelo de costo determinado por la utilización de los servicios.
 
 \begin{defn}
 Un \textbf{modelo de costos} es un conjunto de criterios $C = \{c_1, c_2, \dots, c_n\}$ que determinan las restricciones en las que se debe ejecutar una planificación, por ejemplo, un límite en el tiempo de ejecución, en el costo monetario o la tolerancia a fallos, entre otros.

@@ -6,7 +6,7 @@ Con el fin de facilitar el estudio de los algoritmos de planificación de flujos
 
 Los algoritmos de planificación implementados en el simulador son: Miope (\ref{alg:myopic}, \ref{code:myopic}), MinMin (\ref{alg:min-min}, \ref{lst:xmin_main}) y MaxMin (\ref{alg:max-min}, \ref{lst:xmin_main}). Cabe recordar que el algoritmo Miope es un algoritmo voraz que busca el recurso que pueda ejecutar la tarea lo más pronto posible. Por otro lado, los algoritmos MinMin y MaxMin buscan recursos que puedan minimizar tanto la duración de las tareas listas como el tiempo en el que inician la ejecución de las tareas. Luego, en el caso de MaxMin, se busca la tarea que tarde más tiempo en ejecutarse. En el caso de MinMin, se busca la tarea que tarde menos en ejecutarse.
 
-Para simplificar la construcción del simulador, se asumieron seis supocisiones:
+Para simplificar la construcción del simulador, se asumieron seis suposiciones:
 
 \begin{enumerate}
 \item Los recursos pueden ejecutar todas las tareas.
@@ -39,9 +39,9 @@ El diseño de las clases y objetos se hizo de tal modo que los elementos más co
 
 \item \textbf{Clase \texttt{Schedule}}: Representa una planificación de una tarea en un recurso. Cada objeto de esta clase guarda la tarea y el recurso que fueron asignados, el tiempo en que se empezará a ejecutar la tarea y el tiempo estimado de ejecución de la tarea en el recurso.
 
-\item \textbf{Clase \texttt{Workflow}}: La clase \texttt{Workflow} representa un flujo de trabajo, compuesto de tareas y las relaciones de precedencia entre tareas. Cabe aclarar que no se permite que existan tareas con el mismo nombre y también se verifica que las relaciones de precedencia entre las tareas formen un grafo dirigido acícilico.
+\item \textbf{Clase \texttt{Workflow}}: La clase \texttt{Workflow} representa un flujo de trabajo, compuesto de tareas y las relaciones de precedencia entre tareas. Cabe aclarar que no se permite que existan tareas con el mismo nombre y también se verifica que las relaciones de precedencia entre las tareas formen un grafo dirigido acíclico.
 
-\item \textbf{Clases Adicionales}: La clase \texttt{Pair} es una tupla de dos valores, la cual es utilizada ampliamente en los alogritmos de planificación. La clase \texttt{GEXFConverter} contiene métodos para guardar los flujos de trabajo en archivos con formato GEXF \cite{gexf2014}, el cual es utilizado en software como Gephi \cite{bastian2009gephi} para visualizar grafos. La clase \texttt{EarliestStartTimeComparator} implementa un comparador que es utilizado en el algoritmo Miope para mantener una lista de recursos ordenada por el tiempo de disponibilidad más corto.
+\item \textbf{Clases Adicionales}: La clase \texttt{Pair} es una tupla de dos valores, la cual es utilizada ampliamente en los algoritmos de planificación. La clase \texttt{GEXFConverter} contiene métodos para guardar los flujos de trabajo en archivos con formato GEXF \cite{gexf2014}, el cual es utilizado en software como Gephi \cite{bastian2009gephi} para visualizar grafos. La clase \texttt{EarliestStartTimeComparator} implementa un comparador que es utilizado en el algoritmo Miope para mantener una lista de recursos ordenada por el tiempo de disponibilidad más corto.
 \end{itemize}
 
 \section{Código de los algoritmos de planificación}
@@ -66,11 +66,11 @@ En la figura \ref{fig:uml_class_scheduler} están las clases que implementan los
 A continuación, se describirán los detalles de implementación de cada uno de los algoritmos de planificación.
 
 \subsection{Algoritmo Miope}
-Como se vió en el capítulo \ref{chap:scheduling_algorithms}, el algoritmo Miope asigna tareas a recursos de tal modo que se empiecen a ejecutar lo más pronto posible. Aunque la idea básica resulte fácil de entender, hay algunas cuestiones que deben ser resueltas para implementar este algoritmo. En el código \ref{code:myopic} se encuentra el código del algoritmo Miope, el cual utiliza las clases de los elementos comunes antes descritos. 
+Como se vio en el capítulo \ref{chap:scheduling_algorithms}, el algoritmo Miope asigna tareas a recursos de tal modo que se empiecen a ejecutar lo más pronto posible. Aunque la idea básica resulte fácil de entender, hay algunas cuestiones que deben ser resueltas para implementar este algoritmo. En el código \ref{code:myopic} se encuentra el código del algoritmo Miope, el cual utiliza las clases de los elementos comunes antes descritos. 
 
 Primero, hay que hacer una distinción entre \emph{tareas planificadas} y \emph{tareas listas}. Una tarea está planificada si ya está asignada a uno y sólo un recurso. Cabe aclarar que en el simulador no se permite que una tarea sea asignada a varios recursos. Ahora bien, una tarea está lista para planificar si sus predecesores inmediatos o padres han sido planificados. Esto asegura que se respeten las dependencias entre las tareas a la hora de planificar.
 
-También, hay que tomar en cuenta cómo obtener tareas que estén listas para planificar. En el caso del algoritmo Miope, se evalua exhaustivamente la lista de tareas disponibles \texttt{readyTasks} (línea 4 del código \ref{code:myopic}) en busca de una tarea lista para planificar. El método \texttt{Utils.checkParents(task, schedTasks, workflow)} (línea 15 del código \ref{code:myopic}) devuelve \texttt{true} si la tarea \texttt{task} es una \emph{tarea lista} para planificar. Este método (código \ref{code:utils_checkParents}) determina si todos los padres de una tarea dada se encuentran en la lista de tareas planificadas.
+También, hay que tomar en cuenta cómo obtener tareas que estén listas para planificar. En el caso del algoritmo Miope, se evalúa exhaustivamente la lista de tareas disponibles \texttt{readyTasks} (línea 4 del código \ref{code:myopic}) en busca de una tarea lista para planificar. El método \texttt{Utils.checkParents(task, schedTasks, workflow)} (línea 15 del código \ref{code:myopic}) devuelve \texttt{true} si la tarea \texttt{task} es una \emph{tarea lista} para planificar. Este método (código \ref{code:utils_checkParents}) determina si todos los padres de una tarea dada se encuentran en la lista de tareas planificadas.
 
 \begin{lstlisting}[language=java,label={code:utils_checkParents},caption={Método que verifica si los padres de una tarea están planificados.},float]
 boolean checkParents(Task t, ArrayList<Task> sched, Workflow w) {
@@ -85,7 +85,7 @@ boolean checkParents(Task t, ArrayList<Task> sched, Workflow w) {
 
 Una vez que se obtiene la tarea lista para planificar, se busca el recurso al que se le asignará la tarea. Así, se mantiene una cola de prioridad \texttt{R} (línea 8 del código \ref{code:myopic}) de los recursos con el tiempo de disponibilidad más pronto. Como esta cola de prioridad es un montículo, sólo necesitamos consultar la raíz del montículo para saber cuál es el recurso con el menor tiempo de disponibilidad. 
 
-Con el recurso seleccionado de la cola de prioridad, se hacen los cálculos (líneas 17-22 del código \ref{code:myopic}) del tiempo de ejecución y el tiempo de inicio de la tarea en el recurso elegido. Para el caso del del tiempo de inicio, en la línea 18 del código \ref{code:myopic} se hace una llamada al método \texttt{Utils.parentsReadyTime(task, scheduleList, workflow)}, el cual obtiene el instante de tiempo más pronto en el que todos los padres de una tarea han sido ejecutados. Este método, mostrado en el código \ref{code:utils_parentsReadyTime}, busca en la lista de tareas planificadas si se encuentran los padres de la tarea dada y mantiene un registro del tiempo que tardan en ejecutarse estos padres.
+Con el recurso seleccionado de la cola de prioridad, se hacen los cálculos (líneas 17-22 del código \ref{code:myopic}) del tiempo de ejecución y el tiempo de inicio de la tarea en el recurso elegido. Para el caso del tiempo de inicio, en la línea 18 del código \ref{code:myopic} se hace una llamada al método \texttt{Utils.parentsReadyTime(task, scheduleList, workflow)}, el cual obtiene el instante de tiempo más pronto en el que todos los padres de una tarea han sido ejecutados. Este método, mostrado en el código \ref{code:utils_parentsReadyTime}, busca en la lista de tareas planificadas si se encuentran los padres de la tarea dada y mantiene un registro del tiempo que tardan en ejecutarse estos padres.
 
 \begin{lstlisting}[language=java,label={code:utils_parentsReadyTime},caption={Método que calcula el tiempo mínimo en el que los padres de una tarea dada han sido ejecutados.},float]
 double parentsReadyTime(Task t, List<Schedule> partialSchedule, Workflow w) {
@@ -170,7 +170,7 @@ double ECT(Task t, Resource r, Workflow w, List<Schedule> partialSchedule) {
 }
 \end{lstlisting}
 
-Como los algoritmos MaxMin y MinMin son muy similares, se hizo un sólo método que encapsula el código en común entre ambos algoritmos. Este método se encuentra en el código \ref{lst:xmin_main}. Además, con el parámetro \texttt{alg}, se puede elegir si se ejecuta el algoritmo MaxMin o el algoritm MinMin. Este método prepara la lista de tareas listas (líneas 10-13), luego obtiene las planificaciones de las tareas listas (línea 15). Después, actualiza la lista de tareas planificadas (\texttt{schedTasks}) y la lista global \texttt{allTasks}. Nuevamente, el algoritmo termina cuando la lista global está vacía.
+Como los algoritmos MaxMin y MinMin son muy similares, se hizo un sólo método que encapsula el código en común entre ambos algoritmos. Este método se encuentra en el código \ref{lst:xmin_main}. Además, con el parámetro \texttt{alg}, se puede elegir si se ejecuta el algoritmo MaxMin o el algoritmo MinMin. Este método prepara la lista de tareas listas (líneas 10-13), luego obtiene las planificaciones de las tareas listas (línea 15). Después, actualiza la lista de tareas planificadas (\texttt{schedTasks}) y la lista global \texttt{allTasks}. Nuevamente, el algoritmo termina cuando la lista global está vacía.
 
 \begin{lstlisting}[language=java,label={lst:xmin_main},caption={Método principal para los algoritmos MaxMin y MinMin.},float]
 List<Schedule> schedule(Workflow w, List<Resource> resourceList, XMinAlgorithm alg) {
