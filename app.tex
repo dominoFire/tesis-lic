@@ -3,17 +3,18 @@
 \section{Algoritmos de mejor esfuerzo}
 
 \subsection{Miope}
+\label{alg:myopic}
 El algoritmo Miope \cite{yu2008workflow} es el más simple de todos los algoritmos. Lo único que hace es buscar un recurso disponible que pueda ejecutar la tarea y asignarle dicha tarea. No toma en cuenta otra característica a optimizar. Este algoritmo fue propuesto por Ramamritham et al. \cite{ramamritham1990efficient}. 
 %El algoritmo peresentado en estre trabajo se encuentra en la sección \ref{alg:myopic} del Apéndice.
 
-\label{alg:myopic}
+
 \begin{algorithmic}[1]
 \Require Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$
 \Ensure{Una planificación $f$}
 \While{$\exists v \in \mathcal{V}$ no completada}
-	\State $t \gets$ Obtener una tarea lista, no calendarizada, con padres calendarizados;
+	\State $t \gets$ Obtener una tarea lista, no planificada, con padres planificados;
 	\State $r \gets$ Obtener un recurso que pueda empezar la tarea en el menor tiempo;
-	\State Calendarizar $t$ en $r$, i.e., $f(r) = t$;
+	\State Planificar $t$ en $r$, i.e., $f(r) = t$;
 \EndWhile
 \end{algorithmic}
 
@@ -31,15 +32,15 @@ Los algoritmos MinMin y MaxMin utilizan las siguientes estimaciones: %definidas 
 \end{itemize}
 
 \subsection{MinMin}
+\label{alg:min-min}
 El algoritmo MinMin está basado en la heurística de terminar las tareas más cortas en el menor tiempo posible. Para ello, hace una estimación del tiempo de ejecución tomando en cuenta el tiempo de preparación de las tareas en los servicios --o recursos-- para tener el tiempo y los archivos necesarios disponibles para el recurso en cuestión. El algoritmo fue propuesto por Maheswaran et al. \cite{maheswaran1999dynamic}. 
 %El pseudocódigo está descrito en el listado \ref{alg:min-min}.
 
-\label{alg:min-min}
 \begin{algorithmic}[1]
 \Require{Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$}
 \Ensure{Una planificación $f$}
 \While{$\exists v \in \mathcal{V}$ \emph{no completada}}
-	\State $t \gets$ Obtener conjunto de tareas listas, no calendarizadas, con padres  calendarizados;
+	\State $t \gets$ Obtener conjunto de tareas listas, no planificadas, con padres planificados;
 	\State \Call{Planificacion}{$tasks$};
 \EndWhile
 \Procedure{Planificacion}{$availTasks$}
@@ -60,7 +61,8 @@ El algoritmo MinMin está basado en la heurística de terminar las tareas más c
 \end{algorithmic}
 
 \subsection{MaxMin}
-El algoritmo MaxMin --también propuesto Maheswaran et al. \cite{maheswaran1999dynamic}-- es muy similar al algoritmo min-min. La diferencia radica en que éste calendariza tareas cuyo tiempo mínimo de ejecución es el mayor, de tal modo que se ejecutan las tares más \emph{largas}.
+\label{alg:max-min}
+El algoritmo MaxMin --también propuesto Maheswaran et al. \cite{maheswaran1999dynamic}-- es muy similar al algoritmo MinMin. La diferencia radica en que éste planifica tareas cuyo tiempo mínimo de ejecución es el mayor, de tal modo que se ejecutan primero las tares más \emph{largas}.
 
 El único cambio que se necesita hacer al algoritmo \ref{alg:min-min} es cambiar la línea 14:
 \[T \leftarrow \arg\min_{t \in \emph{availTasks}}ECT(t,r);\]
@@ -68,7 +70,6 @@ por
 \[T \leftarrow \arg\max_{t \in \emph{availTasks}}ECT(t,r);\]
 Así, el algoritmo modificado puede verse a continuación: %en el pseudocódigo \ref{alg:max-min}.
 
-\label{alg:max-min}
 \begin{algorithmic}[1]
 \Require{Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$}
 \Ensure{Una planificación $f$}
@@ -94,10 +95,10 @@ Así, el algoritmo modificado puede verse a continuación: %en el pseudocódigo 
 \end{algorithmic}
 
 \subsection{Sufragio}
-El algoritmo Sufragio\footnote{También conocido como \emph{Sufferage}} \cite{maheswaran1999dynamic} es una variación del algoritmo Min-min, el cual considera el valor del sufragio para hacer la planificación. Dicho valor es la diferencia entre el menor tiempo de ejecución para una tarea $t$ sobre un conjunto de recursos disponibles y el segundo menor. Se calendariza a la tarea que tenga el valor del sufragio más alto, por el hecho de que las tareas que son muy sensibles a los cambios de los recursos deben ser calendarizadas primero. 
+\label{alg:sufferage}
+El algoritmo Sufragio\footnote{También conocido como \emph{Sufferage}} \cite{maheswaran1999dynamic} es una variación del algoritmo MinMin, el cual considera el valor \emph{sufragio} para hacer la planificación. Dicho valor es la diferencia entre el menor tiempo de ejecución para una tarea $t$ sobre un conjunto de recursos disponibles y el segundo menor. Se planifica la tarea que tenga el valor del sufragio más alto, por el hecho de que las tareas que son muy sensibles a los cambios de los recursos deben ser planificadas primero. 
 %El algoritmo se encuentra en la sección \ref{alg:sufferage} del Apéndice.
 
-\label{alg:sufferage}
 \begin{algorithmic}[1]
 \Require{Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$}
 \Ensure{Una planificación $f$}
@@ -125,6 +126,7 @@ El algoritmo Sufragio\footnote{También conocido como \emph{Sufferage}} \cite{ma
 \end{algorithmic}
 
 \subsection{HEFT}
+\label{alg:heft}
 El algoritmo HEFT\footnote{Heterogeneous Earliest-Finish Time} fue propuesto por Topcuoglu et al. \cite{topcuoglu2002performance}. Este algoritmo está dividido en dos fases: (1) priorización de tareas y (2) selección de recursos. En la primera fase, para todas las tareas se calcula un valor llamado $Rango_{Asc}$, que es una estimación del costo de ejecutar una tarea. En la segunda fase, se asigna a cada tarea de la lista un recurso disponible que tenga el tiempo de disponibilidad más corto. Este tiempo se refiere al instante en que un recurso tiene todos los datos necesarios para ejecutar la tarea a planificar.
 
 
@@ -163,7 +165,6 @@ Rango(T) = \overline{\omega_i} + \max_{T_j \in succ(T_i)} ( \overline{C_{ij}} + 
 \end{equation}
 donde $succ(T_i)$ es el conjunto de los sucesores inmediatos de la tarea $T_i$.
 
-\label{alg:heft}
 \begin{algorithmic}[1]
 \Require{Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$}
 \Ensure{Una planificación $f$}
@@ -183,9 +184,9 @@ donde $succ(T_i)$ es el conjunto de los sucesores inmediatos de la tarea $T_i$.
 \end{algorithmic}
 
 \subsection{Híbrido}
+\label{alg:hybrid}
 Este algoritmo combina dos heurísticas: primero agrupa las tareas que tengan dependencias entre sí, de tal modo que haya un balance entre el número de grupos y el número de recursos disponibles para la ejecución de las tareas agrupadas. Luego, con los grupos listos, se utiliza un algoritmo de planificación batch para asignar a cada grupo un recurso. Este algoritmo/heurística fue propuesto por Sakellariou et al \cite{sakellariou2004hybrid}. El algoritmo híbrido utiliza las definiciones de tiempos promedio y función de rango del algoritmo HEFT.
 
-\label{alg:hybrid}
 \begin{algorithmic}[1]
 \Require{Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$}
 \Ensure{Una planificación $f$}

@@ -2,7 +2,7 @@
 
 En los capítulos anteriores, se han revisado los principales elementos del problema de la planificación de flujos de trabajo en entornos de cómputo distribuido. Se estudió también el concepto de flujo de trabajo y sus propiedades. También se han detallado los enfoques de cómputo distribuido comunes en la planificación de flujos de trabajo. Además, se ha estudiado el problema de planificación elemental y su aplicación al problema específico de flujos de trabajo. De este modo, se puede notar que son varios los factores que se tienen que tomar en cuenta para construir software para flujos de trabajo en entornos de cómputo distribuido.
 
-Con el fin de facilitar el estudio de los algoritmos de planificación de flujos de trabajo y de proveer a la comunidad científica de cloud computing de una plataforma para analizar el desempeño de nuevos algoritmos de planificación con respecto a algoritmos consolidados, se construyó un simulador de ejecución de flujos de trabajo. El simulador está construido con el lenguaje de programación Java. También, se utilizó Maven \cite{maven2014} para administrar el proceso de compilación de código y JUnit \cite{junit2014} para administrar la aplicación de pruebas unitarias. También, el código está disponible como software libre \cite{dominofire2014workflowsimulator} para su libre utilización en otros proyectos.
+Con el fin de facilitar el estudio de los algoritmos de planificación de flujos de trabajo y de proveer a la comunidad científica de cloud computing de una plataforma para analizar el desempeño de nuevos algoritmos de planificación con respecto a algoritmos consolidados, se construyó un simulador de ejecución de flujos de trabajo. El simulador está construido con el lenguaje de programación Java. También, se utilizó Maven \cite{maven2014} para administrar el proceso de compilación de código y JUnit \cite{junit2014} para administrar la aplicación de pruebas unitarias. Además, el código está disponible como software libre \cite{dominofire2014workflowsimulator} para su libre utilización en otros proyectos.
 
 Los algoritmos de planificación implementados en el simulador son: Miope (\ref{alg:myopic}, \ref{code:myopic}), MinMin (\ref{alg:min-min}, \ref{lst:xmin_main}) y MaxMin (\ref{alg:max-min}, \ref{lst:xmin_main}). Cabe recordar que el algoritmo Miope es un algoritmo voraz que busca el recurso que pueda ejecutar la tarea lo más pronto posible. Por otro lado, los algoritmos MinMin y MaxMin buscan recursos que puedan minimizar tanto la duración de las tareas listas como el tiempo en el que inician la ejecución de las tareas. Luego, en el caso de MaxMin, se busca la tarea que tarde más tiempo en ejecutarse. En el caso de MinMin, se busca la tarea que tarde menos en ejecutarse.
 
@@ -18,7 +18,7 @@ Para simplificar la construcción del simulador, se asumieron seis suposiciones:
 \end{enumerate}
 
 \section{Clases comunes para los algoritmos}
-El diseño de las clases y objetos se hizo de tal modo que los elementos más comunes de los algoritmos fueran representados en una clase. Así, describiremos primero las clases \texttt{Task}, \texttt{Resource} y \texttt{Schedule}, para luego describir la clase \texttt{Workflow} y las clases que implementan los algoritmos: \texttt{Myopic}, \texttt{MinMin} y \texttt{MaxMin}. En la figura \ref{fig:uml_class} se muestra el diagrama de clases que modela los elementos del problema de planificación de flujos de trabajo. Estas clases se encuentran en el paquete \texttt{org.perez.workflow.elements}.
+El diseño de las clases y objetos se hizo de tal modo que los elementos más comunes de los algoritmos fueran representados en una clase. Así, describiremos primero las clases \texttt{Task}, \texttt{Resource} y \texttt{Schedule}, para luego describir la clase \texttt{Workflow} y las clases que implementan los algoritmos: \texttt{Myopic}, \texttt{MinMin} y \texttt{MaxMin}. En la figura \ref{fig:uml_class} se muestra el diagrama de clases que modela los elementos del problema de planificación de flujos de trabajo. Estas clases se encuentran en el paquete \texttt{org.perez.workflow.elements}, las cuales describiremos a continuación.
 
 \begin{figure}
 \label{fig:uml_class}
@@ -30,7 +30,7 @@ El diseño de las clases y objetos se hizo de tal modo que los elementos más co
 
 \begin{itemize}
 
-\item{\textbf{Clase \texttt{Task}}: Representa una tarea que forma parte de un flujo de trabajo. Cada tarea tiene un nombre que debe ser único en el flujo de trabajo del que forma parte. También, la tarea contiene un factor de complejidad, que es un número que representa qué tan complicado es ejecutar esta tarea. La idea básica es que a mayor factor de complejidad, mayor es el tiempo requerido para ejecutar la tarea o un recurso más rápido es necesario para ejecutar la tarea. Junto con el factor de velocidad de un recurso (que se verá en la descripción de la clase \texttt{Resource}), el tiempo de ejecución de una tarea en un recurso particular se calcula con la siguiente fórmula:
+\item{\textbf{Clase \texttt{Task}}: Representa una tarea que forma parte de un flujo de trabajo. Cada tarea tiene un nombre que debe ser único en el flujo de trabajo del que forma parte. También, la tarea contiene un factor de complejidad, que es un número que representa qué tan complicado es ejecutar esta tarea. La idea básica es que a mayor factor de complejidad, mayor es el tiempo requerido para ejecutar la tarea o un recurso más rápido es necesario para ejecutar la tarea de forma eficiente. Junto con el factor de velocidad de un recurso (que se verá en la descripción de la clase \texttt{Resource}), el tiempo de ejecución de una tarea en un recurso particular se calcula con la siguiente fórmula:
 \begin{equation}
   \text{Tiempo de ejecución} = \frac{\text{Factor de complejidad}}{\text{Factor de velocidad}}
 \end{equation}}
@@ -91,7 +91,7 @@ Con el recurso seleccionado de la cola de prioridad, se hacen los cálculos (lí
 double parentsReadyTime(Task t, List<Schedule> partialSchedule, Workflow w) {
   double parentsReadyTime = 0;
   ArrayList<Task> parents = w.getDependencies(t);
-  //asumimos que tenemos tareas unicas y calendarizaciones unicas
+  //asumimos que tenemos tareas unicas y planificaciones unicas
   for(Task parentTask: parents)
     for(Schedule s: partialSchedule)
       if(parentTask.equals(s.getTask()))
@@ -106,7 +106,7 @@ Estos cálculos son utilizados para crear un objeto del tipo \texttt{Schedule} q
 \begin{lstlisting}[language=java,label={code:myopic},caption={Algoritmo Miope},float]
 List<Schedule> schedule(Workflow w, List<Resource> resourceList) {
   Utils.checkScheduleParams(w, resourceList);
-  //lista de tareas no calendarizadas
+  //lista de tareas no planificadas
   ArrayList<Task> schedTasks = new ArrayList<Task>();
   ArrayList<Task> allTasks = new ArrayList<Task>(w.getTasks());
   ArrayList<Task> readyTasks = null;
