@@ -12,18 +12,18 @@ De acuerdo a  Ullman et al. \cite{ullman1975np}, el problema de la planificació
 \begin{defn}
 El \textbf{problema de la planificación} está compuesto por:
 \begin{enumerate}
-\item Un conjunto de tareas $S = \{ J_1, J_2, \dots, J_n \}$
-\item Un ordenamiento parcial $\prec$ sobre $S$
-\item Una función de costo $U: S \mapsto \mathbb{Z}^{+}$, la cual indica el tiempo que tarda en completarse cada una de las tareas en $S$
+\item Un conjunto de tareas $\mathcal{J} = \{ J_1, J_2, \dots, J_n \}$
+\item Un ordenamiento parcial $\prec$ sobre $\mathcal{J}$
+\item Una función de costo $U: \mathcal{J} \mapsto \mathbb{Z}^{+}$, la cual indica el tiempo que tarda en completarse cada una de las tareas de $\mathcal{J}$
 \item Un número de computadoras (procesadores) $k$
 \end{enumerate}
 \end{defn}
 
-Para Ullman et al. \cite{ullman1975np}, el objetivo del problema de la planificación es \emph{minimizar} el tiempo total de ejecución, denotado por $t_\text{max}$, respetando el orden parcial definido por $\prec$, asignando tareas de $S$ a los $k$ procesadores.
+Para Ullman et al. \cite{ullman1975np}, el objetivo del problema de la planificación es \emph{minimizar} el tiempo total de ejecución, denotado por $t_\text{max}$, respetando el orden parcial definido por $\prec$, asignando tareas de $\mathcal{J}$ a los $k$ procesadores.
 También, es importante notar que se asume que cuando una computadora ejecuta una tarea, ésta es ejecutada completamente, sin errores o interrupciones.
 
 \section{La complejidad de planificar}
-Como puede notarse, hay varias maneras de acomodar las $k$ computadoras para que se ejecuten todas las tareas de $S$. De hecho, Ullman et al. han demostrado que este problema pertenece a la categoría NP-completo \cite{ullman1975np}. Esto signifca que no se ha encontrado un algoritmo que pueda resolver el problema en tiempo polinomial. Entonces, la solución ingenua de probar ordenadamente todas las posibles asignaciones de tareas a computadoras resulta computacionalmente muy costoso.
+Como puede notarse, hay varias maneras de acomodar las $k$ computadoras para que se ejecuten todas las tareas de $\mathcal{J}$. De hecho, Ullman et al. han demostrado que este problema pertenece a la categoría NP-completo \cite{ullman1975np}. Esto signifca que no se ha encontrado un algoritmo que pueda resolver el problema en tiempo polinomial. Entonces, la solución ingenua de probar ordenadamente todas las posibles asignaciones de tareas a computadoras resulta computacionalmente muy costoso.
 
 Así, la forma de atacar estos problemas NP-completos es utilizar métodos de aproximación \cite{leiserson2001introduction} que obtengan soluciones subóptimas o utilizar heurísticas que resuelvan este problema asumiendo ciertas restricciones.
 
@@ -97,7 +97,7 @@ Ahora, se hará una analogía con el problema básico de planificación visto en
 
 
 \begin{enumerate}
-\item El conjunto de tareas $S$ equivale a las tareas $\mathcal{T}$ descritas por el flujo de trabajo.
+\item El conjunto de tareas $\mathcal{J}$ equivale a las tareas $\mathcal{T}$ descritas por el flujo de trabajo.
 
 \item El ordenamiento parcial $\prec$ está representado tanto por las dependencias de datos $\mathcal{D}$ y las aristas $\mathcal{E}$ que representan el control de flujo que deben respetarse para ejecutar el flujo.
 

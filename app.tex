@@ -4,9 +4,9 @@
 
 \subsection{Miope}
 \label{alg:myopic}
-El algoritmo Miope \cite{yu2008workflow} es el más simple de todos los algoritmos. Lo único que hace es buscar un recurso disponible que pueda ejecutar la tarea y asignarle dicha tarea. No toma en cuenta otra característica a optimizar. Este algoritmo fue propuesto por Ramamritham et al. \cite{ramamritham1990efficient}. 
+El algoritmo Miope \cite{yu2008workflow} es el más simple de todos los algoritmos. La idea básica es buscar un recurso disponible que pueda ejecutar la tarea y asignarle dicha tarea. No toma en cuenta otra característica a optimizar. Este algoritmo fue propuesto por Ramamritham et al. \cite{ramamritham1990efficient}. 
 %El algoritmo peresentado en estre trabajo se encuentra en la sección \ref{alg:myopic} del Apéndice.
-
+\\
 
 \begin{algorithmic}[1]
 \Require Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$
@@ -35,7 +35,7 @@ Los algoritmos MinMin y MaxMin utilizan las siguientes estimaciones: %definidas 
 \label{alg:min-min}
 El algoritmo MinMin está basado en la heurística de terminar las tareas más cortas en el menor tiempo posible. Para ello, hace una estimación del tiempo de ejecución tomando en cuenta el tiempo de preparación de las tareas en los servicios --o recursos-- para tener el tiempo y los archivos necesarios disponibles para el recurso en cuestión. El algoritmo fue propuesto por Maheswaran et al. \cite{maheswaran1999dynamic}. 
 %El pseudocódigo está descrito en el listado \ref{alg:min-min}.
-
+\\
 \begin{algorithmic}[1]
 \Require{Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$}
 \Ensure{Una planificación $f$}
@@ -69,7 +69,7 @@ El único cambio que se necesita hacer al algoritmo \ref{alg:min-min} es cambiar
 por
 \[T \leftarrow \arg\max_{t \in \emph{availTasks}}ECT(t,r);\]
 Así, el algoritmo modificado puede verse a continuación: %en el pseudocódigo \ref{alg:max-min}.
-
+\\
 \begin{algorithmic}[1]
 \Require{Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$}
 \Ensure{Una planificación $f$}
@@ -98,7 +98,7 @@ Así, el algoritmo modificado puede verse a continuación: %en el pseudocódigo 
 \label{alg:sufferage}
 El algoritmo Sufragio\footnote{También conocido como \emph{Sufferage}} \cite{maheswaran1999dynamic} es una variación del algoritmo MinMin, el cual considera el valor \emph{sufragio} para hacer la planificación. Dicho valor es la diferencia entre el menor tiempo de ejecución para una tarea $t$ sobre un conjunto de recursos disponibles y el segundo menor. Se planifica la tarea que tenga el valor del sufragio más alto, por el hecho de que las tareas que son muy sensibles a los cambios de los recursos deben ser planificadas primero. 
 %El algoritmo se encuentra en la sección \ref{alg:sufferage} del Apéndice.
-
+\\
 \begin{algorithmic}[1]
 \Require{Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$}
 \Ensure{Una planificación $f$}
@@ -139,7 +139,6 @@ El algoritmo HEFT\footnote{Heterogeneous Earliest-Finish Time} fue propuesto por
 %Tiempo de ejecución promedio por tarea
 El algoritmo HEFT utiliza las fórmulas que vamos a describir a continuación:
 
-
 Sea $time(T_i, r)$ el tiempo de ejecución de la tarea $T_i$ en el recurso $r$ y sea $R_i$ el conjunto de recursos disponibles para ejecutar la tarea $T_i$. El tiempo de ejecución promedio de la tarea $T_i$ está definido como:
 \begin{equation}
 \label{ecc:heft1}
@@ -164,7 +163,7 @@ Para las tareas que no son tareas de  salida, el valor de rango se calcula con l
 Rango(T) = \overline{\omega_i} + \max_{T_j \in succ(T_i)} ( \overline{C_{ij}} + Rango(T_j) )
 \end{equation}
 donde $succ(T_i)$ es el conjunto de los sucesores inmediatos de la tarea $T_i$.
-
+\\
 \begin{algorithmic}[1]
 \Require{Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$}
 \Ensure{Una planificación $f$}
@@ -186,7 +185,7 @@ donde $succ(T_i)$ es el conjunto de los sucesores inmediatos de la tarea $T_i$.
 \subsection{Híbrido}
 \label{alg:hybrid}
 Este algoritmo combina dos heurísticas: primero agrupa las tareas que tengan dependencias entre sí, de tal modo que haya un balance entre el número de grupos y el número de recursos disponibles para la ejecución de las tareas agrupadas. Luego, con los grupos listos, se utiliza un algoritmo de planificación batch para asignar a cada grupo un recurso. Este algoritmo/heurística fue propuesto por Sakellariou et al \cite{sakellariou2004hybrid}. El algoritmo híbrido utiliza las definiciones de tiempos promedio y función de rango del algoritmo HEFT.
-
+\\
 \begin{algorithmic}[1]
 \Require{Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$}
 \Ensure{Una planificación $f$}
@@ -213,7 +212,7 @@ Este algoritmo combina dos heurísticas: primero agrupa las tareas que tengan de
 \subsection{TANH}
 \label{alg:tanh}
 Bajaj et al. \cite{bajaj2004improving} proponen un algoritmo basado en dos heurísticas: en la duplicación de tareas y en el agrupamiento de tareas. La primera heurística se basa en que si dos tareas dependen del resultado de una tarea en común y, estas dos tareas se encuentran en recursos diferentes y con un tiempo muerto previo a la ejecución de estas tareas, entonces, se ejecuta de forma redundante la tarea común en los dos recursos diferentes, para que las dos tareas puedan continuar su ejecución de manera independiente y no exista un costo de comunicación de datos entre estos dos recursos. La segunda heurística se refiere a que las tareas con dependencias entre sí se deben ejecutar en los mismos recursos, para que los costos de comunicación de datos sean despreciables.
-
+\\
 \begin{algorithmic}[1]
 \Require{Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$}
 \Ensure{Una planificación $f$}
@@ -240,7 +239,7 @@ Bajaj et al. \cite{bajaj2004improving} proponen un algoritmo basado en dos heur�
 \subsection{GRASP}
 \label{alg:grasp}
 El procedimiento de búsqueda aleatoria voraz adaptativa (GRASP por sus siglas en inglés) es una heurística que se utiliza para resolver problemas de optimización combinatoria. De manera voraz, se construyen planificaciones que reduzcan del tiempo de ejecución total evaluando cada uno de los sucesores de una tarea dada. Así, el algoritmo escoge las tareas de manera aleatoria cuya variación en el tiempo no pase de un rango dado. El algoritmo termina hasta que se cumple un criterio de terminación, como un tiempo límite. Este algoritmo fue propuesto por Blythe et al. \cite{blythe2005task}.
-
+\\
 \begin{algorithmic}[1]
 \Require{Un grafo de flujo de trabajo $w=(\mathcal{V}, \mathcal{E})$}
 \Ensure{Una planificación $f$}
